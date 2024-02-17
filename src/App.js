@@ -5,7 +5,7 @@ import Splash from './components/Splash/Splash';
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId="236510260850-4dn34qg1pvrmffa4bp84ik7qtjan7qud.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
       <div className="App">
         <Splash />
         <Login />
