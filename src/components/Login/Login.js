@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "../Header/Header";
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 export default function Login () {
+    const [error, setError] = useState("");
     const handleSuccess = async (credentialResponse) => {
         try {
             const accessToken = credentialResponse.credential.accessToken;
@@ -19,7 +20,9 @@ export default function Login () {
             const response = await axios.post(config)
             console.log("to backend: ", response.data);
         } catch(error) {
-            console.error("client side axios failure: ", error)
+            console.error("client side axios failure: ", error);
+            // setError(error);
+            // debugger;
         }
     }
 
@@ -27,6 +30,7 @@ export default function Login () {
     return (
         <div>
             <Header />
+            <p>{error}</p>
             <GoogleLogin
                 onSuccess={credentialResponse => {
                     setCredential(credentialResponse.credential);
