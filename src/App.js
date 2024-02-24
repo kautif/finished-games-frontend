@@ -2,6 +2,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import './App.css';
 import Login from './components/Login/Login';
 import Splash from './components/Splash/Splash';
+import TwitchLoginBtn from './components/TwitchLoginBtn/TwitchLoginBtn';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <div className="App">
         <Splash />
         <Login />
+        <TwitchLoginBtn />
       </div>
     </GoogleOAuthProvider>
   );
