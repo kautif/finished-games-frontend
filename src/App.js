@@ -7,6 +7,8 @@ import Splash from './components/Splash/Splash';
 import TwitchLoginBtn from './components/TwitchLoginBtn/TwitchLoginBtn';
 import AuthenticatedComponent from './components/AuthenticatedComponent'; // the component to show when the user is authenticated
 import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Search from './components/Search/Search';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -23,15 +25,21 @@ function App() {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
       <div className="App">
-        {isAuthenticated ? (
-          <AuthenticatedComponent />
-        ) : (
-          <>
-            <Splash />
-            <Login />
-            <TwitchLoginBtn />
-          </>
-        )}
+          {isAuthenticated ? (
+            <>
+              <AuthenticatedComponent />
+              <Routes>
+                  <Route exact path="/search" element={<Search />} />
+              </Routes>
+            </>
+            
+          ) : (
+            <>
+              <Splash />
+              <Login />
+              <TwitchLoginBtn />
+            </>
+          )}
       </div>
     </GoogleOAuthProvider>
   );

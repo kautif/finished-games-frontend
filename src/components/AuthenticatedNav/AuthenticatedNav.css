@@ -1,0 +1,15 @@
+.auth-nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: #8E43FC;
+    padding: 15px 0px;
+}
+
+.auth-nav__link {
+    color: white;
+    text-decoration: none;
+}
+
+.auth-nav__link:hover {
+    text-decoration: underline;
+}
