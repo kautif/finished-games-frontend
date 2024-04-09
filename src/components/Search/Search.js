@@ -5,6 +5,7 @@ import "./Search.css";
 
 export default function Search () {
     const [search, setSearch] = useState("");
+    // const [summary, setSummary] = useState("");
     const [games, setGames] = useState([]);
     const backendURL = process.env.REACT_APP_NODE_BACKEND || "http://localhost:4000";
 
@@ -28,12 +29,13 @@ export default function Search () {
         })
     }
 
-    function addGame (gameName, gameImg) {
+    function addGame (gameName, gameImg, gameSummary) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
         let gameObj = {
             name: gameName,
-            img_url: gameImg
+            img_url: gameImg,
+            summary: gameSummary
         }
 
         let config = {
@@ -65,7 +67,8 @@ export default function Search () {
         return <div className="search-game">
             <h2>{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
-            <p onClick={() => addGame(game.name, game.background_image)}>Add Game</p>
+            <textarea placeholder="Let your viewers know how you felt about this game"></textarea>
+            <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p>
         </div>
     })
 

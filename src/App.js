@@ -9,6 +9,7 @@ import AuthenticatedComponent from './components/AuthenticatedComponent'; // the
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Search from './components/Search/Search';
+import Gameslist from './components/Gameslist/Gameslist';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -30,6 +31,7 @@ function App() {
               <AuthenticatedComponent />
               <Routes>
                   <Route exact path="/search" element={<Search />} />
+                  <Route exact path="/games" element={<Gameslist />} />
               </Routes>
             </>
             

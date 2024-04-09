@@ -1,4 +1,4 @@
-.search-results {
+.user-games {
     display: flex;
     flex-wrap: wrap;
     width: 97%;
@@ -6,27 +6,31 @@
     margin-right: auto;
 }
 
-.search-game {
+.user-game {
     display: flex;
     flex-direction: column;
     margin-left: 2%;
     margin-right: 2%;
 }
 
-.search-game img {
+.user-game img {
     width: 390px;
     height: 250px;
 }
 
-.search-game textarea {
+.user-game textarea {
     margin-top: 4%;
     height: 50px;
 }
 
-.search-game p {
+.user-game p {
     background-color: #8E43FC;
     color: white;
     padding: 10px;
     border-radius: 4px;
     box-shadow: 2px 3px 5px 2px #313030;
+}
+
+.user-game p:hover {
+    cursor: pointer;
 }

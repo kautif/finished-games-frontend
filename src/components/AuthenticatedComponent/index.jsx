@@ -11,12 +11,12 @@ function AuthenticatedComponent() {
         try {
           const response = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/protected/userid`, { withCredentials: true });
           setData(response.data);
+          console.log("data: ", data);
           token = localStorage.getItem("auth_token");
           window.localStorage.setItem('twitchId', data.twitchId);
-          window.localStorage.setItem('twitchName', data.name);
-          console.log("response: ", response);
+          window.localStorage.setItem('twitchName', data.twitchName);
         } catch (error) {
-          console.error('Error fetching data from protected route', error);
+          console.error('Error fetching data from protected route', error.message);
           if (error.response && error.response.status === 401) {
             localStorage.removeItem('auth_token');
             window.location.href='/';
