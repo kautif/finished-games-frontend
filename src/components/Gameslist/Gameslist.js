@@ -55,6 +55,7 @@ export default function Gameslist (){
             })
     }
 
+    // 4/8/2025: You made this function in the redux slice. Try to implement that instead.
     async function getUserGames() {
         twitchId = window.localStorage.getItem("twitchId");
         // twitchName = window.localStorage.getItem("twitchName");

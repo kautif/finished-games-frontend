@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import GameResult from "../GameResult/GameResult";
 import "./Search.css";
@@ -11,7 +12,8 @@ export default function Search () {
 
     let twitchId;
     let twitchName;
-
+    let userGames = useSelector((state) => state.gamesReducer.userGames);
+    console.log("search userGames: ", userGames);
     function getGames (e) {
         e.preventDefault();
         axios({
@@ -64,11 +66,19 @@ export default function Search () {
     }, [games])
 
     let retrievedGames = games.map((game) => {
+        let doNamesMatch;
         return <div className="search-game">
             <h2>{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
             <textarea placeholder="Let your viewers know how you felt about this game"></textarea>
-            <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p>
+            {userGames.map(userGame => {
+                if (game.name === userGame.name) {
+                    doNamesMatch = true;
+                } else {
+                    doNamesMatch = false;
+                }
+            })}
+            {doNamesMatch ? <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p> : <p className="search-result__added">Added</p>}
         </div>
     })
 

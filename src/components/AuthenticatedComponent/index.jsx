@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { getUserGames, setUserGames } from '../../redux/gamesSlice';
+
 import axios from 'axios';
 import AuthenticatedNav from '../AuthenticatedNav/AuthenticatedNav';
 
 function AuthenticatedComponent() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
+  const userGames = useSelector(state => state.gamesReducer.userGames);
   let token;
-
+  let fetchedGames;
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
         try {
           const response = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/protected/userid`, { withCredentials: true });
           setData(response.data);
-          console.log("data: ", data);
+          console.log("root: ", );
           token = localStorage.getItem("auth_token");
           window.localStorage.setItem('twitchId', data.twitchId);
           window.localStorage.setItem('twitchName', data.twitchName);
+          dispatch(setUserGames(response.data.games));
         } catch (error) {
           console.error('Error fetching data from protected route', error.message);
           if (error.response && error.response.status === 401) {
@@ -25,6 +31,12 @@ function AuthenticatedComponent() {
       };
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   console.log("data: ", data);
+  // }, [data])
+
+  console.log("index games: ", userGames);  
 
   return (
     <div> 
