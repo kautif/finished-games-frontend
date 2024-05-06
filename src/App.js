@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Search from './components/Search/Search';
 import Gameslist from './components/Gameslist/Gameslist';
+import Profile from './components/Profile/Profile';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,14 +33,16 @@ function App() {
               <Routes>
                   <Route exact path="/search" element={<Search />} />
                   <Route exact path="/games" element={<Gameslist />} />
+                  <Route exact path="/:user" element={<Profile />}></Route>
               </Routes>
             </>
             
           ) : (
             <>
-              <Splash />
-              <Login />
-              <TwitchLoginBtn />
+              <Routes>
+                <Route exact path="/" element={<Splash />}></Route>
+                <Route exact path="/:user" element={<Profile />}></Route>
+              </Routes>
             </>
           )}
       </div>

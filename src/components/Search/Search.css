@@ -1,4 +1,4 @@
-.search-results {
+.search-results, .profile-results {
     display: flex;
     flex-wrap: wrap;
     width: 97%;
@@ -6,14 +6,14 @@
     margin-right: auto;
 }
 
-.search-game {
+.search-game, .profile-game {
     display: flex;
     flex-direction: column;
     margin-left: 2%;
     margin-right: 2%;
 }
 
-.search-game img {
+.search-game img, .profile-game img {
     width: 390px;
     height: 250px;
 }
