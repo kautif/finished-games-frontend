@@ -3,7 +3,7 @@ import axios from "axios";
 import "../Search/Search.css"
 
 export default function Profile (match) {
-    const backendURL = process.env.REACT_APP_NODE_BACKEND || "http://localhost:4000";
+    const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     const [user, setUser] = useState({});
     let gamesArr = [];
     let games;

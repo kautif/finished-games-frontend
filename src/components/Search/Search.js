@@ -8,7 +8,7 @@ export default function Search () {
     const [search, setSearch] = useState("");
     // const [summary, setSummary] = useState("");
     const [games, setGames] = useState([]);
-    const backendURL = process.env.REACT_APP_NODE_BACKEND || "http://localhost:4000";
+    const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
 
     let twitchId;
     let twitchName;
