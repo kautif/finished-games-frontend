@@ -21,6 +21,7 @@ function AuthenticatedComponent() {
           window.localStorage.setItem('twitchId', data.twitchId);
           window.localStorage.setItem('twitchName', data.twitchName);
           dispatch(setUserGames(response.data.games));
+          debugger
         } catch (error) {
           console.error('Error fetching data from protected route', error.message);
           if (error.response && error.response.status === 401) {
