@@ -13,6 +13,7 @@ function AuthenticatedComponent() {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
+      console.log("fetchData");
         try {
           const response = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/protected/userid`, { withCredentials: true });
           setData(response.data);
@@ -22,7 +23,10 @@ function AuthenticatedComponent() {
           window.localStorage.setItem('twitchName', data.twitchName);
           dispatch(setUserGames(response.data.games));
           debugger
+          alert("fetchData");
         } catch (error) {
+          console.log("fetchData");
+          alert("You are not logged in. Please log in to view this page.");
           console.error('Error fetching data from protected route', error.message);
           if (error.response && error.response.status === 401) {
             localStorage.removeItem('auth_token');
