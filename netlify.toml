@@ -3,4 +3,4 @@ from = "/:user"
 to = "/:user"
 status = 301
 force = false
-query = {user = ":user"}
+query = {path = ":path"}
