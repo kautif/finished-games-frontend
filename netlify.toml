@@ -1,3 +1,8 @@
 [[redirects]]
-from = "/*"
-to = "/.netlify/functions/redirect"
+from = "/:user"
+to = "/:user"
+status = 301
+force = false
+query = {
+    path = ":user"
+}
