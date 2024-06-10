@@ -3,7 +3,8 @@ import axios from "axios";
 import "./Gameslist.css";
 
 export default function Gameslist (){
-    const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+    // const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+    const backendURL = "http://localhost:4000";
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
     const [userGames, setUserGames] = useState([]);

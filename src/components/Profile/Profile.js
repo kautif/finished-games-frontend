@@ -4,6 +4,8 @@ import "../Search/Search.css"
 
 export default function Profile (match) {
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+    console.log("profile");
+    // const backendURL = "http://localhost:4000";
     const [user, setUser] = useState({});
     let gamesArr = [];
     let games;
@@ -32,7 +34,7 @@ export default function Profile (match) {
             <img src={user.profileImageUrl} alt={user.twitchName + "'s profile picture"}  />
             <h1>{user.twitchName}</h1>
             <div className="profile-results">
-                {
+                {user.games !== undefined && 
                     user.games.map(game => {
                         return (
                             <div className="profile-game">
