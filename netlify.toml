@@ -4,3 +4,7 @@ to = "/:user"
 status = 301
 force = false
 query = {path = ":path"}
+
+from = "/*"
+to = "/index.html"
+status = 200
