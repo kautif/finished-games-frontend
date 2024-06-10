@@ -5,6 +5,7 @@ status = 301
 force = false
 query = {path = ":path"}
 
+[[redirects]]
 from = "/*"
 to = "/index.html"
 status = 200
