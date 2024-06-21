@@ -14,7 +14,6 @@ export default function Search () {
     let twitchId;
     let twitchName;
     let userGames = useSelector((state) => state.gamesReducer.userGames);
-    console.log("search userGames: ", userGames);
     function getGames (e) {
         e.preventDefault();
         axios({
@@ -25,7 +24,6 @@ export default function Search () {
             }
         })
         .then(response => {
-            console.log("response: ", response.data.results);
             setGames(response.data.results);
         }).catch(error => {
             console.error("error: ", error);
@@ -66,20 +64,26 @@ export default function Search () {
         console.log("twitchId: ", twitchId);
     }, [games])
 
-    let retrievedGames = games.map((game) => {
+    let userGameNames = [];
+    let gameNames = [];
+    userGames.map(userGame => {
+        userGameNames.push(userGame.name);
+    })
+
+    games.map(game => {
+        gameNames.push(game.name);
+    })
+    console.log("userGames: ", userGames);   
+    console.log("games: ", games);
+
+    let retrievedGames = games.map((game, i) => {
         let doNamesMatch;
         return <div className="search-game">
             <h2>{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
             <textarea placeholder="Let your viewers know how you felt about this game"></textarea>
-            {userGames.map(userGame => {
-                if (game.name === userGame.name) {
-                    doNamesMatch = true;
-                } else {
-                    doNamesMatch = false;
-                }
-            })}
-            {doNamesMatch ? <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p> : <p className="search-result__added">Added</p>}
+            {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p>}
+            {/* {doNamesMatch ? <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p> : <p className="search-result__added">Added</p>} */}
         </div>
     })
 

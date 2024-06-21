@@ -18,7 +18,6 @@ function App() {
     // Get the token from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('verified');
-    debugger
     if(token || localStorage.getItem('auth_token')){
       localStorage.setItem('auth_token', 'true');
       setIsAuthenticated(true)

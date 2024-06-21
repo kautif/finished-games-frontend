@@ -6,6 +6,8 @@ import axios from 'axios';
 import AuthenticatedNav from '../AuthenticatedNav/AuthenticatedNav';
 
 function AuthenticatedComponent() {
+      const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+      // const backendURL = "http://localhost:4000";
   const [data, setData] = useState([]);
   const userGames = useSelector(state => state.gamesReducer.userGames);
   let token;
@@ -15,7 +17,7 @@ function AuthenticatedComponent() {
     const fetchData = async () => {
       console.log("fetchData");
         try {
-          const response = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/protected/userid`, { withCredentials: true });
+          const response = await axios.get(`${backendURL}/protected/userid`, { withCredentials: true });
           setData(response.data);
           console.log("root: ", );
           token = localStorage.getItem("auth_token");
