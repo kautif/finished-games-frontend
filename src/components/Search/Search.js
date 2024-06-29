@@ -13,6 +13,8 @@ export default function Search () {
 
     let twitchId;
     let twitchName;
+    twitchId = window.localStorage.getItem("twitchId");
+    twitchName = window.localStorage.getItem("twitchName");
     let userGames = useSelector((state) => state.gamesReducer.userGames);
     function getGames (e) {
         e.preventDefault();
@@ -33,11 +35,18 @@ export default function Search () {
     function addGame (gameName, gameImg, gameSummary) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
+        console.log("addGame twitchId: ", twitchId);
+        console.log("addGame twitchName: ", twitchName);
         let gameObj = {
             name: gameName,
             img_url: gameImg,
             summary: gameSummary
         }
+
+        console.log("addGAme: ", gameName);
+        console.log("addGame: ", gameImg);
+        console.log("summary: ", gameSummary);
+        console.log("gameObj: ", gameObj);
 
         let config = {
             method: "post",

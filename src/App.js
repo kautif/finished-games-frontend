@@ -17,7 +17,9 @@ function App() {
   useEffect(() => {
     // Get the token from the URL
     const urlParams = new URLSearchParams(window.location.search);
+    console.log("urlParams: ", urlParams);
     const token = urlParams.get('verified');
+    console.log("App token: ", token);
     if(token || localStorage.getItem('auth_token')){
       localStorage.setItem('auth_token', 'true');
       setIsAuthenticated(true)

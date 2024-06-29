@@ -1,5 +1,7 @@
 import React from "react";
 
+// 6/23/24
+// - in index.js (backend), in /auth/twitch/callback, no request body can be found which implies it is not being sent here. That may mean that it needs to be sent.
 const TwitchLoginBtn = () => {
   const handleLogin = () => {
     const { REACT_APP_TWITCH_ID } = process.env;

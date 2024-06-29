@@ -15,23 +15,21 @@ function AuthenticatedComponent() {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-      console.log("fetchData");
-        try {
-          const response = await axios.get(`${backendURL}/protected/userid`, { withCredentials: true });
+        await axios.get(`${backendURL}/protected/userid`, { withCredentials: true }).then(response => {
           setData(response.data);
-          console.log("root: ", );
           token = localStorage.getItem("auth_token");
-          window.localStorage.setItem('twitchId', data.twitchId);
-          window.localStorage.setItem('twitchName', data.twitchName);
+          window.localStorage.setItem('twitchId', response.data.twitchId);
+          window.localStorage.setItem('twitchName', response.data.twitchName);
           dispatch(setUserGames(response.data.games));
-        } catch (error) {
+        }).catch (error => {
           console.log("fetchData");
           console.error('Error fetching data from protected route', error.message);
           if (error.response && error.response.status === 401) {
             localStorage.removeItem('auth_token');
             window.location.href='/';
           }
-        }
+
+        })
       };
     fetchData();
   }, []);
