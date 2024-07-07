@@ -1,13 +1,19 @@
 import React, {useState, useEffect} from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import GameResult from "../GameResult/GameResult";
 import "./Search.css";
+import { setUserGames } from "../../redux/gamesSlice";
 
 export default function Search () {
+    // TODO: con't *** 7/4/24 Automatically update button appearance when game is added
+    const dispatch = useDispatch();
+    let userGames = useSelector((state) => state.gamesReducer.userGames);
+    console.log("search userGames: ", setUserGames);
     const [search, setSearch] = useState("");
     // const [summary, setSummary] = useState("");
     const [games, setGames] = useState([]);
+    const [searchGames, setSearchGames] = useState(userGames);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";
 
@@ -15,7 +21,6 @@ export default function Search () {
     let twitchName;
     twitchId = window.localStorage.getItem("twitchId");
     twitchName = window.localStorage.getItem("twitchName");
-    let userGames = useSelector((state) => state.gamesReducer.userGames);
     function getGames (e) {
         e.preventDefault();
         axios({
@@ -32,21 +37,33 @@ export default function Search () {
         })
     }
 
+    async function getUserGames() {
+        twitchId = window.localStorage.getItem("twitchId");
+        // twitchName = window.localStorage.getItem("twitchName");
+
+        await axios(`${backendURL}/games`, {
+            method: "get",
+            params: {
+                twitchName: twitchName
+            }
+        }).then(result => {
+            // setUserGames(result.data.response.games);
+            dispatch(setUserGames(result.data.response.games));
+            console.log("getUserGames: ", userGames);
+            // console.log("result: ", result.data.response.games)
+        })
+    }
+
     function addGame (gameName, gameImg, gameSummary) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
-        console.log("addGame twitchId: ", twitchId);
-        console.log("addGame twitchName: ", twitchName);
+        // console.log("addGame twitchId: ", twitchId);
+        // console.log("addGame twitchName: ", twitchName);
         let gameObj = {
             name: gameName,
             img_url: gameImg,
             summary: gameSummary
         }
-
-        console.log("addGAme: ", gameName);
-        console.log("addGame: ", gameImg);
-        console.log("summary: ", gameSummary);
-        console.log("gameObj: ", gameObj);
 
         let config = {
             method: "post",
@@ -61,16 +78,18 @@ export default function Search () {
         axios(config)
             .then(result => {
                 console.log("addGame: ", result)
+                getUserGames();
             })
             .catch(error => {
                 console.log("addGame error: ", error);
             })
     }
 
+    let retrievedGames;
+
     useEffect(() => {
-        console.log(games);
         twitchId = window.localStorage.getItem("twitchId");
-        console.log("twitchId: ", twitchId);
+        getUserGames();
     }, [games])
 
     let userGameNames = [];
@@ -79,20 +98,19 @@ export default function Search () {
         userGameNames.push(userGame.name);
     })
 
+
     games.map(game => {
         gameNames.push(game.name);
     })
     console.log("userGames: ", userGames);   
     console.log("games: ", games);
 
-    let retrievedGames = games.map((game, i) => {
-        let doNamesMatch;
+    retrievedGames = games.map((game, i) => {
         return <div className="search-game">
             <h2>{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
             <textarea placeholder="Let your viewers know how you felt about this game"></textarea>
             {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p>}
-            {/* {doNamesMatch ? <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p> : <p className="search-result__added">Added</p>} */}
         </div>
     })
 
