@@ -8,7 +8,8 @@ export default function Gameslist (){
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
     const [userGames, setUserGames] = useState([]);
-    const [summary, setSummary] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [summary, setSummary] = useState("");
     const [gameName, setGameName] = useState("");
     let userGamesList;
 
@@ -49,7 +50,8 @@ export default function Gameslist (){
 
         axios(config)
             .then(result => {
-                console.log("update Summary: ", result)
+                console.log("update Summary: ", result);
+                setGameName(prevGame => gameName);
             })
             .catch(error => {
                 console.log("update summary error: ", error);
@@ -79,16 +81,22 @@ export default function Gameslist (){
             <p onClick={(e) => {
                 setSummary(prevSummary => e.target.previousElementSibling.value);
                 setGameName(prevGameName => game.name);
+                setShowModal(true);
                 }}>Update</p>
         </div>
     })
 
     return (
-        <div> 
+        <div className="user-games-container"> 
             <h1>Your Games</h1>
             <div className="user-games">
                 {gamesList}
             </div>
+
+            {showModal ? <div className="user-games__update">
+                <p>Summary for {gameName} has been updated</p>
+                <span className="user-games__update__close" onClick={() => setShowModal(false)}>X</span>
+            </div> : ""}
         </div>
     )
 }

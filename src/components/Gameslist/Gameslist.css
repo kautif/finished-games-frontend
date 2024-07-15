@@ -1,3 +1,7 @@
+.user-games-container {
+    position: relative;
+}
+
 .user-games {
     display: flex;
     flex-wrap: wrap;
@@ -32,5 +36,32 @@
 }
 
 .user-game p:hover {
+    cursor: pointer;
+}
+
+.user-games__update {
+    background-color: rgba(0,0,0, 0.75);
+    position: fixed;
+    left: 41%;
+    top: 53%;
+    width: 300px;
+    color: white;
+    height: 100px;
+    border-radius: 6px;
+    padding: 1%;
+}
+
+.user-games__update p {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+}
+
+.user-games__update__close {
+    position: absolute;
+    right: 2%;
+    font-size: 1.5em;
+    top: 0%;
+    font-weight: bold;
     cursor: pointer;
 }
