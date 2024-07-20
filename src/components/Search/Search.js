@@ -6,12 +6,11 @@ import "./Search.css";
 import { setUserGames } from "../../redux/gamesSlice";
 
 export default function Search () {
-    // TODO: con't *** 7/4/24 Automatically update button appearance when game is added
     const dispatch = useDispatch();
     let userGames = useSelector((state) => state.gamesReducer.userGames);
     console.log("search userGames: ", setUserGames);
     const [search, setSearch] = useState("");
-    // const [summary, setSummary] = useState("");
+    const [date, setDate] = useState("");
     const [games, setGames] = useState([]);
     const [searchGames, setSearchGames] = useState(userGames);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -54,15 +53,17 @@ export default function Search () {
         })
     }
 
-    function addGame (gameName, gameImg, gameSummary) {
+    function addGame (gameName, gameImg, gameSummary, index) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
         // console.log("addGame twitchId: ", twitchId);
         // console.log("addGame twitchName: ", twitchName);
+        getDate(index);
         let gameObj = {
             name: gameName,
             img_url: gameImg,
-            summary: gameSummary
+            summary: gameSummary,
+            date_added: date
         }
 
         let config = {
@@ -85,11 +86,35 @@ export default function Search () {
             })
     }
 
+    // Con't ***
+    // 7/18/24: Will the correct date go to the database when it is not changed in the UI?
+    function defaultDate (index) {
+        document.getElementsByClassName("search-game__date")[index].valueAsDate = new Date();
+        const newDate = new Date(document.getElementsByClassName("search-game__date")[index].value);
+        // console.log("Day: ", newDate.getDate());
+        // console.log("Month: ", newDate.getMonth());
+        // console.log("Year: ", newDate.getFullYear());
+        // setDate(prevDate => `${newDate.getMonth() + 1}/${newDate.getDate() + 1}/${newDate.getFullYear()}`);
+        setDate(prevDate => newDate);
+    }
+
+    function getDate (index) {
+        const newDate = new Date(document.getElementsByClassName("search-game__date")[index].value);
+        // console.log("Day: ", newDate.getDate());
+        // console.log("Month: ", newDate.getMonth());
+        // console.log("Year: ", newDate.getFullYear());
+        setDate(prevDate => newDate);
+        console.log("date added: ", date);
+    }
+
     let retrievedGames;
 
     useEffect(() => {
         twitchId = window.localStorage.getItem("twitchId");
         getUserGames();
+        retrievedGames.map((game, i) => {
+            defaultDate(i);
+        })
     }, [games])
 
     let userGameNames = [];
@@ -102,15 +127,16 @@ export default function Search () {
     games.map(game => {
         gameNames.push(game.name);
     })
-    console.log("userGames: ", userGames);   
-    console.log("games: ", games);
+    // console.log("userGames: ", userGames);   
+    // console.log("games: ", games);
 
     retrievedGames = games.map((game, i) => {
         return <div className="search-game">
             <h2>{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
-            <textarea placeholder="Let your viewers know how you felt about this game"></textarea>
-            {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value)}>Add Game</p>}
+            <label>Date Completed:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => getDate(i)}/>
+            <textarea placeholder="Let your viewers know how you felt about this game" ></textarea>
+            {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, i)}>Add Game</p>}
         </div>
     })
 

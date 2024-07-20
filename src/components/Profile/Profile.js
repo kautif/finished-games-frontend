@@ -29,17 +29,26 @@ export default function Profile (match) {
         getProfile(setUser);
     }, [])
 
+    useEffect(() => {
+        for (let i = 0; i < document.getElementsByClassName("profile-game__date").length; i++) {
+            document.getElementsByClassName("profile-game__date")[i].valueAsDate = new Date(user.games[i].date_added);
+        }
+    }, [user])
+
     return (
         <div>
             <img src={user.profileImageUrl} alt={user.twitchName + "'s profile picture"}  />
             <h1>{user.twitchName}</h1>
             <div className="profile-results">
                 {user.games !== undefined && 
-                    user.games.map(game => {
+                    user.games.map((game, i) => {
+                        console.log("profile game: ", game);
+                        
                         return (
                             <div className="profile-game">
                                 <h1>{game.name}</h1>
                                 <img src={game.img_url} alt={game.name + " game cover"} />
+                                <input className="profile-game__date" type="date" name="date-added" disabled/>
                                 <p>{game.summary}</p>
                             </div>
                         )

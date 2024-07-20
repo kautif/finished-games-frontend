@@ -14,12 +14,10 @@ export default function Gameslist (){
     let userGamesList;
 
     useEffect(() => {
-        console.log("twitchName: ", twitchName);
         getUserGames();
     }, [])
 
     useEffect(() => {
-        console.log("userGames: ", userGames);
         if (userGames.length === 0) {
             console.log("user games is empty")
         } else {
@@ -29,6 +27,7 @@ export default function Gameslist (){
                 })
             }
         }
+        getGameDate();
     }, [userGames])
 
     useEffect(() => {
@@ -73,10 +72,21 @@ export default function Gameslist (){
         })
     }
 
+    function getGameDate () {
+        // document.getElementsByClassName("user-game").map((userGame, i) => {
+            // document.getElementsByClassName("user-game")[i].children[2].valueAsDate = new Date(userGames[i].date_added);
+        // })
+
+        for (let i = 0; i < document.getElementsByClassName("user-game").length; i++) {
+            document.getElementsByClassName("user-game")[i].children[2].valueAsDate = new Date(userGames[i].date_added);
+        }
+    }
+
     let gamesList = userGames.map(game => {
         return <div className="user-game">
             {game.name}
             <img src={game.img_url} />
+            <label>Date Completed:</label><input className="search-game__date" type="date" name="date-added" />
             <textarea placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
             <p onClick={(e) => {
                 setSummary(prevSummary => e.target.previousElementSibling.value);
