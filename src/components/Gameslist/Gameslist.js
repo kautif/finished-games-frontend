@@ -10,6 +10,7 @@ export default function Gameslist (){
     const [userGames, setUserGames] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [summary, setSummary] = useState("");
+    const [date, setDate] = useState("");
     const [gameName, setGameName] = useState("");
     let userGamesList;
 
@@ -31,10 +32,11 @@ export default function Gameslist (){
     }, [userGames])
 
     useEffect(() => {
-        updateSummary(gameName, summary);
-    }, [gameName, summary])
+        updateSummary(gameName, summary, date);
+    }, [gameName, summary, date])
 
-    async function updateSummary (gameName, gameSummary) {
+    async function updateSummary (gameName, gameSummary, gameDate) {
+        console.log("gameDate: ", gameDate);
         let config = {
             method: "put",
             url: `${backendURL}/updategame`,
@@ -42,7 +44,8 @@ export default function Gameslist (){
                 twitchName: twitchName,
                 games: {
                     name: gameName,
-                    summary: summary
+                    summary: gameSummary,
+                    date_added: gameDate
                 }
             }
         }
@@ -86,9 +89,11 @@ export default function Gameslist (){
         return <div className="user-game">
             {game.name}
             <img src={game.img_url} />
-            <label>Date Completed:</label><input className="search-game__date" type="date" name="date-added" />
+            <label>Date:</label><input className="user-game__date" type="date" name="date-added" />
             <textarea placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
             <p onClick={(e) => {
+                setDate(prevDate => e.target.previousSibling.previousSibling.value);
+                console.log(e.target.previousSibling.previousSibling.value);
                 setSummary(prevSummary => e.target.previousElementSibling.value);
                 setGameName(prevGameName => game.name);
                 setShowModal(true);

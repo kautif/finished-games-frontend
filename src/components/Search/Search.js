@@ -134,7 +134,7 @@ export default function Search () {
         return <div className="search-game">
             <h2>{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
-            <label>Date Completed:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => getDate(i)}/>
+            <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => getDate(i)}/>
             <textarea placeholder="Let your viewers know how you felt about this game" ></textarea>
             {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, i)}>Add Game</p>}
         </div>
