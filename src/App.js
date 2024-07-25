@@ -1,19 +1,19 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useCookies } from 'react-cookie';
-import jwt_decode from 'jwt-decode';
 import './App.css';
-import Login from './components/Login/Login';
 import Splash from './components/Splash/Splash';
-import TwitchLoginBtn from './components/TwitchLoginBtn/TwitchLoginBtn';
 import AuthenticatedComponent from './components/AuthenticatedComponent'; // the component to show when the user is authenticated
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsAuthenticated } from './redux/gamesSlice';
 import { Route, Routes } from 'react-router-dom';
 import Search from './components/Search/Search';
 import Gameslist from './components/Gameslist/Gameslist';
 import Profile from './components/Profile/Profile';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(state => state.gamesReducer.isAuthenticated);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     // Get the token from the URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -22,7 +22,7 @@ function App() {
     console.log("App token: ", token);
     if(token || localStorage.getItem('auth_token')){
       localStorage.setItem('auth_token', 'true');
-      setIsAuthenticated(true)
+      dispatch(setIsAuthenticated(true));
     }
   }, []);
 

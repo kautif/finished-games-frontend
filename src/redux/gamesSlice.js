@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 const initialState = {
-    userGames: []
+    userGames: [],
+    isAuthenticated: false
 }
 
 let twitchId;
@@ -13,9 +14,12 @@ export const gamesSlice = createSlice({
     reducers: {
         setUserGames: (state, action)  => {
             state.userGames = [...action.payload];
+        },
+        setIsAuthenticated: (state, action) => {
+            state.isAuthenticated = action.payload;
         }
     }
 })
 
-export const {getUserGames, setUserGames} = gamesSlice.actions;
+export const {setUserGames, setIsAuthenticated} = gamesSlice.actions;
 export default gamesSlice.reducer;

@@ -13,3 +13,11 @@
 .auth-nav__link:hover {
     text-decoration: underline;
 }
+
+p.auth-nav__link {
+    margin: 0;
+}
+
+p.auth-nav__link:hover {
+    cursor: pointer;
+}
