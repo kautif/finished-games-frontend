@@ -16,7 +16,8 @@ export default function AuthenticatedNav () {
             method: "POST",
             headers: {
                 'Accept': 'application/json'
-            }
+            },
+            withCredentials: true 
         }).then(response => {
             console.log("logout isAuthenticated:", isAuthenticated);
             console.log("logout: ", response);
