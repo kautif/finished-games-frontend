@@ -16,17 +16,17 @@ function App() {
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     // Get the token from the URL
-    const urlParams = new URLSearchParams(window.location.search);
+    let urlParams = new URLSearchParams(window.location.search);
     console.log("urlParams: ", urlParams);
     const token = urlParams.get('verified');
     console.log("App token: ", token);
     if(token || localStorage.getItem('auth_token')){
       localStorage.setItem('auth_token', 'true');
       dispatch(setIsAuthenticated(true));
+    } else {
+      dispatch(setIsAuthenticated(false));
     }
   }, []);
-
-  console.log("isAuthenticated: ", isAuthenticated);
 
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>

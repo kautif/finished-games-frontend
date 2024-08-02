@@ -49,6 +49,15 @@ export default function Profile (match) {
                                 <h1>{game.name}</h1>
                                 <img src={game.img_url} alt={game.name + " game cover"} />
                                 <input className="profile-game__date" type="date" name="date-added" disabled/>
+                                <div className="search-game__status">
+                                    <label>Game Status</label>
+                                    <select>
+                                        <option value="progress">In Progress</option>
+                                        <option value="upcoming">Upcoming</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="dropped">Dropped</option>
+                                    </select>
+                                </div>
                                 <p>{game.summary}</p>
                             </div>
                         )

@@ -29,6 +29,7 @@ export default function Gameslist (){
             }
         }
         getGameDate();
+        getGameState();
     }, [userGames])
 
     useEffect(() => {
@@ -85,11 +86,26 @@ export default function Gameslist (){
         }
     }
 
+    function getGameState () {
+        for (let i = 0; i < document.getElementsByClassName("user-game__rank").length; i++) {
+            document.getElementsByClassName("user-game__rank")[i].value = userGames[i].rank;
+        }
+    }
+
     let gamesList = userGames.map(game => {
         return <div className="user-game">
             {game.name}
             <img src={game.img_url} />
             <label>Date:</label><input className="user-game__date" type="date" name="date-added" />
+            <div className="search-game__status">
+                <label>Game Status</label>
+                <select className="user-game__rank">
+                    <option value="progress">In Progress</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="completed">Completed</option>
+                    <option value="dropped">Dropped</option>
+                </select>
+            </div>
             <textarea placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
             <p onClick={(e) => {
                 setDate(prevDate => e.target.previousSibling.previousSibling.value);
@@ -104,6 +120,17 @@ export default function Gameslist (){
     return (
         <div className="user-games-container"> 
             <h1>Your Games</h1>
+            <div>
+                <p>Filter Games</p>
+                <select className="user-games__filter">
+                    <option disabled selected>Select Game State</option>
+                    <option value="all">Show All Games</option>
+                    <option value="progress">In Progress</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="completed">Completed</option>
+                    <option value="dropped">Dropped</option>
+                </select>
+            </div>
             <div className="user-games">
                 {gamesList}
             </div>

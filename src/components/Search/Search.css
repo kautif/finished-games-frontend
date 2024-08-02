@@ -6,6 +6,13 @@
     margin-right: auto;
 }
 
+.search-game__name {
+    width: 378px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .search-game, .profile-game {
     display: flex;
     flex-direction: column;
@@ -35,6 +42,12 @@
     cursor: pointer;
     box-shadow: 0px 3px 12px 6px #313030;
     transition: 500ms;
+}
+
+.search-game__status {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
 }
 
 .search-result__added {

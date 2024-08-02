@@ -11,6 +11,10 @@ export default function AuthenticatedNav () {
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     function logout () {
         dispatch(setIsAuthenticated(false));
+        let searchParams = new URLSearchParams(window.location.search);
+        searchParams.set("verified", false);
+        localStorage.setItem("auth_token", false);
+        console.log("verified?: ", searchParams.get("verified"));
         axios({
             url: `${backendURL}/logout`,
             method: "POST",

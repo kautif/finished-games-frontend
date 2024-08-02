@@ -12,6 +12,7 @@ export default function Search () {
     const [search, setSearch] = useState("");
     const [date, setDate] = useState("");
     const [games, setGames] = useState([]);
+    const [rank, setRank] = useState("");
     const [searchGames, setSearchGames] = useState(userGames);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";
@@ -46,14 +47,11 @@ export default function Search () {
                 twitchName: twitchName
             }
         }).then(result => {
-            // setUserGames(result.data.response.games);
             dispatch(setUserGames(result.data.response.games));
-            console.log("getUserGames: ", userGames);
-            // console.log("result: ", result.data.response.games)
         })
     }
 
-    function addGame (gameName, gameImg, gameSummary, index) {
+    function addGame (gameName, gameImg, gameSummary, gameStatus, index) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
         // console.log("addGame twitchId: ", twitchId);
@@ -63,7 +61,8 @@ export default function Search () {
             name: gameName,
             img_url: gameImg,
             summary: gameSummary,
-            date_added: date
+            date_added: date,
+            rank: gameStatus
         }
 
         let config = {
@@ -86,8 +85,6 @@ export default function Search () {
             })
     }
 
-    // Con't ***
-    // 7/18/24: Will the correct date go to the database when it is not changed in the UI?
     function defaultDate (index) {
         document.getElementsByClassName("search-game__date")[index].valueAsDate = new Date();
         const newDate = new Date(document.getElementsByClassName("search-game__date")[index].value);
@@ -127,16 +124,23 @@ export default function Search () {
     games.map(game => {
         gameNames.push(game.name);
     })
-    // console.log("userGames: ", userGames);   
-    // console.log("games: ", games);
 
     retrievedGames = games.map((game, i) => {
         return <div className="search-game">
-            <h2>{game.name}</h2>
+            <h2 className="search-game__name">{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
             <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => getDate(i)}/>
+            <div className="search-game__status">
+                <label>Game Status</label>
+                <select>
+                    <option selected="selected" value="progress">In Progress</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="completed">Completed</option>
+                    <option value="dropped">Dropped</option>
+                </select>
+            </div>
             <textarea placeholder="Let your viewers know how you felt about this game" ></textarea>
-            {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, i)}>Add Game</p>}
+            {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value, i)}>Add Game</p>}
         </div>
     })
 
