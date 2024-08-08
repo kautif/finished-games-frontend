@@ -154,11 +154,14 @@ export default function Gameslist (){
 
     function renderGames (games) {
         gamesList = games.map(game => {
-            return <div className="user-game">
+            return <div className="gameslist-game">
                 {game.name}
                 <img src={game.img_url} />
-                <label>Date:</label><input className="user-game__date" type="date" name="date-added" />
-                <div className="search-game__status">
+                <div class="gameslist-game__date-container">
+                    <label>Date:</label>
+                    <input className="gameslist-game__date" type="date" name="date-added" />
+                </div>
+                <div className="gameslist-game__status">
                     <label>Game Status</label>
                     <select className="user-game__rank">
                         <option value="progress">In Progress</option>
@@ -167,8 +170,8 @@ export default function Gameslist (){
                         <option value="dropped">Dropped</option>
                     </select>
                 </div>
-                <textarea className="user-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
-                <p className="user-game__add-btn" onClick={(e) => {
+                <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
+                <p className="gameslist-game__add-btn" onClick={(e) => {
                     setDate(prevDate => e.target.previousSibling.previousSibling.value);
                     console.log(e.target.previousSibling.previousSibling.value);
                     setSummary(prevSummary => e.target.previousElementSibling.value);
@@ -196,13 +199,13 @@ export default function Gameslist (){
     }
 
     return (
-        <div className="user-games-container"> 
+        <div className="gameslist-games-container"> 
             <h1>Your Games</h1>
             <div>
                 <p>Filter Games</p>
                 <select onChange={(e) => {
                     setGameState(e.target.value);
-                }} className="user-games__filter">
+                }} className="gameslist-games__filter">
                     <option disabled selected>Select Game State</option>
                     <option value="all">Show All Games</option>
                     <option value="progress">In Progress</option>
@@ -211,13 +214,13 @@ export default function Gameslist (){
                     <option value="dropped">Dropped</option>
                 </select>
             </div>
-            <div className="user-games">
+            <div className="gameslist-games">
                 {gamesList}
             </div>
 
-            {showModal ? <div className="user-games__update">
+            {showModal ? <div className="gameslist-games__update">
                 <p>Summary for {gameName} has been updated</p>
-                <span className="user-games__update__close" onClick={() => setShowModal(false)}>X</span>
+                <span className="gameslist-games__update__close" onClick={() => setShowModal(false)}>X</span>
             </div> : ""}
         </div>
     )
