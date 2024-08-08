@@ -1,0 +1,29 @@
+.user-game {
+    display: flex;
+    flex-direction: column;
+    width: 29%;
+}
+
+.user-game__date-container {
+    display: flex;
+    justify-content: space-around;
+    align-self: center;
+    width: 100%;
+}
+
+.user-game__date-container label {
+    margin: 15x 10px;
+}
+
+.user-game__summary {
+    margin-right: auto;
+    margin-left: auto;
+    width: 70%;
+}
+
+.user-game__status-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}

@@ -168,7 +168,7 @@ export default function Gameslist (){
                     </select>
                 </div>
                 <textarea className="user-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
-                <p onClick={(e) => {
+                <p className="user-game__add-btn" onClick={(e) => {
                     setDate(prevDate => e.target.previousSibling.previousSibling.value);
                     console.log(e.target.previousSibling.previousSibling.value);
                     setSummary(prevSummary => e.target.previousElementSibling.value);

@@ -27,7 +27,7 @@
     height: 50px;
 }
 
-.user-game p {
+.user-game__add-btn {
     background-color: #8E43FC;
     color: white;
     padding: 10px;
