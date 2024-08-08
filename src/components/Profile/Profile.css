@@ -1,7 +1,12 @@
 .user-game {
     display: flex;
     flex-direction: column;
-    width: 29%;
+    width: 30%;
+}
+
+.user-game__img img {
+    width: 390px;
+    height: 250px;
 }
 
 .user-game__date-container {
@@ -25,5 +30,10 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    width: 100%;
+}
+
+.user-game__no-results {
+    text-align: center;
     width: 100%;
 }

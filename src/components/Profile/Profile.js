@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Profile.css";
+import Gameslist from "../Gameslist/Gameslist";
 
 export default function Profile (match) {
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -14,7 +15,7 @@ export default function Profile (match) {
     const [completedGames, setCompletedGames] = useState([]);
     const [upcomingGames, setUpcomingGames] = useState([]);
     const [droppedGames, setdroppedGames] = useState([]);
-    const [progressGames, setProgressGames] = useState([]);
+    const [playingGames, setPlayingGames] = useState([]);
 
     const [gameState, setGameState] = useState("");
     function getProfile(setObject) {
@@ -29,7 +30,7 @@ export default function Profile (match) {
             gamesArr = [...response.data.user.games];
             setUserGames(gamesArr);
             let droppedArr = [];
-            let progressArr = [];
+            let playingArr = [];
             let upcomingArr = [];
             let completedArr = [];
             for (let i = 0; i < response.data.user.games.length; i++) {
@@ -37,8 +38,8 @@ export default function Profile (match) {
                     droppedArr.push(response.data.user.games[i]);
                 }
 
-                if (response.data.user.games[i].rank === "progress") {
-                    progressArr.push(response.data.user.games[i]);
+                if (response.data.user.games[i].rank === "playing") {
+                    playingArr.push(response.data.user.games[i]);
                 }
 
                 if (response.data.user.games[i].rank === "upcoming") {
@@ -50,7 +51,7 @@ export default function Profile (match) {
                 }
             }
             setdroppedGames(droppedArr);
-            setProgressGames(progressArr);
+            setPlayingGames(playingArr);
             setUpcomingGames(upcomingArr);
             setCompletedGames(completedArr);
         }).catch(err => {
@@ -76,10 +77,10 @@ export default function Profile (match) {
             getGameState(droppedGames);
             getGameDate(droppedGames);
             getGameSummary(droppedGames);
-        } else if (gameState === "progress") {
-            getGameState(progressGames);
-            getGameDate(progressGames);
-            getGameSummary(progressGames);
+        } else if (gameState === "playing") {
+            getGameState(playingGames);
+            getGameDate(playingGames);
+            getGameSummary(playingGames);
         } else if (gameState === "upcoming") {
             getGameState(upcomingGames);
             getGameDate(upcomingGames) ;
@@ -115,30 +116,34 @@ export default function Profile (match) {
     }
 
     function renderGames (games) {
-        gamesList = games.map(game => {
-            return <div className="user-game">
-                <div className="user-game__title"><h2>{game.name}</h2></div>
-                <div className="user-game__img"><img src={game.img_url} /></div>
-                <div className="user-game__date-container">
-                    <p>Date:</p>
-                    <p className="user-game__date"></p>
+        if (games.length <= 0) {
+            gamesList = <h2 className="user-game__no-results">No Games Found in this Category</h2>
+        } else {
+            gamesList = games.map(game => {
+                return <div className="user-game">
+                    <div className="user-game__title"><h2>{game.name}</h2></div>
+                    <div className="user-game__img"><img src={game.img_url} /></div>
+                    <div className="user-game__date-container">
+                        <p>Date:</p>
+                        <p className="user-game__date"></p>
+                    </div>
+                    <div className="user-game__status-container">
+                        <p>Game Status</p>
+                        {/* <select className="user-game__rank">
+                            <option value="progress">In Progress</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                            <option value="dropped">Dropped</option>
+                        </select> */}
+                        <p className="user-game__status"></p>
+                    </div>
+                    <div className="user-game__summary-container">
+                        <h3>Comments</h3>
+                        <p className="user-game__summary">{game.summary}</p>
+                    </div>
                 </div>
-                <div className="user-game__status-container">
-                    <p>Game Status</p>
-                    {/* <select className="user-game__rank">
-                        <option value="progress">In Progress</option>
-                        <option value="upcoming">Upcoming</option>
-                        <option value="completed">Completed</option>
-                        <option value="dropped">Dropped</option>
-                    </select> */}
-                    <p className="user-game__status"></p>
-                </div>
-                <div className="user-game__summary-container">
-                    <h3>Review</h3>
-                    <p className="user-game__summary">{game.summary}</p>
-                </div>
-            </div>
-        })
+            })
+        }
     }
 
     if (gameState === "dropped") {
@@ -147,8 +152,8 @@ export default function Profile (match) {
         renderGames(upcomingGames);
     } else if (gameState === "completed") {
         renderGames(completedGames);
-    } else if (gameState === "progress") {
-        renderGames(progressGames);
+    } else if (gameState === "playing") {
+        renderGames(playingGames);
     } else {
         renderGames(userGames);
     }
@@ -162,7 +167,7 @@ export default function Profile (match) {
                 }} className="user-games__filter">
                     <option disabled selected>Select Game State</option>
                     <option value="all">Show All Games</option>
-                    <option value="progress">In Progress</option>
+                    <option value="playing">Playing</option>
                     <option value="upcoming">Upcoming</option>
                     <option value="completed">Completed</option>
                     <option value="dropped">Dropped</option>

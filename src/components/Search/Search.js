@@ -133,7 +133,7 @@ export default function Search () {
             <div className="search-game__status">
                 <label>Game Status</label>
                 <select>
-                    <option selected="selected" value="progress">In Progress</option>
+                    <option selected="selected" value="playing">Playing</option>
                     <option value="upcoming">Upcoming</option>
                     <option value="completed">Completed</option>
                     <option value="dropped">Dropped</option>

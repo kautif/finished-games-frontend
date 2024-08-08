@@ -12,7 +12,7 @@ export default function Gameslist (){
     const [completedGames, setCompletedGames] = useState([]);
     const [upcomingGames, setUpcomingGames] = useState([]);
     const [droppedGames, setdroppedGames] = useState([]);
-    const [progressGames, setProgressGames] = useState([]);
+    const [playingGames, setPlayingGames] = useState([]);
 
     const [gameState, setGameState] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -46,10 +46,10 @@ export default function Gameslist (){
             getGameState(droppedGames);
             getGameDate(droppedGames);
             getGameSummary(droppedGames);
-        } else if (gameState === "progress") {
-            getGameState(progressGames);
-            getGameDate(progressGames);
-            getGameSummary(progressGames);
+        } else if (gameState === "playing") {
+            getGameState(playingGames);
+            getGameDate(playingGames);
+            getGameSummary(playingGames);
         } else if (gameState === "upcoming") {
             getGameState(upcomingGames);
             getGameDate(upcomingGames) ;
@@ -107,7 +107,7 @@ export default function Gameslist (){
             setUserGames(result.data.response.games);
             console.log("userGames: ", userGames);
             let droppedArr = [];
-            let progressArr = [];
+            let playingArr = [];
             let upcomingArr = [];
             let completedArr = [];
             for (let i = 0; i < result.data.response.games.length; i++) {
@@ -115,8 +115,8 @@ export default function Gameslist (){
                     droppedArr.push(result.data.response.games[i]);
                 }
 
-                if (result.data.response.games[i].rank === "progress") {
-                    progressArr.push(result.data.response.games[i]);
+                if (result.data.response.games[i].rank === "playing") {
+                    playingArr.push(result.data.response.games[i]);
                 }
 
                 if (result.data.response.games[i].rank === "upcoming") {
@@ -128,7 +128,7 @@ export default function Gameslist (){
                 }
             }
             setdroppedGames(droppedArr);
-            setProgressGames(progressArr);
+            setPlayingGames(playingArr);
             setUpcomingGames(upcomingArr);
             setCompletedGames(completedArr);
         })
@@ -167,7 +167,7 @@ export default function Gameslist (){
                     <div className="gameslist-game__status">
                         <label>Game Status</label>
                         <select className="gameslist-game__rank">
-                            <option value="progress">In Progress</option>
+                            <option value="playing">Playing</option>
                             <option value="upcoming">Upcoming</option>
                             <option value="completed">Completed</option>
                             <option value="dropped">Dropped</option>
@@ -195,9 +195,9 @@ export default function Gameslist (){
     } else if (gameState === "completed") {
         console.log("current state: ", gameState);
         renderGames(completedGames);
-    } else if (gameState === "progress") {
+    } else if (gameState === "playing") {
         console.log("current state: ", gameState);
-        renderGames(progressGames);
+        renderGames(playingGames);
     } else {
         renderGames(userGames);
     }
@@ -212,7 +212,7 @@ export default function Gameslist (){
                 }} className="gameslist-games__filter">
                     <option disabled selected>Select Game State</option>
                     <option value="all">Show All Games</option>
-                    <option value="progress">In Progress</option>
+                    <option value="playing">Playing</option>
                     <option value="upcoming">Upcoming</option>
                     <option value="completed">Completed</option>
                     <option value="dropped">Dropped</option>
