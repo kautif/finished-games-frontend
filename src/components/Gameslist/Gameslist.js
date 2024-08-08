@@ -135,51 +135,55 @@ export default function Gameslist (){
     }
 
     function getGameDate (games) {
-        for (let i = 0; i < document.getElementsByClassName("user-game").length; i++) {
-            document.getElementsByClassName("user-game")[i].children[2].valueAsDate = new Date(games[i].date_added);
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game").length; i++) {
+            document.getElementsByClassName("gameslist-game__date")[i].valueAsDate = new Date(games[i].date_added);
         }
     }
 
     function getGameState (games) {
-        for (let i = 0; i < document.getElementsByClassName("user-game__rank").length; i++) {
-            document.getElementsByClassName("user-game__rank")[i].value = games[i].rank;
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game__rank").length; i++) {
+            document.getElementsByClassName("gameslist-game__rank")[i].value = games[i].rank;
         }
     }
 
     function getGameSummary (games) {
-        for (let i = 0; i < document.getElementsByClassName("user-game__summary").length; i++) {
-            document.getElementsByClassName("user-game__summary")[i].value = games[i].summary;
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game__summary").length; i++) {
+            document.getElementsByClassName("gameslist-game__summary")[i].value = games[i].summary;
         }
     }
 
     function renderGames (games) {
-        gamesList = games.map(game => {
-            return <div className="gameslist-game">
-                {game.name}
-                <img src={game.img_url} />
-                <div class="gameslist-game__date-container">
-                    <label>Date:</label>
-                    <input className="gameslist-game__date" type="date" name="date-added" />
+        if (games.length <= 0) {
+            gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
+        } else {
+            gamesList = games.map((game, i) => {
+                return <div className="gameslist-game">
+                    {game.name}
+                    <img src={game.img_url} />
+                    <div class="gameslist-game__date-container">
+                        <label>Date:</label>
+                        <input className="gameslist-game__date" type="date" name="date-added" />
+                    </div>
+                    <div className="gameslist-game__status">
+                        <label>Game Status</label>
+                        <select className="gameslist-game__rank">
+                            <option value="progress">In Progress</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                            <option value="dropped">Dropped</option>
+                        </select>
+                    </div>
+                    <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
+                    <p className="gameslist-game__add-btn" onClick={(e) => {
+                        setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
+                        console.log("gameslist game date: ", document.getElementsByClassName("gameslist-game__date")[i].value);
+                        setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
+                        setGameName(prevGameName => game.name);
+                        setShowModal(true);
+                        }}>Update</p>
                 </div>
-                <div className="gameslist-game__status">
-                    <label>Game Status</label>
-                    <select className="user-game__rank">
-                        <option value="progress">In Progress</option>
-                        <option value="upcoming">Upcoming</option>
-                        <option value="completed">Completed</option>
-                        <option value="dropped">Dropped</option>
-                    </select>
-                </div>
-                <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
-                <p className="gameslist-game__add-btn" onClick={(e) => {
-                    setDate(prevDate => e.target.previousSibling.previousSibling.value);
-                    console.log(e.target.previousSibling.previousSibling.value);
-                    setSummary(prevSummary => e.target.previousElementSibling.value);
-                    setGameName(prevGameName => game.name);
-                    setShowModal(true);
-                    }}>Update</p>
-            </div>
-        })
+            })   
+        }
     }
 
     if (gameState === "dropped") {

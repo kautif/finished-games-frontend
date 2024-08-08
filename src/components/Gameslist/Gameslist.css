@@ -79,3 +79,8 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+.gameslist-game__no-results {
+    text-align: center;
+    width: 100%;
+}
