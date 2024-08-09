@@ -15,6 +15,7 @@ export default function Gameslist (){
     const [playingGames, setPlayingGames] = useState([]);
 
     const [gameState, setGameState] = useState("");
+    const [rank, setRank] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [summary, setSummary] = useState("");
     const [date, setDate] = useState("");
@@ -66,11 +67,10 @@ export default function Gameslist (){
     }, [gameState])
 
     useEffect(() => {
-        updateSummary(gameName, summary, date);
-    }, [gameName, summary, date])
+        updateSummary(gameName, summary, date, rank);
+    }, [gameName, summary, date, rank])
 
-    async function updateSummary (gameName, gameSummary, gameDate) {
-        console.log("gameDate: ", gameDate);
+    async function updateSummary (gameName, gameSummary, gameDate, gameRank) {
         let config = {
             method: "put",
             url: `${backendURL}/updategame`,
@@ -79,7 +79,8 @@ export default function Gameslist (){
                 games: {
                     name: gameName,
                     summary: gameSummary,
-                    date_added: gameDate
+                    date_added: gameDate,
+                    rank: gameRank
                 }
             }
         }
@@ -160,7 +161,7 @@ export default function Gameslist (){
                 return <div className="gameslist-game">
                     {game.name}
                     <img src={game.img_url} />
-                    <div class="gameslist-game__date-container">
+                    <div className="gameslist-game__date-container">
                         <label>Date:</label>
                         <input className="gameslist-game__date" type="date" name="date-added" />
                     </div>
@@ -176,9 +177,9 @@ export default function Gameslist (){
                     <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
                     <p className="gameslist-game__add-btn" onClick={(e) => {
                         setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
-                        console.log("gameslist game date: ", document.getElementsByClassName("gameslist-game__date")[i].value);
                         setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
                         setGameName(prevGameName => game.name);
+                        setRank(document.getElementsByClassName("gameslist-game__rank")[i].value)
                         setShowModal(true);
                         }}>Update</p>
                 </div>
@@ -187,16 +188,12 @@ export default function Gameslist (){
     }
 
     if (gameState === "dropped") {
-        console.log("current state: ", gameState);
         renderGames(droppedGames);
     } else if (gameState === "upcoming") {
-        console.log("current state: ", gameState);
         renderGames(upcomingGames);
     } else if (gameState === "completed") {
-        console.log("current state: ", gameState);
         renderGames(completedGames);
     } else if (gameState === "playing") {
-        console.log("current state: ", gameState);
         renderGames(playingGames);
     } else {
         renderGames(userGames);
