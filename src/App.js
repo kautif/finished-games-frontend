@@ -2,29 +2,39 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import './App.css';
 import Splash from './components/Splash/Splash';
 import AuthenticatedComponent from './components/AuthenticatedComponent'; // the component to show when the user is authenticated
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuthenticated } from './redux/gamesSlice';
 import { Route, Routes } from 'react-router-dom';
 import Search from './components/Search/Search';
 import Gameslist from './components/Gameslist/Gameslist';
 import Profile from './components/Profile/Profile';
+import { getItem, setItem } from './utils/localStorage';
 
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.gamesReducer.isAuthenticated);
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
     // Get the token from the URL
-    let urlParams = new URLSearchParams(window.location.search);
-    console.log("urlParams: ", urlParams);
-    const token = urlParams.get('verified');
-    console.log("App token: ", token);
-    if(token || localStorage.getItem('auth_token')){
-      localStorage.setItem('auth_token', 'true');
+    const urlParams = new URLSearchParams(window.location.search);
+    const authToken = urlParams.get('auth_token');
+    const twitchToken = urlParams.get('twitch_token');
+
+    if(authToken && twitchToken){
+      setItem('authToken', authToken);
+      setItem('twitchToken', twitchToken);
+
       dispatch(setIsAuthenticated(true));
-    } else {
-      dispatch(setIsAuthenticated(false));
+
+      const newUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+    else if (getItem('authToken') && getItem('twitchToken')) {
+      dispatch(setIsAuthenticated(true))
+    }
+    else {
+      dispatch(setIsAuthenticated(false))
     }
   }, []);
 
