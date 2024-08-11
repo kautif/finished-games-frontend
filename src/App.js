@@ -2,7 +2,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import './App.css';
 import Splash from './components/Splash/Splash';
 import AuthenticatedComponent from './components/AuthenticatedComponent'; // the component to show when the user is authenticated
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuthenticated } from './redux/gamesSlice';
 import { Route, Routes } from 'react-router-dom';
@@ -32,6 +32,9 @@ function App() {
     }
     else if (getItem('authToken') && getItem('twitchToken')) {
       dispatch(setIsAuthenticated(true))
+    }
+    else {
+      dispatch(setIsAuthenticated(false))
     }
   }, []);
 
