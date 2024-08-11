@@ -5,9 +5,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./AuthenticatedNav.css";
 import { clearStorage, getItem } from "../../utils/localStorage";
+import { useNavigate } from 'react-router-dom';
 
 export default function AuthenticatedNav () {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     function logout () {
         axios({
@@ -22,6 +25,7 @@ export default function AuthenticatedNav () {
             console.log("logout: ", response);
             dispatch(setIsAuthenticated(false));
             clearStorage();
+            navigate('/');
         }).catch(err => {
             console.error("error: ", err.message);
         })
