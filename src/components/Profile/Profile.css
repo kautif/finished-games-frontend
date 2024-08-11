@@ -20,6 +20,11 @@
     margin: 15x 10px;
 }
 
+.user-game__rating {
+    display: flex;
+    justify-content: space-around;
+}
+
 .user-game__summary {
     margin-right: auto;
     margin-left: auto;

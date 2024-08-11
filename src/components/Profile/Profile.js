@@ -70,6 +70,7 @@ export default function Profile (match) {
         getGameState(user.games);
         getGameDate(user.games);
         getGameSummary(user.games);
+        getGameRating(user.games);
     }, [user])
 
     useEffect(() => {
@@ -77,22 +78,27 @@ export default function Profile (match) {
             getGameState(droppedGames);
             getGameDate(droppedGames);
             getGameSummary(droppedGames);
+            getGameRating(droppedGames);
         } else if (gameState === "playing") {
             getGameState(playingGames);
             getGameDate(playingGames);
             getGameSummary(playingGames);
+            getGameRating(playingGames);
         } else if (gameState === "upcoming") {
             getGameState(upcomingGames);
             getGameDate(upcomingGames) ;
             getGameSummary(upcomingGames);
+            getGameRating(upcomingGames);
         } else if (gameState === "completed") {
             getGameState(completedGames);
             getGameDate(completedGames) ;
             getGameSummary(completedGames);
+            getGameRating(completedGames);
         } else {
             getGameState(userGames);
             getGameDate(userGames);
             getGameSummary(userGames);
+            getGameRating(userGames);
         }
     }, [gameState])
 
@@ -115,6 +121,12 @@ export default function Profile (match) {
         }
     }
 
+    function getGameRating (games) {
+        for (let i = 0; i < document.getElementsByClassName("user-game__rating__num").length; i++) {
+            document.getElementsByClassName("user-game__rating__num")[i].value = games[i].rating;
+        }
+    }
+
     function renderGames (games) {
         if (games.length <= 0) {
             gamesList = <h2 className="user-game__no-results">No Games Found in this Category</h2>
@@ -126,6 +138,21 @@ export default function Profile (match) {
                     <div className="user-game__date-container">
                         <p>Date:</p>
                         <p className="user-game__date"></p>
+                    </div>
+                    <div className="user-game__rating">
+                        <label>Rating: </label>
+                        <select className="user-game__rating__num">
+                            <option selected value="10">10</option>
+                            <option value="9">9</option>
+                            <option value="8">8</option>
+                            <option value="7">7</option>
+                            <option value="6">6</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>    
+                        </select>    
                     </div>
                     <div className="user-game__status-container">
                         <p>Game Status</p>
