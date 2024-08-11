@@ -13,6 +13,7 @@ export default function Search () {
     const [date, setDate] = useState("");
     const [games, setGames] = useState([]);
     const [rank, setRank] = useState("");
+    const [rating, setRating] = useState(0);
     const [searchGames, setSearchGames] = useState(userGames);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";
@@ -54,15 +55,14 @@ export default function Search () {
     function addGame (gameName, gameImg, gameSummary, gameStatus, index) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
-        // console.log("addGame twitchId: ", twitchId);
-        // console.log("addGame twitchName: ", twitchName);
         getDate(index);
         let gameObj = {
             name: gameName,
             img_url: gameImg,
             summary: gameSummary,
             date_added: date,
-            rank: gameStatus
+            rank: gameStatus,
+            rating: document.getElementsByClassName("search-game__rating__num")[index].value
         }
 
         let config = {
@@ -101,8 +101,14 @@ export default function Search () {
         // console.log("Month: ", newDate.getMonth());
         // console.log("Year: ", newDate.getFullYear());
         setDate(prevDate => newDate);
-        console.log("date added: ", date);
     }
+
+
+
+    // function getRating (index) {
+    //     let ratingNum = document.getElementsByClassName("search-game__rating__num")[index].value;
+    //     setRating(ratingNum);
+    // }
 
     let retrievedGames;
 
@@ -111,6 +117,7 @@ export default function Search () {
         getUserGames();
         retrievedGames.map((game, i) => {
             defaultDate(i);
+            // getRating(i);
         })
     }, [games])
 
@@ -130,6 +137,21 @@ export default function Search () {
             <h2 className="search-game__name">{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
             <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => getDate(i)}/>
+            <div className="search-game__rating">
+                <label>Rating: </label>
+                <select className="search-game__rating__num">
+                    <option selected value="10">10</option>
+                    <option value="9">9</option>
+                    <option value="8">8</option>
+                    <option value="7">7</option>
+                    <option value="6">6</option>
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                    <option value="1">1</option>    
+                </select>    
+            </div>
             <div className="search-game__status">
                 <label>Game Status</label>
                 <select>

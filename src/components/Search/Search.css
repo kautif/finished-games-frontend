@@ -44,6 +44,13 @@
     transition: 500ms;
 }
 
+.search-game__rating {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 7%;
+    margin-bottom: 2%;
+}
+
 .search-game__status {
     display: flex;
     justify-content: space-around;
