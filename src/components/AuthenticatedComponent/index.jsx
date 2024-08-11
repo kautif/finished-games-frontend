@@ -15,7 +15,13 @@ function AuthenticatedComponent() {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-        await axios.get(`${backendURL}/protected/userid`, { withCredentials: true }).then(response => {
+        await axios.get(`${backendURL}/protected/userid`, 
+          {
+            headers: {
+              'auth_token': localStorage.getItem("authToken"),
+            }
+          }
+        ).then(response => {
           setData(response.data);
           token = localStorage.getItem("auth_token");
           window.localStorage.setItem('twitchId', response.data.twitchId);

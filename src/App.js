@@ -9,24 +9,31 @@ import { Route, Routes } from 'react-router-dom';
 import Search from './components/Search/Search';
 import Gameslist from './components/Gameslist/Gameslist';
 import Profile from './components/Profile/Profile';
+import { getItem, setItem } from './utils/localStorage';
 
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.gamesReducer.isAuthenticated);
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
     // Get the token from the URL
     const urlParams = new URLSearchParams(window.location.search);
-    console.log("urlParams: ", urlParams);
-    const token = urlParams.get('verified');
-    console.log("App token: ", token);
-    if(token || localStorage.getItem('auth_token')){
-      localStorage.setItem('auth_token', 'true');
+    const authToken = urlParams.get('auth_token');
+    const twitchToken = urlParams.get('twitch_token');
+
+    if(authToken && twitchToken){
+      setItem('authToken', authToken);
+      setItem('twitchToken', twitchToken);
+
       dispatch(setIsAuthenticated(true));
+
+      const newUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+    else if (getItem('authToken') && getItem('twitchToken')) {
+      dispatch(setIsAuthenticated(true))
     }
   }, []);
-
-  console.log("isAuthenticated: ", isAuthenticated);
 
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>

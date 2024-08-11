@@ -4,23 +4,24 @@ import { setIsAuthenticated } from "../../redux/gamesSlice";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./AuthenticatedNav.css";
+import { clearStorage, getItem } from "../../utils/localStorage";
 
 export default function AuthenticatedNav () {
     const dispatch = useDispatch();
-    const isAuthenticated = useSelector(state => state.gamesReducer.isAuthenticated);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     function logout () {
-        dispatch(setIsAuthenticated(false));
         axios({
             url: `${backendURL}/logout`,
             method: "POST",
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'auth_token': getItem("authToken"),
+                'twitch_token': getItem("twitchToken"),
             },
-            withCredentials: true 
         }).then(response => {
-            console.log("logout isAuthenticated:", isAuthenticated);
             console.log("logout: ", response);
+            dispatch(setIsAuthenticated(false));
+            clearStorage();
         }).catch(err => {
             console.error("error: ", err.message);
         })
