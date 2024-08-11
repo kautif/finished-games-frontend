@@ -17,6 +17,7 @@ export const gamesSlice = createSlice({
         },
         setIsAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
+            console.log("gamesSlice isAuthenticated: ", state.isAuthenticated);
         }
     }
 })

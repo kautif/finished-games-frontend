@@ -7,13 +7,21 @@ export default function Gameslist (){
     // const backendURL = "http://localhost:4000";
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
+    let filteredArr = [];
     const [userGames, setUserGames] = useState([]);
+    const [completedGames, setCompletedGames] = useState([]);
+    const [upcomingGames, setUpcomingGames] = useState([]);
+    const [droppedGames, setdroppedGames] = useState([]);
+    const [playingGames, setPlayingGames] = useState([]);
+
+    const [gameState, setGameState] = useState("");
+    const [rank, setRank] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [summary, setSummary] = useState("");
     const [date, setDate] = useState("");
     const [gameName, setGameName] = useState("");
     let userGamesList;
-
+    let gamesList;
     useEffect(() => {
         getUserGames();
     }, [])
@@ -28,15 +36,41 @@ export default function Gameslist (){
                 })
             }
         }
-        getGameDate();
+        getGameDate(userGames);
+        getGameState(userGames);
     }, [userGames])
 
     useEffect(() => {
-        updateSummary(gameName, summary, date);
-    }, [gameName, summary, date])
+        console.log("gameState", gameState);
+        // 8/3/24: When setting userGames state, also set a completedGame, droppedGames, upcomingGames state and so on.
+        if (gameState === "dropped") {
+            getGameState(droppedGames);
+            getGameDate(droppedGames);
+            getGameSummary(droppedGames);
+        } else if (gameState === "playing") {
+            getGameState(playingGames);
+            getGameDate(playingGames);
+            getGameSummary(playingGames);
+        } else if (gameState === "upcoming") {
+            getGameState(upcomingGames);
+            getGameDate(upcomingGames) ;
+            getGameSummary(upcomingGames);
+        } else if (gameState === "completed") {
+            getGameState(completedGames);
+            getGameDate(completedGames) ;
+            getGameSummary(completedGames);
+        } else {
+            getGameState(userGames);
+            getGameDate(userGames);
+            getGameSummary(userGames);
+        }
+    }, [gameState])
 
-    async function updateSummary (gameName, gameSummary, gameDate) {
-        console.log("gameDate: ", gameDate);
+    useEffect(() => {
+        updateSummary(gameName, summary, date, rank);
+    }, [gameName, summary, date, rank])
+
+    async function updateSummary (gameName, gameSummary, gameDate, gameRank) {
         let config = {
             method: "put",
             url: `${backendURL}/updategame`,
@@ -45,7 +79,8 @@ export default function Gameslist (){
                 games: {
                     name: gameName,
                     summary: gameSummary,
-                    date_added: gameDate
+                    date_added: gameDate,
+                    rank: gameRank
                 }
             }
         }
@@ -72,45 +107,121 @@ export default function Gameslist (){
         }).then(result => {
             setUserGames(result.data.response.games);
             console.log("userGames: ", userGames);
+            let droppedArr = [];
+            let playingArr = [];
+            let upcomingArr = [];
+            let completedArr = [];
+            for (let i = 0; i < result.data.response.games.length; i++) {
+                if (result.data.response.games[i].rank === "dropped") {
+                    droppedArr.push(result.data.response.games[i]);
+                }
+
+                if (result.data.response.games[i].rank === "playing") {
+                    playingArr.push(result.data.response.games[i]);
+                }
+
+                if (result.data.response.games[i].rank === "upcoming") {
+                    upcomingArr.push(result.data.response.games[i]);
+                }
+
+                if (result.data.response.games[i].rank === "completed") {
+                    completedArr.push(result.data.response.games[i]);
+                }
+            }
+            setdroppedGames(droppedArr);
+            setPlayingGames(playingArr);
+            setUpcomingGames(upcomingArr);
+            setCompletedGames(completedArr);
         })
     }
 
-    function getGameDate () {
-        // document.getElementsByClassName("user-game").map((userGame, i) => {
-            // document.getElementsByClassName("user-game")[i].children[2].valueAsDate = new Date(userGames[i].date_added);
-        // })
-
-        for (let i = 0; i < document.getElementsByClassName("user-game").length; i++) {
-            document.getElementsByClassName("user-game")[i].children[2].valueAsDate = new Date(userGames[i].date_added);
+    function getGameDate (games) {
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game").length; i++) {
+            document.getElementsByClassName("gameslist-game__date")[i].valueAsDate = new Date(games[i].date_added);
         }
     }
 
-    let gamesList = userGames.map(game => {
-        return <div className="user-game">
-            {game.name}
-            <img src={game.img_url} />
-            <label>Date:</label><input className="user-game__date" type="date" name="date-added" />
-            <textarea placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
-            <p onClick={(e) => {
-                setDate(prevDate => e.target.previousSibling.previousSibling.value);
-                console.log(e.target.previousSibling.previousSibling.value);
-                setSummary(prevSummary => e.target.previousElementSibling.value);
-                setGameName(prevGameName => game.name);
-                setShowModal(true);
-                }}>Update</p>
-        </div>
-    })
+    function getGameState (games) {
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game__rank").length; i++) {
+            document.getElementsByClassName("gameslist-game__rank")[i].value = games[i].rank;
+        }
+    }
+
+    function getGameSummary (games) {
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game__summary").length; i++) {
+            document.getElementsByClassName("gameslist-game__summary")[i].value = games[i].summary;
+        }
+    }
+
+    function renderGames (games) {
+        if (games.length <= 0) {
+            gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
+        } else {
+            gamesList = games.map((game, i) => {
+                return <div className="gameslist-game">
+                    {game.name}
+                    <img src={game.img_url} />
+                    <div className="gameslist-game__date-container">
+                        <label>Date:</label>
+                        <input className="gameslist-game__date" type="date" name="date-added" />
+                    </div>
+                    <div className="gameslist-game__status">
+                        <label>Game Status</label>
+                        <select className="gameslist-game__rank">
+                            <option value="playing">Playing</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                            <option value="dropped">Dropped</option>
+                        </select>
+                    </div>
+                    <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
+                    <p className="gameslist-game__add-btn" onClick={(e) => {
+                        setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
+                        setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
+                        setGameName(prevGameName => game.name);
+                        setRank(document.getElementsByClassName("gameslist-game__rank")[i].value)
+                        setShowModal(true);
+                        }}>Update</p>
+                </div>
+            })   
+        }
+    }
+
+    if (gameState === "dropped") {
+        renderGames(droppedGames);
+    } else if (gameState === "upcoming") {
+        renderGames(upcomingGames);
+    } else if (gameState === "completed") {
+        renderGames(completedGames);
+    } else if (gameState === "playing") {
+        renderGames(playingGames);
+    } else {
+        renderGames(userGames);
+    }
 
     return (
-        <div className="user-games-container"> 
+        <div className="gameslist-games-container"> 
             <h1>Your Games</h1>
-            <div className="user-games">
+            <div>
+                <p>Filter Games</p>
+                <select onChange={(e) => {
+                    setGameState(e.target.value);
+                }} className="gameslist-games__filter">
+                    <option disabled selected>Select Game State</option>
+                    <option value="all">Show All Games</option>
+                    <option value="playing">Playing</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="completed">Completed</option>
+                    <option value="dropped">Dropped</option>
+                </select>
+            </div>
+            <div className="gameslist-games">
                 {gamesList}
             </div>
 
-            {showModal ? <div className="user-games__update">
+            {showModal ? <div className="gameslist-games__update">
                 <p>Summary for {gameName} has been updated</p>
-                <span className="user-games__update__close" onClick={() => setShowModal(false)}>X</span>
+                <span className="gameslist-games__update__close" onClick={() => setShowModal(false)}>X</span>
             </div> : ""}
         </div>
     )

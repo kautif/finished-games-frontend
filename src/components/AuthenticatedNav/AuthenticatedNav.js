@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setIsAuthenticated } from "../../redux/gamesSlice";
 import axios from "axios";
 import { Link } from "react-router-dom";
