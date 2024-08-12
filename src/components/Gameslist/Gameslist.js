@@ -16,6 +16,7 @@ export default function Gameslist (){
 
     const [gameState, setGameState] = useState("");
     const [rank, setRank] = useState("");
+    const [rating, setRating] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [summary, setSummary] = useState("");
     const [date, setDate] = useState("");
@@ -38,6 +39,7 @@ export default function Gameslist (){
         }
         getGameDate(userGames);
         getGameState(userGames);
+        getGameRating(userGames);
     }, [userGames])
 
     useEffect(() => {
@@ -47,30 +49,35 @@ export default function Gameslist (){
             getGameState(droppedGames);
             getGameDate(droppedGames);
             getGameSummary(droppedGames);
+            getGameRating(droppedGames);
         } else if (gameState === "playing") {
             getGameState(playingGames);
             getGameDate(playingGames);
             getGameSummary(playingGames);
+            getGameRating(playingGames);
         } else if (gameState === "upcoming") {
             getGameState(upcomingGames);
             getGameDate(upcomingGames) ;
             getGameSummary(upcomingGames);
+            getGameRating(upcomingGames);
         } else if (gameState === "completed") {
             getGameState(completedGames);
             getGameDate(completedGames) ;
             getGameSummary(completedGames);
+            getGameRating(completedGames);
         } else {
             getGameState(userGames);
             getGameDate(userGames);
             getGameSummary(userGames);
+            getGameRating(userGames);
         }
     }, [gameState])
 
     useEffect(() => {
-        updateSummary(gameName, summary, date, rank);
-    }, [gameName, summary, date, rank])
+        updateSummary(gameName, summary, date, rank, rating);
+    }, [gameName, summary, date, rank, rating])
 
-    async function updateSummary (gameName, gameSummary, gameDate, gameRank) {
+    async function updateSummary (gameName, gameSummary, gameDate, gameRank, gameRating) {
         let config = {
             method: "put",
             url: `${backendURL}/updategame`,
@@ -80,7 +87,8 @@ export default function Gameslist (){
                     name: gameName,
                     summary: gameSummary,
                     date_added: gameDate,
-                    rank: gameRank
+                    rank: gameRank,
+                    rating: gameRating
                 }
             }
         }
@@ -106,7 +114,7 @@ export default function Gameslist (){
             }
         }).then(result => {
             setUserGames(result.data.response.games);
-            console.log("userGames: ", userGames);
+            // console.log("userGames: ", userGames);
             let droppedArr = [];
             let playingArr = [];
             let upcomingArr = [];
@@ -153,6 +161,12 @@ export default function Gameslist (){
         }
     }
 
+    function getGameRating (games) {
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game__rating__num").length; i++) {
+            document.getElementsByClassName("gameslist-game__rating__num")[i].value = games[i].rating;
+        }
+    }
+
     function renderGames (games) {
         if (games.length <= 0) {
             gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
@@ -164,6 +178,21 @@ export default function Gameslist (){
                     <div className="gameslist-game__date-container">
                         <label>Date:</label>
                         <input className="gameslist-game__date" type="date" name="date-added" />
+                    </div>
+                    <div className="gameslist-game__rating">
+                        <label>Rating: </label>
+                        <select className="gameslist-game__rating__num">
+                            <option selected value="10">10</option>
+                            <option value="9">9</option>
+                            <option value="8">8</option>
+                            <option value="7">7</option>
+                            <option value="6">6</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>    
+                        </select>    
                     </div>
                     <div className="gameslist-game__status">
                         <label>Game Status</label>
@@ -179,7 +208,8 @@ export default function Gameslist (){
                         setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
                         setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
                         setGameName(prevGameName => game.name);
-                        setRank(document.getElementsByClassName("gameslist-game__rank")[i].value)
+                        setRank(document.getElementsByClassName("gameslist-game__rank")[i].value);
+                        setRating(document.getElementsByClassName("gameslist-game__rating__num")[i].value);
                         setShowModal(true);
                         }}>Update</p>
                 </div>

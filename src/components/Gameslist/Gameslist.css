@@ -29,6 +29,12 @@
     margin-top: 8%;
 }
 
+.gameslist-game__rating {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5%;
+}
+
 .gameslist-game textarea {
     margin-top: 4%;
     height: 50px;
