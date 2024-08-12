@@ -22,7 +22,6 @@ export default function AuthenticatedNav () {
                 'twitch_token': getItem("twitchToken"),
             },
         }).then(response => {
-            console.log("logout: ", response);
             dispatch(setIsAuthenticated(false));
             clearStorage();
             navigate('/');

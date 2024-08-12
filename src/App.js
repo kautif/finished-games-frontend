@@ -30,9 +30,9 @@ function App() {
       const newUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, newUrl);
     }
-    // else if (getItem('authToken') && getItem('twitchToken')) {
-    //   dispatch(setIsAuthenticated(true));
-    // }
+    else if (getItem('authToken') && getItem('twitchToken')) {
+      dispatch(setIsAuthenticated(true));
+    }
     else {
       dispatch(setIsAuthenticated(false));
     }

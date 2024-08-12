@@ -4,6 +4,7 @@ import { getUserGames, setUserGames } from '../../redux/gamesSlice';
 
 import axios from 'axios';
 import AuthenticatedNav from '../AuthenticatedNav/AuthenticatedNav';
+import { clearStorage } from '../../utils/localStorage';
 
 function AuthenticatedComponent() {
       const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -31,8 +32,8 @@ function AuthenticatedComponent() {
           console.log("fetchData");
           console.error('Error fetching data from protected route', error.message);
           if (error.response && error.response.status === 401) {
-            localStorage.removeItem('auth_token');
-            window.location.href='/';
+            window.location.href = '/';
+            clearStorage();
           }
 
         })
