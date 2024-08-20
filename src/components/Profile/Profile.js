@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Profile.css";
-import Gameslist from "../Gameslist/Gameslist";
 
 export default function Profile (match) {
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -17,7 +16,8 @@ export default function Profile (match) {
     const [droppedGames, setdroppedGames] = useState([]);
     const [playingGames, setPlayingGames] = useState([]);
 
-    const [gameState, setGameState] = useState("");
+    const [gameState, setGameState] = useState("all");
+    const [sortedArr, setSortedArr] = useState([]);
     function getProfile(setObject) {
         axios({
             method: 'get',
@@ -67,79 +67,29 @@ export default function Profile (match) {
         }
     }, [])
 
-    useEffect(() => {
-        // for (let i = 0; i < document.getElementsByClassName("profile-game__date").length; i++) {
-        //     document.getElementsByClassName("profile-game__date")[i].valueAsDate = new Date(user.games[i].date_added);
-        // }
-        if (user !== null) {
-            getGameState(user.games);
-            getGameDate(user.games);
-            getGameSummary(user.games);
-            getGameRating(user.games);
+    function alphaSort () {
+        let sortGamesArr;
+        let sortedGames;
+        if (gameState === "dropped") {
+            sortGamesArr = droppedGames;
+        } else if (gameState === "completed") {
+            sortGamesArr = completedGames;
+        } else if (gameState === "upcoming") {
+            sortGamesArr = upcomingGames;
+        } else if (gameState === "playing") {
+            sortGamesArr = playingGames;
+        } else {
+            sortGamesArr = userGames;
         }
-    }, [user])
 
-    useEffect(() => {
-        if (user !== null) {
-            if (gameState === "dropped") {
-                getGameState(droppedGames);
-                getGameDate(droppedGames);
-                getGameSummary(droppedGames);
-                getGameRating(droppedGames);
-            } else if (gameState === "playing") {
-                getGameState(playingGames);
-                getGameDate(playingGames);
-                getGameSummary(playingGames);
-                getGameRating(playingGames);
-            } else if (gameState === "upcoming") {
-                getGameState(upcomingGames);
-                getGameDate(upcomingGames) ;
-                getGameSummary(upcomingGames);
-                getGameRating(upcomingGames);
-            } else if (gameState === "completed") {
-                getGameState(completedGames);
-                getGameDate(completedGames) ;
-                getGameSummary(completedGames);
-                getGameRating(completedGames);
-            } else {
-                getGameState(userGames);
-                getGameDate(userGames);
-                getGameSummary(userGames);
-                getGameRating(userGames);
-            }
+        if (document.getElementById("sort-direction").value === "ascending" && 
+            document.getElementById("sort-focus").value === "alpha") {
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
         }
-    }, [gameState])
-
-    function getGameDate (games) {
-        for (let i = 0; i < document.getElementsByClassName("user-game").length; i++) {
-            if (user !== null) {
-                document.getElementsByClassName("user-game__date")[i].innerHTML = new Date(games[i].date_added).toDateString().substring(4);
-                console.log(new Date(games[i].date_added).toDateString().substring(4));
-            }
-        }
-    }
-
-    function getGameState (games) {
-        if (user !== null) {
-            for (let i = 0; i < document.getElementsByClassName("user-game__status").length; i++) {
-                document.getElementsByClassName("user-game__status")[i].innerHTML = (games[i].rank).toUpperCase();
-            }
-        }
-    }
-
-    function getGameSummary (games) {
-        if (user !== null) {
-            for (let i = 0; i < document.getElementsByClassName("user-game__summary").length; i++) {
-                document.getElementsByClassName("user-game__summary")[i].value = games[i].summary;
-            }
-        }
-    }
-
-    function getGameRating (games) {
-        if (user !== null) {
-            for (let i = 0; i < document.getElementsByClassName("user-game__rating__num").length; i++) {
-                document.getElementsByClassName("user-game__rating__num")[i].value = games[i].rating;
-            }
+        
+        if (document.getElementById("sort-direction").value === "descending" && 
+            document.getElementById("sort-focus").value === "alpha") {
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.name < b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
         }
     }
 
@@ -153,32 +103,15 @@ export default function Profile (match) {
                     <div className="user-game__img"><img src={game.img_url} /></div>
                     <div className="user-game__date-container">
                         <p>Date:</p>
-                        <p className="user-game__date"></p>
+                        <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
                     </div>
                     <div className="user-game__rating">
                         <label>Rating: </label>
-                        <select className="user-game__rating__num">
-                            <option selected value="10">10</option>
-                            <option value="9">9</option>
-                            <option value="8">8</option>
-                            <option value="7">7</option>
-                            <option value="6">6</option>
-                            <option value="5">5</option>
-                            <option value="4">4</option>
-                            <option value="3">3</option>
-                            <option value="2">2</option>
-                            <option value="1">1</option>    
-                        </select>    
+                        <p className="user-game__rating__num">{game.rating}</p>    
                     </div>
                     <div className="user-game__status-container">
                         <p>Game Status</p>
-                        {/* <select className="user-game__rank">
-                            <option value="progress">In Progress</option>
-                            <option value="upcoming">Upcoming</option>
-                            <option value="completed">Completed</option>
-                            <option value="dropped">Dropped</option>
-                        </select> */}
-                        <p className="user-game__status"></p>
+                        <p className="user-game__status">{game.rank.toUpperCase()}</p>
                     </div>
                     <div className="user-game__summary-container">
                         <h3>Comments</h3>
@@ -213,40 +146,41 @@ export default function Profile (match) {
             <div>
                 <img src={user.profileImageUrl} alt={user.twitchName + "'s profile picture"}  />
                 <h1>{user.twitchName}</h1>
-                <select onChange={(e) => {
-                        setGameState(e.target.value);
-                    }} className="user-games__filter">
-                        <option disabled selected>Select Game State</option>
-                        <option value="all">Show All Games</option>
-                        <option value="playing">Playing</option>
-                        <option value="upcoming">Upcoming</option>
-                        <option value="completed">Completed</option>
-                        <option value="dropped">Dropped</option>
-                    </select>
+                <div>
+                    <div>
+                        <select onChange={(e) => {
+                            setGameState(e.target.value);
+                        }} className="user-games__filter">
+                            <option disabled selected>Select Game State</option>
+                            <option value="all">Show All Games</option>
+                            <option value="playing">Playing</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                            <option value="dropped">Dropped</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h2>Sorting</h2>
+                        <div>
+                            <select id="sort-direction">
+                                <option value="ascending">Ascending</option>
+                                <option value="descending" >Descending</option>
+                            </select>
+                            <select id="sort-focus">
+                                <option value="alpha">Alphabetical</option>
+                                <option value="date">Date</option>
+                                <option value="rating">Rating</option>
+                            </select>
+                            <input type="submit" id="sorting-btn" value="Submit" onClick={(e) => {
+                                e.preventDefault();
+                                alphaSort();
+                            }}/>
+                        </div>
+                    </div>
+                </div>
                 <div className="profile-results">
                     {user.games !== undefined && 
                     gamesList
-                        // user.games.map((game, i) => {
-                        //     console.log("profile game: ", game);
-                            
-                        //     return (
-                        //         <div className="profile-game">
-                        //             <h1>{game.name}</h1>
-                        //             <img src={game.img_url} alt={game.name + " game cover"} />
-                        //             <input className="profile-game__date" type="date" name="date-added" disabled/>
-                        //             <div className="search-game__status">
-                        //                 <label>Game Status</label>
-                        //                 <select disabled>
-                        //                     <option value="progress">In Progress</option>
-                        //                     <option value="upcoming">Upcoming</option>
-                        //                     <option value="completed">Completed</option>
-                        //                     <option value="dropped">Dropped</option>
-                        //                 </select>
-                        //             </div>
-                        //             <p className="user-game__summary">{game.summary}</p>
-                        //         </div>
-                        //     )
-                        // })
                     }
                 </div>
             </div>
