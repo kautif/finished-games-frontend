@@ -111,8 +111,6 @@ export default function Profile (match) {
             document.getElementById("sort-focus").value === "rating") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)));
         }
-
-        
     }
 
     function renderGames (games) {

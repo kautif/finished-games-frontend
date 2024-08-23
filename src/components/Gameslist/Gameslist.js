@@ -14,7 +14,8 @@ export default function Gameslist (){
     const [droppedGames, setdroppedGames] = useState([]);
     const [playingGames, setPlayingGames] = useState([]);
 
-    const [gameState, setGameState] = useState("");
+    const [gameState, setGameState] = useState("all");
+    const [sortedArr, setSortedArr] = useState([]);
     const [rank, setRank] = useState("");
     const [rating, setRating] = useState(0);
     const [showModal, setShowModal] = useState(false);
@@ -40,6 +41,7 @@ export default function Gameslist (){
         getGameDate(userGames);
         getGameState(userGames);
         getGameRating(userGames);
+        getGameSummary(userGames);
     }, [userGames])
 
     useEffect(() => {
@@ -76,6 +78,64 @@ export default function Gameslist (){
     useEffect(() => {
         updateSummary(gameName, summary, date, rank, rating);
     }, [gameName, summary, date, rank, rating])
+
+    useEffect(() => {
+        // getGameSummary(sortedArr);
+    }, [sortedArr])
+
+    function alphaSort () {
+        let sortGamesArr;
+        let sortedGames;
+        if (gameState === "dropped") {
+            sortGamesArr = droppedGames;
+        } else if (gameState === "completed") {
+            sortGamesArr = completedGames;
+        } else if (gameState === "upcoming") {
+            sortGamesArr = upcomingGames;
+        } else if (gameState === "playing") {
+            sortGamesArr = playingGames;
+        } else {
+            sortGamesArr = userGames;
+        }
+
+        console.log("sortGamesArr: ", sortGamesArr);
+
+        if (document.getElementById("sort-direction").value === "ascending" && 
+            document.getElementById("sort-focus").value === "alpha") {
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
+        }
+        
+        if (document.getElementById("sort-direction").value === "descending" && 
+            document.getElementById("sort-focus").value === "alpha") {
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.name < b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
+        }
+
+        if (document.getElementById("sort-direction").value === "ascending" && 
+            document.getElementById("sort-focus").value === "date") {
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added > b.date_added) ? 1 : ((b.date_added > a.date_added) ? -1 : 0)));
+        }
+
+        if (document.getElementById("sort-direction").value === "descending" && 
+            document.getElementById("sort-focus").value === "date") {
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((b.date_added > a.date_added) ? -1 : 0)));
+        }
+
+        if (document.getElementById("sort-direction").value === "ascending" && 
+            document.getElementById("sort-focus").value === "rating") {
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)));
+        }
+
+        if (document.getElementById("sort-direction").value === "descending" && 
+            document.getElementById("sort-focus").value === "rating") {
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)));
+        }
+        getGameTitle(sortGamesArr);
+        getGameImage(sortGamesArr);
+        getGameSummary(sortGamesArr);
+        getGameDate(sortGamesArr);
+        getGameRating(sortGamesArr);
+        getGameState(sortGamesArr);
+    }
 
     async function updateSummary (gameName, gameSummary, gameDate, gameRank, gameRating) {
         let config = {
@@ -143,6 +203,18 @@ export default function Gameslist (){
         })
     }
 
+    function getGameTitle (games) {
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game__title").length; i++) {
+            document.getElementsByClassName("gameslist-game__title")[i].innerHTML = games[i].name;
+        }
+    }
+
+    function getGameImage (games) {
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game__img").length; i++) {
+            document.getElementsByClassName("gameslist-game__img")[i].src = games[i].img_url;
+        }
+    }
+
     function getGameDate (games) {
         for (let i = 0; i < document.getElementsByClassName("gameslist-game").length; i++) {
             document.getElementsByClassName("gameslist-game__date")[i].valueAsDate = new Date(games[i].date_added);
@@ -173,8 +245,8 @@ export default function Gameslist (){
         } else {
             gamesList = games.map((game, i) => {
                 return <div className="gameslist-game">
-                    {game.name}
-                    <img src={game.img_url} />
+                    <h2 className="gameslist-game__title">{game.name}</h2>
+                    <img className="gameslist-game__img" src={game.img_url} />
                     <div className="gameslist-game__date-container">
                         <label>Date:</label>
                         <input className="gameslist-game__date" type="date" name="date-added" />
@@ -244,6 +316,24 @@ export default function Gameslist (){
                     <option value="completed">Completed</option>
                     <option value="dropped">Dropped</option>
                 </select>
+            </div>
+            <div>
+                <h2>Sorting</h2>
+                <div>
+                    <select id="sort-direction">
+                        <option value="ascending">Ascending</option>
+                        <option value="descending" >Descending</option>
+                    </select>
+                    <select id="sort-focus">
+                        <option value="alpha">Alphabetical</option>
+                        <option value="date">Date</option>
+                        <option value="rating">Rating</option>
+                    </select>
+                    <input type="submit" id="sorting-btn" value="Submit" onClick={(e) => {
+                        e.preventDefault();
+                        alphaSort();
+                    }}/>
+                </div>
             </div>
             <div className="gameslist-games">
                 {gamesList}
