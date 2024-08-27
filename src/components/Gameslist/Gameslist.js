@@ -7,7 +7,6 @@ export default function Gameslist (){
     // const backendURL = "http://localhost:4000";
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
-    let filteredArr = [];
     const [userGames, setUserGames] = useState([]);
     const [completedGames, setCompletedGames] = useState([]);
     const [upcomingGames, setUpcomingGames] = useState([]);
@@ -16,12 +15,15 @@ export default function Gameslist (){
 
     const [gameState, setGameState] = useState("all");
     const [sortedArr, setSortedArr] = useState([]);
+    const [searchArr, setSearchArr] = useState([]);
     const [rank, setRank] = useState("");
     const [rating, setRating] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [summary, setSummary] = useState("");
     const [date, setDate] = useState("");
     const [gameName, setGameName] = useState("");
+
+    const [search, setSearch] = useState("");
     let userGamesList;
     let gamesList;
     useEffect(() => {
@@ -80,8 +82,11 @@ export default function Gameslist (){
     }, [gameName, summary, date, rank, rating])
 
     useEffect(() => {
-        // getGameSummary(sortedArr);
-    }, [sortedArr])
+        // renderGames([searchArr]);
+        console.log(searchArr);
+            searchGameslist();
+            searchGames();
+    }, [search])
 
     function alphaSort () {
         let sortGamesArr;
@@ -97,8 +102,6 @@ export default function Gameslist (){
         } else {
             sortGamesArr = userGames;
         }
-
-        console.log("sortGamesArr: ", sortGamesArr);
 
         if (document.getElementById("sort-direction").value === "ascending" && 
             document.getElementById("sort-focus").value === "alpha") {
@@ -135,6 +138,29 @@ export default function Gameslist (){
         getGameDate(sortGamesArr);
         getGameRating(sortGamesArr);
         getGameState(sortGamesArr);
+    }
+
+    function searchGameslist () {
+        let searchGamesArr;
+        let matchArr = []
+        if (gameState === "dropped") {
+            searchGamesArr = droppedGames;
+        } else if (gameState === "upcoming") {
+            searchGamesArr = upcomingGames;
+        } else if (gameState === "completed") {
+            searchGamesArr = completedGames;
+        } else if (gameState === "playing") {
+            searchGamesArr = playingGames;
+        } else {
+            searchGamesArr = userGames;
+        }
+
+        searchGamesArr.map(game => {
+            if (game.name.toLowerCase().includes(search.toLowerCase())) {
+                matchArr.push(game);
+            }
+        })
+        setSearchArr(prevArr => [...matchArr]);
     }
 
     async function updateSummary (gameName, gameSummary, gameDate, gameRank, gameRating) {
@@ -174,7 +200,6 @@ export default function Gameslist (){
             }
         }).then(result => {
             setUserGames(result.data.response.games);
-            // console.log("userGames: ", userGames);
             let droppedArr = [];
             let playingArr = [];
             let upcomingArr = [];
@@ -289,6 +314,55 @@ export default function Gameslist (){
         }
     }
 
+    function searchGames() {
+        // Con't *** 8/25/24
+        if (search.length > 0) {
+            gamesList = searchArr.map((game, i)=> {
+                return <div className="gameslist__search-game">
+                    <h2 className="gameslist-game__title">{game.name}</h2>
+                    <img className="gameslist-game__img" src={game.img_url} />
+                    <div className="gameslist-game__date-container">
+                        <label>Date:</label>
+                        <input className="gameslist-game__date" type="date" name="date-added" />
+                    </div>
+                    <div className="gameslist-game__rating">
+                        <label>Rating: </label>
+                        <select className="gameslist-game__rating__num">
+                            <option selected value="10">10</option>
+                            <option value="9">9</option>
+                            <option value="8">8</option>
+                            <option value="7">7</option>
+                            <option value="6">6</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>    
+                        </select>    
+                    </div>
+                    <div className="gameslist-game__status">
+                        <label>Game Status</label>
+                        <select className="gameslist-game__rank">
+                            <option value="playing">Playing</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                            <option value="dropped">Dropped</option>
+                        </select>
+                    </div>
+                    <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
+                    <p className="gameslist-game__add-btn" onClick={(e) => {
+                        setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
+                        setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
+                        setGameName(prevGameName => game.name);
+                        setRank(document.getElementsByClassName("gameslist-game__rank")[i].value);
+                        setRating(document.getElementsByClassName("gameslist-game__rating__num")[i].value);
+                        setShowModal(true);
+                        }}>Update</p>
+                </div>
+            })
+        }
+    }
+
     if (gameState === "dropped") {
         renderGames(droppedGames);
     } else if (gameState === "upcoming") {
@@ -299,6 +373,11 @@ export default function Gameslist (){
         renderGames(playingGames);
     } else {
         renderGames(userGames);
+    }
+
+    // Con't *** 8/26/24
+    if (search.length > 0) {
+        searchGames();
     }
 
     return (
@@ -319,7 +398,7 @@ export default function Gameslist (){
             </div>
             <div>
                 <h2>Sorting</h2>
-                <div>
+                <form>
                     <select id="sort-direction">
                         <option value="ascending">Ascending</option>
                         <option value="descending" >Descending</option>
@@ -333,8 +412,17 @@ export default function Gameslist (){
                         e.preventDefault();
                         alphaSort();
                     }}/>
-                </div>
+                </form>
             </div>
+            <form>
+                <h2>Search</h2>
+                <input id="gameslist-games__search" type="text" onChange={(e) => {
+                    setSearch(e.target.value);
+                }}/>
+                <input type="submit" value="Submit" onClick={(e) => {
+                    e.preventDefault();
+                }}/>
+            </form>
             <div className="gameslist-games">
                 {gamesList}
             </div>

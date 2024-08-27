@@ -8,6 +8,7 @@
     width: 97%;
     margin-left: auto;
     margin-right: auto;
+    justify-content: space-around;
 }
 
 .gameslist-game {
@@ -17,7 +18,8 @@
     margin-right: 2%;
 }
 
-.gameslist-game img {
+.gameslist-game img,
+.gameslist__search-game img {
     width: 390px;
     height: 250px;
 }
@@ -35,9 +37,11 @@
     margin-top: 5%;
 }
 
-.gameslist-game textarea {
+.gameslist-game textarea,
+.gameslist__search-game textarea {
     margin-top: 4%;
     height: 50px;
+    width: 100%;
 }
 
 .gameslist-game__add-btn {
