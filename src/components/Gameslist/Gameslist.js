@@ -103,6 +103,10 @@ export default function Gameslist (){
             sortGamesArr = userGames;
         }
 
+        if (search.length > 0) {
+            sortGamesArr = searchArr;
+        }
+
         if (document.getElementById("sort-direction").value === "ascending" && 
             document.getElementById("sort-focus").value === "alpha") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
@@ -241,7 +245,7 @@ export default function Gameslist (){
     }
 
     function getGameDate (games) {
-        for (let i = 0; i < document.getElementsByClassName("gameslist-game").length; i++) {
+        for (let i = 0; i < document.getElementsByClassName("gameslist-game__date").length; i++) {
             document.getElementsByClassName("gameslist-game__date")[i].valueAsDate = new Date(games[i].date_added);
         }
     }
@@ -315,7 +319,6 @@ export default function Gameslist (){
     }
 
     function searchGames() {
-        // Con't *** 8/25/24
         if (search.length > 0) {
             gamesList = searchArr.map((game, i)=> {
                 return <div className="gameslist__search-game">
