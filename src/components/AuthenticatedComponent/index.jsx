@@ -7,7 +7,7 @@ import AuthenticatedNav from '../AuthenticatedNav/AuthenticatedNav';
 import { clearStorage } from '../../utils/localStorage';
 
 function AuthenticatedComponent() {
-      // const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+      const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
       // const backendURL = "http://localhost:4000";
   const [data, setData] = useState([]);
   const userGames = useSelector(state => state.gamesReducer.userGames);
@@ -16,7 +16,7 @@ function AuthenticatedComponent() {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-        await axios.get(`https://finished-games-backend.onrender.com/protected/userid`, 
+        await axios.get(`${backendURL}/protected/userid`, 
           {
             headers: {
               'auth_token': localStorage.getItem("authToken"),
