@@ -114,7 +114,7 @@ export default function Gameslist (){
         
         if (document.getElementById("sort-direction").value === "descending" && 
             document.getElementById("sort-focus").value === "alpha") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.name < b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.name < b.name) ? 1 : ((a.name > b.name) ? -1 : 0)));
         }
 
         if (document.getElementById("sort-direction").value === "ascending" && 
@@ -124,7 +124,7 @@ export default function Gameslist (){
 
         if (document.getElementById("sort-direction").value === "descending" && 
             document.getElementById("sort-focus").value === "date") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((b.date_added > a.date_added) ? -1 : 0)));
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((a.date_added > b.date_added) ? -1 : 0)));
         }
 
         if (document.getElementById("sort-direction").value === "ascending" && 
@@ -134,7 +134,7 @@ export default function Gameslist (){
 
         if (document.getElementById("sort-direction").value === "descending" && 
             document.getElementById("sort-focus").value === "rating") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)));
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0)));
         }
         getGameTitle(sortGamesArr);
         getGameImage(sortGamesArr);
