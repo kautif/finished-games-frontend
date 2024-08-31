@@ -75,17 +75,22 @@ export default function Gameslist (){
             getGameSummary(userGames);
             getGameRating(userGames);
         }
-    }, [gameState])
+
+        if (search.length > 0) {
+            getGameRating(searchArr);
+            getGameDate(searchArr);
+            getGameState(searchArr);
+            getGameSummary(searchArr);
+        }
+    }, [gameState, searchArr])
 
     useEffect(() => {
         updateSummary(gameName, summary, date, rank, rating);
     }, [gameName, summary, date, rank, rating])
 
     useEffect(() => {
-        // renderGames([searchArr]);
-        console.log(searchArr);
-            searchGameslist();
-            searchGames();
+        searchGameslist();
+        searchGames();
     }, [search])
 
     function alphaSort () {
