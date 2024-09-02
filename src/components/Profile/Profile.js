@@ -17,7 +17,11 @@ export default function Profile (match) {
     const [playingGames, setPlayingGames] = useState([]);
 
     const [gameState, setGameState] = useState("all");
+    const [searchArr, setSearchArr] = useState([]);
     const [sortedArr, setSortedArr] = useState([]);
+
+    const [search, setSearch] = useState("");
+
     function getProfile(setObject) {
         axios({
             method: 'get',
@@ -67,6 +71,11 @@ export default function Profile (match) {
         }
     }, [])
 
+    useEffect(() => {
+        searchGameslist();
+        searchGames();
+    }, [search])
+
     function alphaSort () {
         let sortGamesArr;
         let sortedGames;
@@ -80,6 +89,10 @@ export default function Profile (match) {
             sortGamesArr = playingGames;
         } else {
             sortGamesArr = userGames;
+        }
+
+        if (search.length > 0) {
+            sortGamesArr = searchArr;
         }
 
         if (document.getElementById("sort-direction").value === "ascending" && 
@@ -99,7 +112,7 @@ export default function Profile (match) {
 
         if (document.getElementById("sort-direction").value === "descending" && 
             document.getElementById("sort-focus").value === "date") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((b.date_added > a.date_added) ? -1 : 0)));
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((a.date_added > b.date_added) ? -1 : 0)));
         }
 
         if (document.getElementById("sort-direction").value === "ascending" && 
@@ -109,8 +122,31 @@ export default function Profile (match) {
 
         if (document.getElementById("sort-direction").value === "descending" && 
             document.getElementById("sort-focus").value === "rating") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)));
+                setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0)));
         }
+    }
+
+    function searchGameslist () {
+        let searchGamesArr;
+        let matchArr = []
+        if (gameState === "dropped") {
+            searchGamesArr = droppedGames;
+        } else if (gameState === "upcoming") {
+            searchGamesArr = upcomingGames;
+        } else if (gameState === "completed") {
+            searchGamesArr = completedGames;
+        } else if (gameState === "playing") {
+            searchGamesArr = playingGames;
+        } else {
+            searchGamesArr = userGames;
+        }
+
+        searchGamesArr.map(game => {
+            if (game.name.toLowerCase().includes(search.toLowerCase())) {
+                matchArr.push(game);
+            }
+        })
+        setSearchArr(prevArr => [...matchArr]);
     }
 
     function renderGames (games) {
@@ -142,6 +178,33 @@ export default function Profile (match) {
         }
     }
 
+    function searchGames() {
+        if (search.length > 0) {
+            gamesList = searchArr.map((game, i)=> {
+                return <div className="user-game__search-game">
+                    <h2 className="user-game__title">{game.name}</h2>
+                    <div className="user-game__img"><img src={game.img_url} /></div>
+                    <div className="user-game__date-container">
+                        <p>Date:</p>
+                        <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
+                    </div>
+                    <div className="user-game__rating">
+                        <label>Rating: </label>
+                        <p className="user-game__rating__num">{game.rating}</p>    
+                    </div>
+                    <div className="user-game__status-container">
+                        <p>Game Status</p>
+                        <p className="user-game__status">{game.rank.toUpperCase()}</p>
+                    </div>
+                    <p className="user-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</p>
+                </div>
+            })
+            document.getElementById("profile-results-container").scrollIntoView({
+                behavior: "smooth"
+            })
+        }
+    }
+
     if (gameState === "dropped") {
         renderGames(droppedGames);
     } else if (gameState === "upcoming") {
@@ -152,6 +215,10 @@ export default function Profile (match) {
         renderGames(playingGames);
     } else {
         renderGames(userGames);
+    }
+
+    if (search.length > 0) {
+        searchGames();
     }
 
 
@@ -181,7 +248,7 @@ export default function Profile (match) {
                     </div>
                     <div>
                         <h2>Sorting</h2>
-                        <div>
+                        <form>
                             <select id="sort-direction">
                                 <option value="ascending">Ascending</option>
                                 <option value="descending" >Descending</option>
@@ -195,10 +262,20 @@ export default function Profile (match) {
                                 e.preventDefault();
                                 alphaSort();
                             }}/>
-                        </div>
+                        </form>
                     </div>
+                    <form>
+                        <h2>Search</h2>
+                        <input id="gameslist-games__search" type="text" 
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                        }}/>
+                        <input type="submit" value="Submit" onClick={(e) => {
+                        e.preventDefault();
+                        }}/>
+                    </form>
                 </div>
-                <div className="profile-results">
+                <div id="profile-results-container" className="profile-results">
                     {user.games !== undefined && 
                     gamesList
                     }

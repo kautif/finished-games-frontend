@@ -1,4 +1,5 @@
-.user-game {
+.user-game,
+.user-game__search-game {
     display: flex;
     flex-direction: column;
     width: 30%;

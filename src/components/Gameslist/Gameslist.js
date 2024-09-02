@@ -383,7 +383,6 @@ export default function Gameslist (){
         renderGames(userGames);
     }
 
-    // Con't *** 8/26/24
     if (search.length > 0) {
         searchGames();
     }
