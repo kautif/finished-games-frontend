@@ -20,6 +20,9 @@ export default function Profile (match) {
     const [searchArr, setSearchArr] = useState([]);
     const [sortedArr, setSortedArr] = useState([]);
 
+
+    const [sortFocus, setSortFocus] = useState("");
+    const [sortDirection, setSortDirection] = useState("");
     const [search, setSearch] = useState("");
 
     function getProfile(setObject) {
@@ -68,6 +71,9 @@ export default function Profile (match) {
     useEffect(() => {
         if (user !== null) {
             getProfile(setUser);
+            setSortDirection("ascending");
+            setSortFocus("alpha");
+            alphaSort();
         }
     }, [])
 
@@ -75,6 +81,10 @@ export default function Profile (match) {
         searchGameslist();
         searchGames();
     }, [search])
+
+    useEffect(() => {
+        alphaSort();
+    }, [sortDirection, sortFocus])
 
     function alphaSort () {
         let sortGamesArr;
@@ -95,35 +105,36 @@ export default function Profile (match) {
             sortGamesArr = searchArr;
         }
 
-        if (document.getElementById("sort-direction").value === "ascending" && 
-            document.getElementById("sort-focus").value === "alpha") {
+        if (sortDirection === "ascending" && 
+            sortFocus === "alpha") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
         }
         
-        if (document.getElementById("sort-direction").value === "descending" && 
-            document.getElementById("sort-focus").value === "alpha") {
+        if (sortDirection === "descending" && 
+            sortFocus === "alpha") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.name < b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
         }
 
-        if (document.getElementById("sort-direction").value === "ascending" && 
-            document.getElementById("sort-focus").value === "date") {
+        if (sortDirection === "ascending" && 
+            sortFocus === "date") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added > b.date_added) ? 1 : ((b.date_added > a.date_added) ? -1 : 0)));
         }
 
-        if (document.getElementById("sort-direction").value === "descending" && 
-            document.getElementById("sort-focus").value === "date") {
+        if (sortDirection === "descending" && 
+            sortFocus === "date") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((a.date_added > b.date_added) ? -1 : 0)));
         }
 
-        if (document.getElementById("sort-direction").value === "ascending" && 
-            document.getElementById("sort-focus").value === "rating") {
+        if (sortDirection === "ascending" && 
+            sortFocus === "rating") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)));
         }
 
-        if (document.getElementById("sort-direction").value === "descending" && 
-            document.getElementById("sort-focus").value === "rating") {
+        if (sortDirection === "descending" && 
+            sortFocus === "rating") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0)));
         }
+
     }
 
     function searchGameslist () {
@@ -249,19 +260,33 @@ export default function Profile (match) {
                     <div>
                         <h2>Sorting</h2>
                         <form>
-                            <select id="sort-direction">
-                                <option value="ascending">Ascending</option>
-                                <option value="descending" >Descending</option>
+                            <select id="sort-direction" onChange={(e) => {
+                                setSortDirection(e.target.value);
+                            }}>
+                                <option value="ascending" onClick={(e) => {
+                                    // setSortDirection("ascending");
+                                }}>Ascending</option>
+                                <option value="descending" onClick={(e) => {
+                                    // setSortDirection("descending")
+                                }}>Descending</option>
                             </select>
-                            <select id="sort-focus">
-                                <option value="alpha">Alphabetical</option>
-                                <option value="date">Date</option>
-                                <option value="rating">Rating</option>
+                            <select id="sort-focus" onChange={(e) => {
+                                setSortFocus(e.target.value);
+                            }}>
+                                <option value="alpha" onClick={(e) =>{
+                                    // setSortFocus("alpha");
+                                }}>Alphabetical</option>
+                                <option value="date" onClick={(e) =>{
+                                    // setSortFocus("date");
+                                }}>Date</option>
+                                <option value="rating" onClick={(e) =>{
+                                    // setSortFocus("rating");
+                                }}>Rating</option>
                             </select>
-                            <input type="submit" id="sorting-btn" value="Submit" onClick={(e) => {
+                            {/*<input type="submit" id="sorting-btn" value="Submit" onClick={(e) => {
                                 e.preventDefault();
                                 alphaSort();
-                            }}/>
+                            }}/> */}
                         </form>
                     </div>
                     <form>
@@ -270,8 +295,8 @@ export default function Profile (match) {
                         onChange={(e) => {
                             setSearch(e.target.value);
                         }}/>
-                        <input type="submit" value="Submit" onClick={(e) => {
-                        e.preventDefault();
+                        <input type="submit" value="Submit" onClick={(e) => { 
+                            e.preventDefault();
                         }}/>
                     </form>
                 </div>

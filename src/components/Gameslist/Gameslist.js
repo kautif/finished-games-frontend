@@ -23,11 +23,16 @@ export default function Gameslist (){
     const [date, setDate] = useState("");
     const [gameName, setGameName] = useState("");
 
+    const [sortDirection, setSortDirection] = useState("");
+    const [sortFocus, setSortFocus] = useState("");
+
     const [search, setSearch] = useState("");
     let userGamesList;
     let gamesList;
     useEffect(() => {
         getUserGames();
+        setSortFocus("alpha");
+        setSortDirection("ascending");
     }, [])
 
     useEffect(() => {
@@ -89,6 +94,10 @@ export default function Gameslist (){
     }, [gameName, summary, date, rank, rating])
 
     useEffect(() => {
+        alphaSort();
+    }, [sortDirection, sortFocus])
+
+    useEffect(() => {
         searchGameslist();
         searchGames();
     }, [search])
@@ -112,33 +121,33 @@ export default function Gameslist (){
             sortGamesArr = searchArr;
         }
 
-        if (document.getElementById("sort-direction").value === "ascending" && 
-            document.getElementById("sort-focus").value === "alpha") {
+        if (sortDirection === "ascending" && 
+            sortFocus === "alpha") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
         }
         
-        if (document.getElementById("sort-direction").value === "descending" && 
-            document.getElementById("sort-focus").value === "alpha") {
+        if (sortDirection === "descending" && 
+            sortFocus === "alpha") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.name < b.name) ? 1 : ((a.name > b.name) ? -1 : 0)));
         }
 
-        if (document.getElementById("sort-direction").value === "ascending" && 
-            document.getElementById("sort-focus").value === "date") {
+        if (sortDirection === "ascending" && 
+            sortFocus === "date") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added > b.date_added) ? 1 : ((b.date_added > a.date_added) ? -1 : 0)));
         }
 
-        if (document.getElementById("sort-direction").value === "descending" && 
-            document.getElementById("sort-focus").value === "date") {
+        if (sortDirection === "descending" && 
+            sortFocus === "date") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((a.date_added > b.date_added) ? -1 : 0)));
         }
 
-        if (document.getElementById("sort-direction").value === "ascending" && 
-            document.getElementById("sort-focus").value === "rating") {
+        if (sortDirection === "ascending" && 
+            sortFocus === "rating") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)));
         }
 
-        if (document.getElementById("sort-direction").value === "descending" && 
-            document.getElementById("sort-focus").value === "rating") {
+        if (sortDirection === "descending" && 
+            sortFocus === "rating") {
                 setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0)));
         }
         getGameTitle(sortGamesArr);
@@ -406,19 +415,23 @@ export default function Gameslist (){
             <div>
                 <h2>Sorting</h2>
                 <form>
-                    <select id="sort-direction">
+                    <select id="sort-direction" onChange={(e) => {
+                        setSortDirection(e.target.value);
+                    }}>
                         <option value="ascending">Ascending</option>
                         <option value="descending" >Descending</option>
                     </select>
-                    <select id="sort-focus">
+                    <select id="sort-focus" onChange={(e) => {
+                        setSortFocus(e.target.value);
+                    }}>
                         <option value="alpha">Alphabetical</option>
                         <option value="date">Date</option>
                         <option value="rating">Rating</option>
                     </select>
-                    <input type="submit" id="sorting-btn" value="Submit" onClick={(e) => {
+                    {/*<input type="submit" id="sorting-btn" value="Submit" onClick={(e) => {
                         e.preventDefault();
                         alphaSort();
-                    }}/>
+                    }}/> */}
                 </form>
             </div>
             <form>

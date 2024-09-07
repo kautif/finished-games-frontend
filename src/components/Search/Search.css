@@ -30,7 +30,8 @@
     height: 50px;
 }
 
-.search-game p {
+.search-game p,
+.custom-game__add-btn {
     background-color: #8E43FC;
     color: white;
     padding: 10px;
@@ -38,7 +39,8 @@
     box-shadow: 2px 3px 5px 2px #313030;
 }
 
-.search-game p:hover {
+.search-game p:hover,
+.custom-game__add-btn:hover {
     cursor: pointer;
     box-shadow: 0px 3px 12px 6px #313030;
     transition: 500ms;
@@ -60,4 +62,27 @@
 .search-result__added {
     background-color: #a9a9a9 !important;
     color: black !important;
+}
+
+.custom-game-container form{
+    display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.custom-game__field {
+    margin-top: 2.5%;
+    margin-bottom: 2.5%;
+}
+
+#custom-game__game-type {
+    display: flex;
+    justify-content: space-around;
+}
+
+#custom-game__notif {
+    display: none;
 }

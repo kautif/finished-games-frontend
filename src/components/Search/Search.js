@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import GameResult from "../GameResult/GameResult";
+import Custom from "../Custom/Custom";
 import "./Search.css";
 import { setUserGames } from "../../redux/gamesSlice";
 
 export default function Search () {
     const dispatch = useDispatch();
     let userGames = useSelector((state) => state.gamesReducer.userGames);
-    console.log("search userGames: ", setUserGames);
     const [search, setSearch] = useState("");
+    const [gameType, setGameType] = useState("regular");
+    const [customGame, setCustomGame] = useState("romhack");
     const [date, setDate] = useState("");
     const [games, setGames] = useState([]);
     const [rank, setRank] = useState("");
@@ -52,17 +53,20 @@ export default function Search () {
         })
     }
 
-    function addGame (gameName, gameImg, gameSummary, gameStatus, index) {
+    function addGame (gameName, gameImg, 
+                        gameSummary, gameStatus,
+                        gameDate, index, gameRating, customGame) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
-        getDate(index);
+        getDate(gameDate, index);
         let gameObj = {
             name: gameName,
+            custom_game: customGame,
             img_url: gameImg,
             summary: gameSummary,
             date_added: date,
             rank: gameStatus,
-            rating: document.getElementsByClassName("search-game__rating__num")[index].value
+            rating: gameRating
         }
 
         let config = {
@@ -85,9 +89,9 @@ export default function Search () {
             })
     }
 
-    function defaultDate (index) {
-        document.getElementsByClassName("search-game__date")[index].valueAsDate = new Date();
-        const newDate = new Date(document.getElementsByClassName("search-game__date")[index].value);
+    function defaultDate (gameDate, index) {
+        gameDate[index].valueAsDate = new Date();
+        const newDate = new Date(gameDate[index].value);
         // console.log("Day: ", newDate.getDate());
         // console.log("Month: ", newDate.getMonth());
         // console.log("Year: ", newDate.getFullYear());
@@ -95,8 +99,8 @@ export default function Search () {
         setDate(prevDate => newDate);
     }
 
-    function getDate (index) {
-        const newDate = new Date(document.getElementsByClassName("search-game__date")[index].value);
+    function getDate (dateField, index) {
+        const newDate = new Date(dateField[index].value);
         // console.log("Day: ", newDate.getDate());
         // console.log("Month: ", newDate.getMonth());
         // console.log("Year: ", newDate.getFullYear());
@@ -110,16 +114,37 @@ export default function Search () {
     //     setRating(ratingNum);
     // }
 
+    function handleCustomGame () {
+        let titleField = document.getElementsByClassName('custom-game__field__text')[0];
+
+        const hasAmpersand = /&/.test(titleField.value);
+        const hasInvalidCharacters = /[^a-zA-Z0-9 &]/.test(titleField.value);
+
+        if (hasInvalidCharacters) {
+            // Show an error message if validation fails
+            document.getElementById("custom-game__notif").style.display = "initial";
+        } else {
+            // Clear the error message and submit the form if validation passes
+            alert("we're good");
+        }
+    }
+
     let retrievedGames;
 
     useEffect(() => {
         twitchId = window.localStorage.getItem("twitchId");
         getUserGames();
         retrievedGames.map((game, i) => {
-            defaultDate(i);
+            defaultDate(document.getElementsByClassName("search-game__date"), i);
             // getRating(i);
         })
     }, [games])
+
+    useEffect(() => {
+        if (gameType === "custom") {
+            defaultDate(document.getElementsByClassName("custom-game__date"), 0);
+        }
+    }, [gameType])
 
     let userGameNames = [];
     let gameNames = [];
@@ -162,19 +187,105 @@ export default function Search () {
                 </select>
             </div>
             <textarea placeholder="Let your viewers know how you felt about this game" ></textarea>
-            {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value, i)}>Add Game</p>}
+            {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
+                document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>}
         </div>
     })
 
     return (
         <div>
             <form>
-                <input className="search" placeholder="Search games" 
-                onChange={(e) => {setSearch(prevSearch => e.target.value)}} value={search}/>
-                <button onClick={(e) => {getGames(e)}}>Submit</button>  
+                <select id="search-game__type" onChange={(e) => {
+                    setGameType(prevGameType => e.target.value);
+                }}>
+                    <option value="regular" selected>Regular</option>
+                    <option value="custom">Custom</option>
+                </select>
+                {gameType === "regular" ? 
+                <div>
+                    <input className="search" placeholder="Search games" 
+                        onChange={(e) => {setSearch(prevSearch => e.target.value)}} value={search}/>
+                    <button onClick={(e) => {getGames(e)}}>Submit</button>
+                </div> : ""}
             </form>
+            {gameType === "custom" ? 
+            <div className="custom-game-container">
+                <form>
+                    <div className="custom-game__field" id="custom-game__game-type">
+                        <label>Game Type</label>
+                        <select onChange={(e) => {
+                            setCustomGame(prevGame => e.target.value);
+                        }}>
+                            <option value="romhack">Romhack</option>
+                            <option value="minecraft">Minecraft Mod</option>
+                        </select>
+                    </div>
+                    <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" placeholder="Title"/>
+                    <input className="custom-game__field custom-game__field__text" id="custom-game__img-url" type="text" placeholder="Image URL"/>
+                    <div className="custom-game__field">
+                        <label>Date:</label><input className="custom-game__date" type="date" name="date-added"/>
+                    </div>
+                <div className="custom-game__field custom-game__rating">
+                    <label>Rating: </label>
+                    <select id="custom-game__rating__num">
+                        <option selected value="10">10</option>
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>    
+                    </select>    
+                </div>
+                <div className="custom-game__field custom-game__status">
+                    <label>Game Status</label>
+                    <select id="custom-game__status">
+                        <option selected="selected" value="playing">Playing</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="completed">Completed</option>
+                        <option value="dropped">Dropped</option>
+                    </select>
+                </div>
+                <textarea id="custom-game__summary" className="custom-game__field" placeholder="Let your viewers know how you felt about this game" ></textarea>
+                {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value, i)}>Add Game</p>} */}
+                <p className="custom-game__add-btn" onClick={() => {
+                    let customGameTitle = document.getElementById("custom-game__title").value;
+                    let customImgUrl = document.getElementById("custom-game__img-url").value;
+                    let customSummary = document.getElementById("custom-game__summary").value;
+                    let customStatus = document.getElementById("custom-game__status").value;
+                    let customDate = document.getElementsByClassName("custom-game__date")[0].value;
+                    let customRating = document.getElementById("custom-game__rating__num").value;
+
+                    console.log(customDate);
+
+                    if (customImgUrl.startsWith("https") && 
+                        (customImgUrl.includes(".png") ||
+                        customImgUrl.includes(".jpg") || 
+                        customImgUrl.includes(".jpeg") ||
+                        customImgUrl.includes(".webp")) &&
+                        (customImgUrl.includes("smwcentral.net") || 
+                        customImgUrl.includes("www.pokeharbor.com") || 
+                        customImgUrl.includes("www.minecraftmods.com") ||
+                        customImgUrl.includes("modrinth.com") ||
+                        customImgUrl.includes("wsrv.nl") ||
+                        customImgUrl.includes("raw.githubusercontent.com") ||
+                        customImgUrl.includes("forgecdn.net"))) {
+                            addGame(customGameTitle, customImgUrl, customSummary, customStatus, customDate, 0, customRating, gameType);
+                    } else {
+                        handleCustomGame();
+                    }
+                }}>Add Game</p>
+                <div id="custom-game__notif-container">
+                    <p id="custom-game__notif__msg"></p>
+                </div>
+                </form>
+            </div> 
+            : ""}
             <div className="search-results">
-                {retrievedGames}
+                {gameType === "regular" ? retrievedGames : ""}
             </div>
         </div>
     )
