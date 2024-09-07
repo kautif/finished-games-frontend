@@ -16,6 +16,7 @@ export default function Search () {
     const [rank, setRank] = useState("");
     const [rating, setRating] = useState(0);
     const [searchGames, setSearchGames] = useState(userGames);
+    const [customGameMsg, setCustomGameMsg] = useState("");
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";
 
@@ -92,10 +93,6 @@ export default function Search () {
     function defaultDate (gameDate, index) {
         gameDate[index].valueAsDate = new Date();
         const newDate = new Date(gameDate[index].value);
-        // console.log("Day: ", newDate.getDate());
-        // console.log("Month: ", newDate.getMonth());
-        // console.log("Year: ", newDate.getFullYear());
-        // setDate(prevDate => `${newDate.getMonth() + 1}/${newDate.getDate() + 1}/${newDate.getFullYear()}`);
         setDate(prevDate => newDate);
     }
 
@@ -113,21 +110,6 @@ export default function Search () {
     //     let ratingNum = document.getElementsByClassName("search-game__rating__num")[index].value;
     //     setRating(ratingNum);
     // }
-
-    function handleCustomGame () {
-        let titleField = document.getElementsByClassName('custom-game__field__text')[0];
-
-        const hasAmpersand = /&/.test(titleField.value);
-        const hasInvalidCharacters = /[^a-zA-Z0-9 &]/.test(titleField.value);
-
-        if (hasInvalidCharacters) {
-            // Show an error message if validation fails
-            document.getElementById("custom-game__notif").style.display = "initial";
-        } else {
-            // Clear the error message and submit the form if validation passes
-            alert("we're good");
-        }
-    }
 
     let retrievedGames;
 
@@ -260,8 +242,11 @@ export default function Search () {
                     let customRating = document.getElementById("custom-game__rating__num").value;
 
                     console.log(customDate);
-
-                    if (customImgUrl.startsWith("https") && 
+                    let titleField = document.getElementsByClassName('custom-game__field__text')[0];
+                    const hasAmpersand = /&/.test(titleField.value);
+                    const hasInvalidCharacters = /[^a-zA-Z0-9 &]/.test(titleField.value);
+                    if (!hasInvalidCharacters &&
+                        customImgUrl.startsWith("https") && 
                         (customImgUrl.includes(".png") ||
                         customImgUrl.includes(".jpg") || 
                         customImgUrl.includes(".jpeg") ||
@@ -274,12 +259,20 @@ export default function Search () {
                         customImgUrl.includes("raw.githubusercontent.com") ||
                         customImgUrl.includes("forgecdn.net"))) {
                             addGame(customGameTitle, customImgUrl, customSummary, customStatus, customDate, 0, customRating, gameType);
+                            setCustomGameMsg(`${customGameTitle} has been added`);
+                            document.getElementById("custom-game__title").value = "";
+                            document.getElementById("custom-game__img-url").value = "";
+                            document.getElementById("custom-game__summary").value = "";
+                            document.getElementById("custom-game__status").value = "playing";
+                            defaultDate(document.getElementsByClassName("custom-game__date"), 0);
+                            document.getElementById("custom-game__rating__num").value = "10";
+
                     } else {
-                        handleCustomGame();
+                        setCustomGameMsg("No special characters (except '&' and only png, jpg, jpeg, or webp)");
                     }
                 }}>Add Game</p>
                 <div id="custom-game__notif-container">
-                    <p id="custom-game__notif__msg"></p>
+                    <p id="custom-game__notif__msg">{customGameMsg}</p>
                 </div>
                 </form>
             </div> 
