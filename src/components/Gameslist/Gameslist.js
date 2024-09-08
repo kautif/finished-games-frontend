@@ -31,8 +31,6 @@ export default function Gameslist (){
     let gamesList;
     useEffect(() => {
         getUserGames();
-        setSortFocus("alpha");
-        setSortDirection("ascending");
     }, [])
 
     useEffect(() => {
@@ -49,6 +47,9 @@ export default function Gameslist (){
         getGameState(userGames);
         getGameRating(userGames);
         getGameSummary(userGames);
+        setSortFocus("alpha");
+        setSortDirection("ascending");
+        alphaSort();
     }, [userGames])
 
     useEffect(() => {

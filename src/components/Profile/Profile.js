@@ -71,11 +71,14 @@ export default function Profile (match) {
     useEffect(() => {
         if (user !== null) {
             getProfile(setUser);
+        }
+    }, [])
+
+    useEffect(() => {
             setSortDirection("ascending");
             setSortFocus("alpha");
             alphaSort();
-        }
-    }, [])
+    }, [userGames])
 
     useEffect(() => {
         searchGameslist();
