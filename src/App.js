@@ -11,6 +11,7 @@ import Gameslist from './components/Gameslist/Gameslist';
 import Profile from './components/Profile/Profile';
 import { getItem, setItem } from './utils/localStorage';
 import Donate from './components/Donate/Donate';
+import Feedback from './components/Feedback/Feedback';
 
 function App() {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ function App() {
                   <Route exact path="/games" element={<Gameslist />} />
                   <Route exact path="/:user" element={<Profile />}></Route>
                   <Route exact path="/donate" element={<Donate />}></Route>
+                  <Route exact path="/feedback" element={<Feedback />}></Route>
               </Routes>
             </>
             
@@ -59,6 +61,7 @@ function App() {
                 <Route exact path="/" element={<Splash />}></Route>
                 <Route exact path="/:user" element={<Profile />}></Route>
                 <Route exact path="/donate" element={<Donate />}></Route>
+                <Route exact path="/feedback" element={<Feedback />}></Route>
               </Routes>
             </>
           )}
