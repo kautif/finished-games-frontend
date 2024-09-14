@@ -208,6 +208,19 @@ export default function Gameslist (){
             })
     }
 
+    async function deleteGame (gameName) {
+        let config = {
+            method: "delete",
+            data: {
+                twitchName: twitchName,
+                games: {
+                    name: gameName
+                }
+            }
+        }
+        await axios(`${backendURL}/deletegame`, config);
+    }
+
     async function getUserGames() {
         twitchId = window.localStorage.getItem("twitchId");
         // twitchName = window.localStorage.getItem("twitchName");
@@ -320,14 +333,19 @@ export default function Gameslist (){
                         </select>
                     </div>
                     <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
-                    <p className="gameslist-game__add-btn" onClick={(e) => {
-                        setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
-                        setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
-                        setGameName(prevGameName => game.name);
-                        setRank(document.getElementsByClassName("gameslist-game__rank")[i].value);
-                        setRating(document.getElementsByClassName("gameslist-game__rating__num")[i].value);
-                        setShowModal(true);
-                        }}>Update</p>
+                    <div className="gameslist-btn-container">
+                        <p className="gameslist-game__add-btn" onClick={(e) => {
+                            setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
+                            setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
+                            setGameName(prevGameName => game.name);
+                            setRank(document.getElementsByClassName("gameslist-game__rank")[i].value);
+                            setRating(document.getElementsByClassName("gameslist-game__rating__num")[i].value);
+                            setShowModal(true);
+                            }}>Update</p>
+                        <p className="gameslist-game__add-btn" onClick={() => {
+                            deleteGame(game.name);
+                        }}>Delete</p>
+                    </div>
                 </div>
             })   
         }
@@ -368,14 +386,19 @@ export default function Gameslist (){
                         </select>
                     </div>
                     <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</textarea>
-                    <p className="gameslist-game__add-btn" onClick={(e) => {
-                        setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
-                        setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
-                        setGameName(prevGameName => game.name);
-                        setRank(document.getElementsByClassName("gameslist-game__rank")[i].value);
-                        setRating(document.getElementsByClassName("gameslist-game__rating__num")[i].value);
-                        setShowModal(true);
-                        }}>Update</p>
+                    <div className="gameslist-btn-container">
+                        <p className="gameslist-game__add-btn" onClick={(e) => {
+                            setDate(prevDate => document.getElementsByClassName("gameslist-game__date")[i].value);
+                            setSummary(prevSummary => document.getElementsByClassName("gameslist-game__summary")[i].value);
+                            setGameName(prevGameName => game.name);
+                            setRank(document.getElementsByClassName("gameslist-game__rank")[i].value);
+                            setRating(document.getElementsByClassName("gameslist-game__rating__num")[i].value);
+                            setShowModal(true);
+                            }}>Update</p>
+                        <p onClick={() => {
+                            deleteGame(game.name);
+                        }}>Delete</p>
+                    </div>
                 </div>
             })
         }

@@ -247,6 +247,7 @@ export default function Profile (match) {
             <div>
                 <img src={user.profileImageUrl} alt={user.twitchName + "'s profile picture"}  />
                 <h1>{user.twitchName}</h1>
+                <p><a href="#">Report User</a></p>
                 <div>
                     <div>
                         <select onChange={(e) => {
