@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import "./Report.css"
 
 export default function Report () {    
     // const reportUser = useSelector((state) => state.gamesReducer.reportUser);
@@ -24,12 +25,12 @@ export default function Report () {
     }
 
     return (
-        <div>
+        <div className="report-container">
             <form>
-                <input required value={report} placeholder="Enter username" onChange={(e) => {
+                <input className="report__field" required value={report} placeholder="Enter username" onChange={(e) => {
                     setReport(e.target.value);
                 }}/>
-                <div>
+                <div className="report__issue">
                     <label>Issue</label>
                     <select required onChange={(e) => {
                         setIssue(e.target.value);
@@ -40,13 +41,13 @@ export default function Report () {
                         <option value="other">Other</option>
                     </select>
                 </div>
-                <div>
+                <div className="report__details">
                     <label>Details</label>
-                    <textarea required placeholder="Tell us what the issue is. Step by step, tell us what actions/events take place to lead to it" onChange={(e) => {
+                    <textarea className="report__field" required placeholder="Tell us what the issue is. Step by step, tell us what actions/events take place to lead to it" onChange={(e) => {
                         setDetails(e.target.value);
                     }}></textarea>
                 </div>
-                <input type="submit" value="Submit" onClick={(e) => {
+                <input className="report__submit-btn" type="submit" value="Submit" onClick={(e) => {
                     e.preventDefault();
                     handleSubmit();
                 }}/>

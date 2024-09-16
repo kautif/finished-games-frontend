@@ -143,7 +143,7 @@ export default function Search () {
         return <div className="search-game">
             <h2 className="search-game__name">{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
-            <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => getDate(i)}/>
+            <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => getDate("search-game__date", i)}/>
             <div className="search-game__rating">
                 <label>Rating: </label>
                 <select className="search-game__rating__num">

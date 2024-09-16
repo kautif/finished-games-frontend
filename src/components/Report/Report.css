@@ -1,0 +1,43 @@
+.report-container {
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.report__field {
+    font-size: 1.25em;
+    padding-left: 10px;
+}
+
+.report-container form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 40vh;
+}
+
+.report__issue {
+    display: flex;
+    justify-content: space-around;
+}
+
+.report__details {
+    display: flex;
+    flex-direction: column;
+}
+
+.report__details textarea {
+    height: 75px;
+}
+
+.report__submit-btn {
+    background-color: #8E43FC;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 2px 3px 5px 2px #313030;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.25em;
+}
