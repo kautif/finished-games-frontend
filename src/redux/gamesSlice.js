@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 const initialState = {
     userGames: [],
+    reportUser: "",
     isAuthenticated: false
 }
 
@@ -18,9 +19,13 @@ export const gamesSlice = createSlice({
         setIsAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
             console.log("gamesSlice isAuthenticated: ", state.isAuthenticated);
+        },
+        setReportUser: (state, action) => {
+            state.reportUser = action.payload;
+            console.log("gamesSlice reportUser", action.payload);
         }
     }
 })
 
-export const {setUserGames, setIsAuthenticated} = gamesSlice.actions;
+export const {setUserGames, setIsAuthenticated, setReportUser} = gamesSlice.actions;
 export default gamesSlice.reducer;

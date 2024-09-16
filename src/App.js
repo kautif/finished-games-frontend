@@ -12,6 +12,7 @@ import Profile from './components/Profile/Profile';
 import { getItem, setItem } from './utils/localStorage';
 import Donate from './components/Donate/Donate';
 import Feedback from './components/Feedback/Feedback';
+import Report from './components/Report/Report';
 
 function App() {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ function App() {
                   <Route exact path="/:user" element={<Profile />}></Route>
                   <Route exact path="/donate" element={<Donate />}></Route>
                   <Route exact path="/feedback" element={<Feedback />}></Route>
+                  <Route exact path="/report" element={<Report />}></Route>
               </Routes>
             </>
             

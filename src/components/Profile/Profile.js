@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { setReportUser } from "../../redux/gamesSlice";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "./Profile.css";
 
 export default function Profile (match) {
+    const dispatch = useDispatch();
+    const reportUser = useSelector((state) => state.gamesReducer.reportUser);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     console.log("profile");
     // const backendURL = "http://localhost:4000";
@@ -19,7 +23,6 @@ export default function Profile (match) {
     const [gameState, setGameState] = useState("all");
     const [searchArr, setSearchArr] = useState([]);
     const [sortedArr, setSortedArr] = useState([]);
-
 
     const [sortFocus, setSortFocus] = useState("");
     const [sortDirection, setSortDirection] = useState("");
@@ -73,6 +76,10 @@ export default function Profile (match) {
             getProfile(setUser);
         }
     }, [])
+
+    useEffect(() => {
+
+    }, [user])
 
     useEffect(() => {
             setSortDirection("ascending");
@@ -247,7 +254,12 @@ export default function Profile (match) {
             <div>
                 <img src={user.profileImageUrl} alt={user.twitchName + "'s profile picture"}  />
                 <h1>{user.twitchName}</h1>
-                <p><a href="#">Report User</a></p>
+                <p onClick={() => {
+                    localStorage.setItem("reportUser", user.twitchName);
+                    // dispatch(setReportUser(user.twitchName));
+                    // console.log("user: ", reportUser);
+                    window.location.pathname = "/report";
+                }}>Report User</p>
                 <div>
                     <div>
                         <select onChange={(e) => {
