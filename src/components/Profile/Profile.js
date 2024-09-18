@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { setReportUser } from "../../redux/gamesSlice";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "./Profile.css";
@@ -8,7 +9,8 @@ export default function Profile (match) {
     const dispatch = useDispatch();
     const reportUser = useSelector((state) => state.gamesReducer.reportUser);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
-    console.log("profile");
+    const userParam = useParams();
+    const navigate = useNavigate();
     // const backendURL = "http://localhost:4000";
     const [user, setUser] = useState({});
     const [userGames, setUserGames] = useState([]);
@@ -73,13 +75,18 @@ export default function Profile (match) {
 
     useEffect(() => {
         if (user !== null) {
+            if (userParam.user !== userParam.user.toLowerCase()) {
+                navigate(`/` + userParam.user.toLowerCase(), { replace: true });
+              }
             getProfile(setUser);
         }
     }, [])
 
     useEffect(() => {
-
-    }, [user])
+        // if (userParam.user !== userParam.user.toLowerCase()) {
+        //     navigate(`/` + userParam.user.toLowerCase(), { replace: true });
+        //   }
+    }, [userParam, navigate])
 
     useEffect(() => {
             setSortDirection("ascending");
@@ -252,10 +259,10 @@ export default function Profile (match) {
     } else {
         return (
             <div>
-                <img src={user.profileImageUrl} alt={user.twitchName + "'s profile picture"}  />
-                <h1>{user.twitchName}</h1>
+                <img src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
+                <h1>{user.twitch_default}</h1>
                 <p onClick={() => {
-                    localStorage.setItem("reportUser", user.twitchName);
+                    localStorage.setItem("reportUser", user.twitch_default);
                     // dispatch(setReportUser(user.twitchName));
                     // console.log("user: ", reportUser);
                     window.location.pathname = "/report";

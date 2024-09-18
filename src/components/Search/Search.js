@@ -202,8 +202,8 @@ export default function Search () {
                             <option value="minecraft">Minecraft Mod</option>
                         </select>
                     </div>
-                    <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" placeholder="Title"/>
-                    <input className="custom-game__field custom-game__field__text" id="custom-game__img-url" type="text" placeholder="Image URL"/>
+                    <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" placeholder="Title - Only permitted special characters are & and !"/>
+                    <input className="custom-game__field custom-game__field__text" id="custom-game__img-url" type="text" placeholder="Image URL - allowed file types are png, jpg, jpeg, and webp"/>
                     <div className="custom-game__field">
                         <label>Date:</label><input className="custom-game__date" type="date" name="date-added"/>
                     </div>
@@ -244,7 +244,7 @@ export default function Search () {
                     console.log(customDate);
                     let titleField = document.getElementsByClassName('custom-game__field__text')[0];
                     const hasAmpersand = /&/.test(titleField.value);
-                    const hasInvalidCharacters = /[^a-zA-Z0-9 &]/.test(titleField.value);
+                    const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
                     if (!hasInvalidCharacters &&
                         customImgUrl.startsWith("https") && 
                         (customImgUrl.includes(".png") ||
