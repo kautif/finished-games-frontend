@@ -7,10 +7,14 @@
 }
 
 .search-game__name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 378px;
-    white-space: nowrap;
+    white-space: wrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 90px;
 }
 
 .search-game, .profile-game {
