@@ -198,8 +198,10 @@ export default function Search () {
                         <select onChange={(e) => {
                             setCustomGame(prevGame => e.target.value);
                         }}>
-                            <option value="romhack">Romhack</option>
+                            <option value="mario">Super Mario</option>
+                            <option value="pokemon">Pokemon</option>
                             <option value="minecraft">Minecraft Mod</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
                     <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" placeholder="Title - Only permitted special characters are & and !"/>

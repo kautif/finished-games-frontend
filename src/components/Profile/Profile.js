@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "./Profile.css";
+import nullGame from "../../assets/null_game_001.png";
 
 export default function Profile (match) {
     const dispatch = useDispatch();
@@ -230,7 +231,19 @@ export default function Profile (match) {
             document.getElementById("profile-results-container").scrollIntoView({
                 behavior: "smooth"
             })
+
+            console.log("searchArr length: ", searchArr.length);
+
+            if (searchArr.length === 0) {
+                let nullGameImg = <div className="user-game__nogame-container">
+                    <h2>No games found for this search</h2>
+                    <img src={nullGame} alt="no game found image" />
+                    </div>
+                gamesList = nullGameImg;
+            }
         }
+
+        console.log("search length: ", search)
     }
 
     if (gameState === "dropped") {
