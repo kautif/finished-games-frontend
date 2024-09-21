@@ -5,6 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "./Profile.css";
 import nullGame from "../../assets/null_game_001.png";
+import smwCart from "../../assets/vh_smw_cart.webp";
+import mcCart from "../../assets/vh_minecraft_cart.webp";
+import pokemonCart from "../../assets/vh_pokemon_cart.webp";
+import otherCart from "../../assets/vh_other_cart.webp";
 
 export default function Profile (match) {
     const dispatch = useDispatch();
@@ -185,7 +189,7 @@ export default function Profile (match) {
             gamesList = games.map(game => {
                 return <div className="user-game">
                     <div className="user-game__title"><h2>{game.name}</h2></div>
-                    <div className="user-game__img"><img src={game.img_url} /></div>
+                    <div className="user-game__img"><img src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} /></div>
                     <div className="user-game__date-container">
                         <p>Date:</p>
                         <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
@@ -212,7 +216,7 @@ export default function Profile (match) {
             gamesList = searchArr.map((game, i)=> {
                 return <div className="user-game__search-game">
                     <h2 className="user-game__title">{game.name}</h2>
-                    <div className="user-game__img"><img src={game.img_url} /></div>
+                    <div className="user-game__img"><img src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} /></div>
                     <div className="user-game__date-container">
                         <p>Date:</p>
                         <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>

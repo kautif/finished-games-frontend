@@ -240,10 +240,9 @@ export default function Search () {
                     let titleField = document.getElementsByClassName('custom-game__field__text')[0];
                     const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
                     if (!hasInvalidCharacters) {
-                            addGame(customGameTitle, customSummary, customStatus, customDate, 0, customRating, gameType);
+                            addGame(customGameTitle, customSummary, customStatus, customDate, 0, customRating, customGame);
                             setCustomGameMsg(`${customGameTitle} has been added`);
                             document.getElementById("custom-game__title").value = "";
-                            document.getElementById("custom-game__img-url").value = "";
                             document.getElementById("custom-game__summary").value = "";
                             document.getElementById("custom-game__status").value = "playing";
                             defaultDate(document.getElementsByClassName("custom-game__date"), 0);

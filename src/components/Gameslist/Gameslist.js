@@ -310,7 +310,7 @@ export default function Gameslist (){
             gamesList = games.map((game, i) => {
                 return <div className="gameslist-game">
                     <h2 className="gameslist-game__title">{game.name}</h2>
-                    <img className="gameslist-game__img" src={game.img_url} />
+                    <img className="gameslist-game__img" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} />
                     <div className="gameslist-game__date-container">
                         <label>Date:</label>
                         <input className="gameslist-game__date" type="date" name="date-added" />
