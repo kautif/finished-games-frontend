@@ -34,6 +34,7 @@ export default function AuthenticatedNav () {
         <ul className="auth-nav"> 
             <Link className="auth-nav__link" to="/games">Games</Link>
             <Link className="auth-nav__link" to="/search">Add Game</Link>
+            <Link className="auth-nav__link" to="/finduser">Find User</Link>
             <Link className="auth-nav__link" to="/donate">Donate</Link>
             <Link className="auth-nav__link" to="/feedback">Feedback</Link>
             <p className="auth-nav__link" onClick={() => logout()}>Logout</p>

@@ -13,6 +13,7 @@ import { getItem, setItem } from './utils/localStorage';
 import Donate from './components/Donate/Donate';
 import Feedback from './components/Feedback/Feedback';
 import Report from './components/Report/Report';
+import FindUser from './components/FindUser/FindUser';
 
 function App() {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ function App() {
               <Routes>
                   <Route exact path="/search" element={<Search />} />
                   <Route exact path="/games" element={<Gameslist />} />
+                  <Route exact path="/finduser" element={<FindUser />}></Route>
                   <Route exact path="/:user" element={<Profile />}></Route>
                   <Route exact path="/donate" element={<Donate />}></Route>
                   <Route exact path="/feedback" element={<Feedback />}></Route>

@@ -1,0 +1,16 @@
+.find-user__results {
+    display: flex;
+    justify-content: space-around;
+}
+
+.found-user__btn {
+    background-color: #8E43FC;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 2px 3px 5px 2px #313030;
+}
+
+.found-user__btn a {
+    color: white;
+    text-decoration: none;
+}
