@@ -58,8 +58,7 @@ export default function Search () {
         })
     }
 
-    function addGame (gameName, 
-                        gameSummary, gameStatus,
+    function addGame (gameName, gameImg, gameSummary, gameStatus,
                         gameDate, index, gameRating, customGame) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
@@ -67,7 +66,7 @@ export default function Search () {
         let gameObj = {
             name: gameName,
             custom_game: customGame,
-            img_url: "",
+            img_url: customGame.length === 0 ? gameImg : "",
             summary: gameSummary,
             date_added: date,
             rank: gameStatus,
@@ -163,8 +162,9 @@ export default function Search () {
                 </select>
             </div>
             <textarea placeholder="Let your viewers know how you felt about this game" ></textarea>
-            {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
-                document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>}
+                {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => 
+                           addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
+                            document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>}
         </div>
     })
 

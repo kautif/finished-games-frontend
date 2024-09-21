@@ -21,6 +21,23 @@
     margin: 15x 10px;
 }
 
+.user-game__title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.user-game__title h2 {
+    width: 378px;
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 90px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .user-game__rating {
     display: flex;
     justify-content: space-around;
