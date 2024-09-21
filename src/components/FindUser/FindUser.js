@@ -28,10 +28,6 @@ export default function FindUser () {
             })
     }
 
-    function outputUsers () {
-        
-    }
-
     useEffect(() => {
         console.log(foundUsers);
     }, [foundUsers])

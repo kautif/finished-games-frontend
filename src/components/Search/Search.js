@@ -240,7 +240,10 @@ export default function Search () {
                     let titleField = document.getElementsByClassName('custom-game__field__text')[0];
                     const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
                     if (!hasInvalidCharacters) {
-                            addGame(customGameTitle, customSummary, customStatus, customDate, 0, customRating, customGame);
+                            addGame(customGameTitle, "", customSummary, customStatus, customDate, 0, customRating, customGame);
+                            // <p className="search-result__add-btn" onClick={(e) => 
+                            //     addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
+                            //      document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, customGame)}>Add Game</p>
                             setCustomGameMsg(`${customGameTitle} has been added`);
                             document.getElementById("custom-game__title").value = "";
                             document.getElementById("custom-game__summary").value = "";
