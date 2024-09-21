@@ -4,13 +4,17 @@ import axios from "axios";
 import Custom from "../Custom/Custom";
 import "./Search.css";
 import { setUserGames } from "../../redux/gamesSlice";
+import smwCart from "../../assets/vh_smw_cart.webp";
+import mcCart from "../../assets/vh_minecraft_cart.webp";
+import pokemonCart from "../../assets/vh_pokemon_cart.webp";
+import otherCart from "../../assets/vh_other_cart.webp";
 
 export default function Search () {
     const dispatch = useDispatch();
     let userGames = useSelector((state) => state.gamesReducer.userGames);
     const [search, setSearch] = useState("");
     const [gameType, setGameType] = useState("regular");
-    const [customGame, setCustomGame] = useState("romhack");
+    const [customGame, setCustomGame] = useState("mario");
     const [date, setDate] = useState("");
     const [games, setGames] = useState([]);
     const [rank, setRank] = useState("");
@@ -54,7 +58,7 @@ export default function Search () {
         })
     }
 
-    function addGame (gameName, gameImg, 
+    function addGame (gameName, 
                         gameSummary, gameStatus,
                         gameDate, index, gameRating, customGame) {
         twitchId = window.localStorage.getItem("twitchId");
@@ -63,7 +67,7 @@ export default function Search () {
         let gameObj = {
             name: gameName,
             custom_game: customGame,
-            img_url: gameImg,
+            img_url: "",
             summary: gameSummary,
             date_added: date,
             rank: gameStatus,
@@ -98,18 +102,8 @@ export default function Search () {
 
     function getDate (dateField, index) {
         const newDate = new Date(dateField[index].value);
-        // console.log("Day: ", newDate.getDate());
-        // console.log("Month: ", newDate.getMonth());
-        // console.log("Year: ", newDate.getFullYear());
         setDate(prevDate => newDate);
     }
-
-
-
-    // function getRating (index) {
-    //     let ratingNum = document.getElementsByClassName("search-game__rating__num")[index].value;
-    //     setRating(ratingNum);
-    // }
 
     let retrievedGames;
 
@@ -204,8 +198,8 @@ export default function Search () {
                             <option value="other">Other</option>
                         </select>
                     </div>
+                    <img src={customGame === "mario" ? smwCart : customGame === "pokemon" ? pokemonCart : customGame === "minecraft" ? mcCart : otherCart} />
                     <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" placeholder="Title - Only permitted special characters are & and !"/>
-                    <input className="custom-game__field custom-game__field__text" id="custom-game__img-url" type="text" placeholder="Image URL - allowed file types are png, jpg, jpeg, and webp"/>
                     <div className="custom-game__field">
                         <label>Date:</label><input className="custom-game__date" type="date" name="date-added"/>
                     </div>
@@ -237,7 +231,6 @@ export default function Search () {
                 {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value, i)}>Add Game</p>} */}
                 <p className="custom-game__add-btn" onClick={() => {
                     let customGameTitle = document.getElementById("custom-game__title").value;
-                    let customImgUrl = document.getElementById("custom-game__img-url").value;
                     let customSummary = document.getElementById("custom-game__summary").value;
                     let customStatus = document.getElementById("custom-game__status").value;
                     let customDate = document.getElementsByClassName("custom-game__date")[0].value;
@@ -245,22 +238,9 @@ export default function Search () {
 
                     console.log(customDate);
                     let titleField = document.getElementsByClassName('custom-game__field__text')[0];
-                    const hasAmpersand = /&/.test(titleField.value);
                     const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
-                    if (!hasInvalidCharacters &&
-                        customImgUrl.startsWith("https") && 
-                        (customImgUrl.includes(".png") ||
-                        customImgUrl.includes(".jpg") || 
-                        customImgUrl.includes(".jpeg") ||
-                        customImgUrl.includes(".webp")) &&
-                        (customImgUrl.includes("smwcentral.net") || 
-                        customImgUrl.includes("www.pokeharbor.com") || 
-                        customImgUrl.includes("www.minecraftmods.com") ||
-                        customImgUrl.includes("modrinth.com") ||
-                        customImgUrl.includes("wsrv.nl") ||
-                        customImgUrl.includes("raw.githubusercontent.com") ||
-                        customImgUrl.includes("forgecdn.net"))) {
-                            addGame(customGameTitle, customImgUrl, customSummary, customStatus, customDate, 0, customRating, gameType);
+                    if (!hasInvalidCharacters) {
+                            addGame(customGameTitle, customSummary, customStatus, customDate, 0, customRating, gameType);
                             setCustomGameMsg(`${customGameTitle} has been added`);
                             document.getElementById("custom-game__title").value = "";
                             document.getElementById("custom-game__img-url").value = "";
@@ -270,7 +250,7 @@ export default function Search () {
                             document.getElementById("custom-game__rating__num").value = "10";
 
                     } else {
-                        setCustomGameMsg("No special characters (except '&' and only png, jpg, jpeg, or webp)");
+                        setCustomGameMsg("No special characters (except '&')");
                     }
                 }}>Add Game</p>
                 <div id="custom-game__notif-container">

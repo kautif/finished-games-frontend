@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import "./Gameslist.css";
+import smwCart from "../../assets/vh_smw_cart.webp";
+import mcCart from "../../assets/vh_minecraft_cart.webp";
+import pokemonCart from "../../assets/vh_pokemon_cart.webp";
+import otherCart from "../../assets/vh_other_cart.webp";
 
 export default function Gameslist (){
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -219,6 +223,9 @@ export default function Gameslist (){
             }
         }
         await axios(`${backendURL}/deletegame`, config);
+        setTimeout(function () {
+            window.location.reload();
+        }, 1000) 
     }
 
     async function getUserGames() {
