@@ -324,7 +324,7 @@ export default function Gameslist (){
                     <div className="gameslist-game__rating">
                         <label>Rating: </label>
                         <select className="gameslist-game__rating__num">
-                            <option selected value="10">10</option>
+                            <option value="10">10</option>
                             <option value="9">9</option>
                             <option value="8">8</option>
                             <option value="7">7</option>
@@ -333,7 +333,8 @@ export default function Gameslist (){
                             <option value="4">4</option>
                             <option value="3">3</option>
                             <option value="2">2</option>
-                            <option value="1">1</option>    
+                            <option value="1">1</option>
+                            <option selected value="0">-</option>
                         </select>    
                     </div>
                     <div className="gameslist-game__status">
@@ -386,7 +387,8 @@ export default function Gameslist (){
                             <option value="4">4</option>
                             <option value="3">3</option>
                             <option value="2">2</option>
-                            <option value="1">1</option>    
+                            <option value="1">1</option>
+                            <option selected value="0">-</option>
                         </select>    
                     </div>
                     <div className="gameslist-game__status">

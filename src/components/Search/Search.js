@@ -149,7 +149,8 @@ export default function Search () {
                     <option value="4">4</option>
                     <option value="3">3</option>
                     <option value="2">2</option>
-                    <option value="1">1</option>    
+                    <option value="1">1</option>
+                    <option selected value="0">-</option> 
                 </select>    
             </div>
             <div className="search-game__status">
@@ -206,7 +207,7 @@ export default function Search () {
                 <div className="custom-game__field custom-game__rating">
                     <label>Rating: </label>
                     <select id="custom-game__rating__num">
-                        <option selected value="10">10</option>
+                        <option value="10">10</option>
                         <option value="9">9</option>
                         <option value="8">8</option>
                         <option value="7">7</option>
@@ -215,7 +216,8 @@ export default function Search () {
                         <option value="4">4</option>
                         <option value="3">3</option>
                         <option value="2">2</option>
-                        <option value="1">1</option>    
+                        <option value="1">1</option>
+                        <option selected value="0">-</option>    
                     </select>    
                 </div>
                 <div className="custom-game__field custom-game__status">
