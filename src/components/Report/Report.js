@@ -11,10 +11,10 @@ export default function Report () {
     const [report, setReport] = useState(localStorage.getItem("reportUser"));
     const [issue, setIssue] = useState("game");
     const [details, setDetails] = useState("");
-
+    const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     const handleSubmit = async (e) => {
         try {
-            await axios.post('http://localhost:4000/send-report', {
+            await axios.post(`${backendURL}/send-report`, {
                 user: report,
                 issue: issue,
                 details: details

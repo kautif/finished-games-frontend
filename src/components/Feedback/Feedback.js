@@ -7,10 +7,10 @@ export default function Feedback () {
     const [formData, setFormData] = useState({});
     const [topic, setTopic] = useState("games");
     const [message, setMessage] = useState("");
-
+    const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     const handleSubmit = async (e) => {
         try {
-            await axios.post('http://localhost:4000/send-email', formData);
+            await axios.post(`${backendURL}/send-email`, formData);
           } catch (error) {
             console.error('There was an error sending the email!', error);
           }
