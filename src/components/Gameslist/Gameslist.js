@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Gameslist.css";
 import smwCart from "../../assets/vh_smw_cart.webp";
@@ -7,6 +8,8 @@ import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
 
 export default function Gameslist (){
+    const navigate = useNavigate();
+
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";
     let twitchId;
@@ -212,9 +215,8 @@ export default function Gameslist (){
             })
     }
 
-    async function deleteGame (gameName) {
+    function deleteGame (gameName) {
         let config = {
-            method: "delete",
             data: {
                 twitchName: twitchName,
                 games: {
@@ -222,10 +224,14 @@ export default function Gameslist (){
                 }
             }
         }
-        await axios(`${backendURL}/deletegame`, config);
-        setTimeout(function () {
-            window.location.reload();
-        }, 1000) 
+            axios.delete(`${backendURL}/deletegame`, config)
+                .then(response => {
+
+                }).catch(err => {
+                    console.error("Failed to delete: ", err.message);
+
+                })
+                window.location.reload();
     }
 
     async function getUserGames() {
@@ -363,7 +369,7 @@ export default function Gameslist (){
             gamesList = searchArr.map((game, i)=> {
                 return <div className="gameslist__search-game">
                     <h2 className="gameslist-game__title">{game.name}</h2>
-                    <img className="gameslist-game__img" src={game.img_url} />
+                    <img className="gameslist-game__img" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} />
                     <div className="gameslist-game__date-container">
                         <label>Date:</label>
                         <input className="gameslist-game__date" type="date" name="date-added" />

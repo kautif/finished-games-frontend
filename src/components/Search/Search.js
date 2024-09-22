@@ -14,7 +14,7 @@ export default function Search () {
     let userGames = useSelector((state) => state.gamesReducer.userGames);
     const [search, setSearch] = useState("");
     const [gameType, setGameType] = useState("regular");
-    const [customGame, setCustomGame] = useState("mario");
+    const [customGame, setCustomGame] = useState("other");
     const [date, setDate] = useState("");
     const [games, setGames] = useState([]);
     const [rank, setRank] = useState("");
@@ -192,10 +192,10 @@ export default function Search () {
                         <select onChange={(e) => {
                             setCustomGame(prevGame => e.target.value);
                         }}>
+                            <option value="other">Other</option>
                             <option value="mario">Super Mario</option>
                             <option value="pokemon">Pokemon</option>
                             <option value="minecraft">Minecraft Mod</option>
-                            <option value="other">Other</option>
                         </select>
                     </div>
                     <img src={customGame === "mario" ? smwCart : customGame === "pokemon" ? pokemonCart : customGame === "minecraft" ? mcCart : otherCart} />
