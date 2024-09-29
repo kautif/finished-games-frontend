@@ -45,7 +45,7 @@ function AuthenticatedComponent() {
   //   console.log("data: ", data);
   // }, [data])
 
-  console.log("index games: ", userGames);  
+  // console.log("index games: ", userGames);  
 
   return (
     <div> 
