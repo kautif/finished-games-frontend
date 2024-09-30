@@ -19,20 +19,25 @@ export default function Profile (match) {
     // const backendURL = "http://localhost:4000";
     const [user, setUser] = useState({});
     const [userGames, setUserGames] = useState([]);
+    const [gameType, setGameType] = useState("all");
     let gamesArr = [];
     let games;
     let gamesList;
-    const [completedGames, setCompletedGames] = useState([]);
-    const [upcomingGames, setUpcomingGames] = useState([]);
-    const [droppedGames, setdroppedGames] = useState([]);
-    const [playingGames, setPlayingGames] = useState([]);
+    let phase1Arr = [];
+    let phase2Arr = [];
+    let phase3Arr;
+    let matchArr;
+    // const [completedGames, setCompletedGames] = useState([]);
+    // const [upcomingGames, setUpcomingGames] = useState([]);
+    // const [droppedGames, setdroppedGames] = useState([]);
+    // const [playingGames, setPlayingGames] = useState([]);
 
     const [gameState, setGameState] = useState("all");
     const [searchArr, setSearchArr] = useState([]);
     const [sortedArr, setSortedArr] = useState([]);
 
-    const [sortFocus, setSortFocus] = useState("");
-    const [sortDirection, setSortDirection] = useState("");
+    const [sortFocus, setSortFocus] = useState("alpha");
+    const [sortDirection, setSortDirection] = useState("ascending");
     const [search, setSearch] = useState("");
 
     function getProfile(setObject) {
@@ -46,33 +51,33 @@ export default function Profile (match) {
             setObject(response.data.user);
             gamesArr = [...response.data.user.games];
             setUserGames(gamesArr);
-            let droppedArr = [];
-            let playingArr = [];
-            let upcomingArr = [];
-            let completedArr = [];
-            if (user !== null) {
-                for (let i = 0; i < response.data.user.games.length; i++) {
-                    if (response.data.user.games[i].rank === "dropped") {
-                        droppedArr.push(response.data.user.games[i]);
-                    }
+            // let droppedArr = [];
+            // let playingArr = [];
+            // let upcomingArr = [];
+            // let completedArr = [];
+            // if (user !== null) {
+            //     for (let i = 0; i < response.data.user.games.length; i++) {
+            //         if (response.data.user.games[i].rank === "dropped") {
+            //             droppedArr.push(response.data.user.games[i]);
+            //         }
     
-                    if (response.data.user.games[i].rank === "playing") {
-                        playingArr.push(response.data.user.games[i]);
-                    }
+            //         if (response.data.user.games[i].rank === "playing") {
+            //             playingArr.push(response.data.user.games[i]);
+            //         }
     
-                    if (response.data.user.games[i].rank === "upcoming") {
-                        upcomingArr.push(response.data.user.games[i]);
-                    }
+            //         if (response.data.user.games[i].rank === "upcoming") {
+            //             upcomingArr.push(response.data.user.games[i]);
+            //         }
     
-                    if (response.data.user.games[i].rank === "completed") {
-                        completedArr.push(response.data.user.games[i]);
-                    }
-                }
-                setdroppedGames(droppedArr);
-                setPlayingGames(playingArr);
-                setUpcomingGames(upcomingArr);
-                setCompletedGames(completedArr);
-            }
+            //         if (response.data.user.games[i].rank === "completed") {
+            //             completedArr.push(response.data.user.games[i]);
+            //         }
+            //     }
+            //     setdroppedGames(droppedArr);
+            //     setPlayingGames(playingArr);
+            //     setUpcomingGames(upcomingArr);
+            //     setCompletedGames(completedArr);
+            // }
         }).catch(err => {
             console.log("error");
         })
@@ -94,31 +99,103 @@ export default function Profile (match) {
     }, [userParam, navigate])
 
     useEffect(() => {
-            setSortDirection("ascending");
-            setSortFocus("alpha");
-            alphaSort();
+            // setSortDirection("ascending");
+            // setSortFocus("alpha");
+            // alphaSort();
     }, [userGames])
 
     useEffect(() => {
-        searchGameslist();
-        searchGames();
+        // searchGameslist();
+        // searchGames();
     }, [search])
 
     useEffect(() => {
-        alphaSort();
-    }, [sortDirection, sortFocus])
+        // alphaSort();
+        console.log("gameType: ", gameType);
+    }, [gameType, gameState, sortDirection, sortFocus])
+
+    let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];
+    let gameStateArr = ["all", "playing", "upcoming", "completed", "dropped"];
+    function filterOrSort () {
+        if (gameType === "all") {
+            phase1Arr = userGames;
+        } else {
+            for (let i = 0; i < userGames.length; i++) {
+                for (let k = 0; k < gameTypesArr.length; k++) {
+                    if (userGames[i].custom_game === gameTypesArr[k] && gameType === gameTypesArr[k]) {
+                        phase1Arr.push(userGames[i]);
+                    }
+                }	
+            }
+    
+            if (gameType === "custom") {
+                phase1Arr = [];
+                for (let i = 0; i < userGames.length; i++) {
+                    if (userGames[i].custom_game === "other" || userGames[i].custom_game === "mario" || userGames[i].custom_game === "pokemon" || userGames[i].custom_game === "minecraft") {
+                        phase1Arr.push(userGames[i]);
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < phase1Arr.length; i++) {
+            if (gameState === "all") {
+                phase2Arr = phase1Arr;
+            } else {
+                for (let k = 0; k < gameStateArr.length; k++) {
+                    if (phase1Arr[i].rank === gameStateArr[k] && gameState === gameStateArr[k]) {
+                        phase2Arr.push(phase1Arr[i]);
+                    }
+                }
+            }
+        }
+
+        if (sortDirection === "ascending" && 
+            sortFocus === "alpha") {
+                phase3Arr = [...phase2Arr.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))];
+        }
+        
+        if (sortDirection === "descending" && 
+            sortFocus === "alpha") {
+                phase3Arr = [...phase2Arr.sort((a,b) => (a.name < b.name) ? 1 : ((a.name > b.name) ? -1 : 0))];
+        }
+
+        if (sortDirection === "ascending" && 
+            sortFocus === "date") {
+                phase3Arr = [...phase2Arr.sort((a,b) => (a.date_added > b.date_added) ? 1 : ((b.date_added > a.date_added) ? -1 : 0))];
+        }
+
+        if (sortDirection === "descending" && 
+            sortFocus === "date") {
+                phase3Arr = [...phase2Arr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((a.date_added > b.date_added) ? -1 : 0))];
+        }
+
+        if (sortDirection === "ascending" && 
+            sortFocus === "rating") {
+                phase3Arr = [...phase2Arr.sort((a,b) => (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0))];
+        }
+
+        if (sortDirection === "descending" && 
+            sortFocus === "rating") {
+                phase3Arr = [...phase2Arr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0))];
+        }
+        console.log("phase3Arr: ", phase3Arr);
+
+        renderGames(phase3Arr);
+    }
+
 
     function alphaSort () {
         let sortGamesArr;
         let sortedGames;
         if (gameState === "dropped") {
-            sortGamesArr = droppedGames;
+            // sortGamesArr = droppedGames;
         } else if (gameState === "completed") {
-            sortGamesArr = completedGames;
+            // sortGamesArr = completedGames;
         } else if (gameState === "upcoming") {
-            sortGamesArr = upcomingGames;
+            // sortGamesArr = upcomingGames;
         } else if (gameState === "playing") {
-            sortGamesArr = playingGames;
+            // sortGamesArr = playingGames;
         } else {
             sortGamesArr = userGames;
         }
@@ -163,13 +240,13 @@ export default function Profile (match) {
         let searchGamesArr;
         let matchArr = []
         if (gameState === "dropped") {
-            searchGamesArr = droppedGames;
+            // searchGamesArr = droppedGames;
         } else if (gameState === "upcoming") {
-            searchGamesArr = upcomingGames;
+            // searchGamesArr = upcomingGames;
         } else if (gameState === "completed") {
-            searchGamesArr = completedGames;
+            // searchGamesArr = completedGames;
         } else if (gameState === "playing") {
-            searchGamesArr = playingGames;
+            // searchGamesArr = playingGames;
         } else {
             searchGamesArr = userGames;
         }
@@ -209,6 +286,18 @@ export default function Profile (match) {
                 </div>
             })
         }
+    }
+
+    filterOrSort();
+
+    if (search.length > 0 && phase3Arr.length > 0) {
+        matchArr = [];
+        phase3Arr.map(game => {
+            if (game.name.toLowerCase().includes(search.toLowerCase())) {
+                matchArr.push(game);
+            }
+        })
+        renderGames(matchArr);
     }
 
     function searchGames() {
@@ -251,20 +340,20 @@ export default function Profile (match) {
     }
 
     if (gameState === "dropped") {
-        renderGames(droppedGames);
+        // renderGames(droppedGames);
     } else if (gameState === "upcoming") {
-        renderGames(upcomingGames);
+        // renderGames(upcomingGames);
     } else if (gameState === "completed") {
-        renderGames(completedGames);
+        // renderGames(completedGames);
     } else if (gameState === "playing") {
-        renderGames(playingGames);
+        // renderGames(playingGames);
     } else {
-        renderGames(userGames);
+        // renderGames(userGames);
     }
 
-    if (search.length > 0) {
-        searchGames();
-    }
+    // if (search.length > 0) {
+    //     searchGames();
+    // }
 
 
 
@@ -327,6 +416,22 @@ export default function Profile (match) {
                                 e.preventDefault();
                                 alphaSort();
                             }}/> */}
+                        </form>
+                    </div>
+                    <div>
+                        <h2>Game Type</h2>
+                        <form>
+                            <select onChange={(e) => {
+                                setGameType(e.target.value);
+                            }}>
+                                <option value="all">All</option>
+                                <option value="regular">Regular</option>
+                                <option value="custom">All Custom</option>
+                                <option value="other">Other</option>
+                                <option value="mario">Super Mario</option>
+                                <option value="pokemon">Pokemon</option>
+                                <option value="minecraft">Minecraft Mod</option>
+                            </select>
                         </form>
                     </div>
                     <form>

@@ -73,8 +73,8 @@ export default function Gameslist (){
     }, [search])
 
     useEffect(() => {
-    getGameSummary(phase3Arr);
-    getGameDate(phase3Arr);
+        getGameSummary(phase3Arr);
+        getGameDate(phase3Arr);
     }, [gameType, gameState, sortDirection, sortFocus])
 
     let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];

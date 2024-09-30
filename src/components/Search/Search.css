@@ -4,6 +4,7 @@
     width: 97%;
     margin-left: auto;
     margin-right: auto;
+    justify-content: center;
 }
 
 .search-game__name {
