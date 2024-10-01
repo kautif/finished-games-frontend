@@ -26,8 +26,6 @@ function App() {
     const urlParams = new URLSearchParams(window.location.search);
     const authToken = urlParams.get('auth_token');
     const twitchToken = urlParams.get('twitch_token');
-    setAuToken(authToken);
-    setTwToken(twitchToken);
     if(authToken && twitchToken){
       setItem('authToken', authToken);
       setItem('twitchToken', twitchToken);
@@ -44,14 +42,6 @@ function App() {
       dispatch(setIsAuthenticated(false));
     }
   }, []);
-
-  useEffect(() => {
-    if (auToken && twToken) {
-      dispatch(setIsAuthenticated(true));
-    } else {
-      dispatch(setIsAuthenticated(false));
-    }
-  }, [auToken, twToken])
 
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>

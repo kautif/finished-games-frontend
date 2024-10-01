@@ -62,15 +62,9 @@ function AuthenticatedComponent() {
     fetchData();
   }, []);
 
-  /// Con't *** 10/1/2024
   useEffect(() => {
-    console.log("data: ", data);
-    // if (data.length === 0) {
-    //   logout();
-    // }
+    
   }, [data])
-
-  // console.log("index games: ", userGames);  
 
   return (
     <div> 
