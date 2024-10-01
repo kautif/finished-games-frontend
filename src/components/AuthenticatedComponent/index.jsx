@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { getUserGames, setUserGames } from '../../redux/gamesSlice';
-
+import { setIsAuthenticated } from "../../redux/gamesSlice";
 import axios from 'axios';
 import AuthenticatedNav from '../AuthenticatedNav/AuthenticatedNav';
 import { clearStorage } from '../../utils/localStorage';
+import { useNavigate } from 'react-router-dom';
 
 function AuthenticatedComponent() {
       const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -13,7 +14,27 @@ function AuthenticatedComponent() {
   const userGames = useSelector(state => state.gamesReducer.userGames);
   let token;
   let fetchedGames;
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  function logout () {
+    axios({
+        url: `${backendURL}/logout`,
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'auth_token': localStorage.getItem("authToken"),
+            'twitch_token':   localStorage.getItem("twitchToken"),
+        },
+    }).then(response => {
+        dispatch(setIsAuthenticated(false));
+        clearStorage();
+        navigate('/');
+    }).catch(err => {
+        console.error("error: ", err.message);
+    })
+}
+
   useEffect(() => {
     const fetchData = async () => {
         await axios.get(`${backendURL}/protected/userid`, 
@@ -41,9 +62,13 @@ function AuthenticatedComponent() {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   console.log("data: ", data);
-  // }, [data])
+  /// Con't *** 10/1/2024
+  useEffect(() => {
+    console.log("data: ", data);
+    // if (data.length === 0) {
+    //   logout();
+    // }
+  }, [data])
 
   // console.log("index games: ", userGames);  
 
