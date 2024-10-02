@@ -28,7 +28,6 @@ export default function Gameslist (){
     const [summary, setSummary] = useState("");
     const [date, setDate] = useState("");
     const [gameName, setGameName] = useState("");
-    const [deleted, setDeleted] = useState(false);
 
     const [sortDirection, setSortDirection] = useState("ascending");
     const [sortFocus, setSortFocus] = useState("alpha");
@@ -76,10 +75,6 @@ export default function Gameslist (){
         getGameSummary(phase3Arr);
         getGameDate(phase3Arr);
     }, [gameType, gameState, sortDirection, sortFocus])
-
-    useEffect(() => {
-        window.location.reload();
-    }, [deleted])
 
     let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];
     let gameStateArr = ["all", "playing", "upcoming", "completed", "dropped"];
@@ -188,7 +183,7 @@ export default function Gameslist (){
         }
             axios.delete(`${backendURL}/deletegame`, config)
                 .then(response => {
-                    setDeleted(true);
+
                 }).catch(err => {
                     console.error("Failed to delete: ", err.message);
                 })
