@@ -71,7 +71,7 @@ function AuthenticatedComponent() {
           <h2>This data is from protected route</h2>
           <AuthenticatedNav />
         </div>
-      ) : dispatch(setIsAuthenticated(false))}
+      ) : logout()}
     </div>
   );
 }
