@@ -189,7 +189,6 @@ export default function Gameslist (){
                     console.error("Failed to delete: ", err.message);
 
                 })
-                window.location.reload();
     }
 
     async function getUserGames() {
@@ -262,6 +261,9 @@ export default function Gameslist (){
                             }}>Update</p>
                         <p className="gameslist-game__add-btn" onClick={() => {
                             deleteGame(game.name);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 390)
                         }}>Delete</p>
                     </div>
                 </div>
@@ -335,9 +337,6 @@ export default function Gameslist (){
                 <h2>Search</h2>
                 <input id="gameslist-games__search" type="text" onChange={(e) => {
                     setSearch(e.target.value);
-                }}/>
-                <input type="submit" value="Submit" onClick={(e) => {
-                    e.preventDefault();
                 }}/>
             </form>
             <div className="gameslist-games">
