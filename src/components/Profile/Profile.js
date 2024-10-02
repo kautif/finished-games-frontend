@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "./Profile.css";
-import nullGame from "../../assets/null_game_001.png";
 import smwCart from "../../assets/vh_smw_cart.webp";
 import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
@@ -27,14 +26,8 @@ export default function Profile (match) {
     let phase2Arr = [];
     let phase3Arr;
     let matchArr;
-    // const [completedGames, setCompletedGames] = useState([]);
-    // const [upcomingGames, setUpcomingGames] = useState([]);
-    // const [droppedGames, setdroppedGames] = useState([]);
-    // const [playingGames, setPlayingGames] = useState([]);
 
     const [gameState, setGameState] = useState("all");
-    const [searchArr, setSearchArr] = useState([]);
-    const [sortedArr, setSortedArr] = useState([]);
 
     const [sortFocus, setSortFocus] = useState("alpha");
     const [sortDirection, setSortDirection] = useState("ascending");
@@ -51,33 +44,6 @@ export default function Profile (match) {
             setObject(response.data.user);
             gamesArr = [...response.data.user.games];
             setUserGames(gamesArr);
-            // let droppedArr = [];
-            // let playingArr = [];
-            // let upcomingArr = [];
-            // let completedArr = [];
-            // if (user !== null) {
-            //     for (let i = 0; i < response.data.user.games.length; i++) {
-            //         if (response.data.user.games[i].rank === "dropped") {
-            //             droppedArr.push(response.data.user.games[i]);
-            //         }
-    
-            //         if (response.data.user.games[i].rank === "playing") {
-            //             playingArr.push(response.data.user.games[i]);
-            //         }
-    
-            //         if (response.data.user.games[i].rank === "upcoming") {
-            //             upcomingArr.push(response.data.user.games[i]);
-            //         }
-    
-            //         if (response.data.user.games[i].rank === "completed") {
-            //             completedArr.push(response.data.user.games[i]);
-            //         }
-            //     }
-            //     setdroppedGames(droppedArr);
-            //     setPlayingGames(playingArr);
-            //     setUpcomingGames(upcomingArr);
-            //     setCompletedGames(completedArr);
-            // }
         }).catch(err => {
             console.log("error");
         })
@@ -93,24 +59,6 @@ export default function Profile (match) {
     }, [])
 
     useEffect(() => {
-        // if (userParam.user !== userParam.user.toLowerCase()) {
-        //     navigate(`/` + userParam.user.toLowerCase(), { replace: true });
-        //   }
-    }, [userParam, navigate])
-
-    useEffect(() => {
-            // setSortDirection("ascending");
-            // setSortFocus("alpha");
-            // alphaSort();
-    }, [userGames])
-
-    useEffect(() => {
-        // searchGameslist();
-        // searchGames();
-    }, [search])
-
-    useEffect(() => {
-        // alphaSort();
         console.log("gameType: ", gameType);
     }, [gameType, gameState, sortDirection, sortFocus])
 
@@ -179,84 +127,8 @@ export default function Profile (match) {
             sortFocus === "rating") {
                 phase3Arr = [...phase2Arr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0))];
         }
-        console.log("phase3Arr: ", phase3Arr);
 
         renderGames(phase3Arr);
-    }
-
-
-    function alphaSort () {
-        let sortGamesArr;
-        let sortedGames;
-        if (gameState === "dropped") {
-            // sortGamesArr = droppedGames;
-        } else if (gameState === "completed") {
-            // sortGamesArr = completedGames;
-        } else if (gameState === "upcoming") {
-            // sortGamesArr = upcomingGames;
-        } else if (gameState === "playing") {
-            // sortGamesArr = playingGames;
-        } else {
-            sortGamesArr = userGames;
-        }
-
-        if (search.length > 0) {
-            sortGamesArr = searchArr;
-        }
-
-        if (sortDirection === "ascending" && 
-            sortFocus === "alpha") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
-        }
-        
-        if (sortDirection === "descending" && 
-            sortFocus === "alpha") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.name < b.name) ? 1 : ((b.name > a.name) ? -1 : 0)));
-        }
-
-        if (sortDirection === "ascending" && 
-            sortFocus === "date") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added > b.date_added) ? 1 : ((b.date_added > a.date_added) ? -1 : 0)));
-        }
-
-        if (sortDirection === "descending" && 
-            sortFocus === "date") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.date_added < b.date_added) ? 1 : ((a.date_added > b.date_added) ? -1 : 0)));
-        }
-
-        if (sortDirection === "ascending" && 
-            sortFocus === "rating") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.rating > b.rating) ? 1 : ((b.rating > a.rating) ? -1 : 0)));
-        }
-
-        if (sortDirection === "descending" && 
-            sortFocus === "rating") {
-                setSortedArr(...sortGamesArr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0)));
-        }
-
-    }
-
-    function searchGameslist () {
-        let searchGamesArr;
-        let matchArr = []
-        if (gameState === "dropped") {
-            // searchGamesArr = droppedGames;
-        } else if (gameState === "upcoming") {
-            // searchGamesArr = upcomingGames;
-        } else if (gameState === "completed") {
-            // searchGamesArr = completedGames;
-        } else if (gameState === "playing") {
-            // searchGamesArr = playingGames;
-        } else {
-            searchGamesArr = userGames;
-        }
-
-        searchGamesArr.map(game => {
-            if (game.name.toLowerCase().includes(search.toLowerCase())) {
-                matchArr.push(game);
-            }
-        })
-        setSearchArr(prevArr => [...matchArr]);
     }
 
     function renderGames (games) {
@@ -300,63 +172,6 @@ export default function Profile (match) {
         renderGames(matchArr);
     }
 
-    function searchGames() {
-        if (search.length > 0) {
-            gamesList = searchArr.map((game, i)=> {
-                return <div className="user-game__search-game">
-                    <h2 className="user-game__title">{game.name}</h2>
-                    <div className="user-game__img"><img src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} /></div>
-                    <div className="user-game__date-container">
-                        <p>Date:</p>
-                        <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
-                    </div>
-                    <div className="user-game__rating">
-                        <label>Rating: </label>
-                        <p className="user-game__rating__num">{game.rating === 0 ? "-" : game.rating}</p>    
-                    </div>
-                    <div className="user-game__status-container">
-                        <p>Game Status</p>
-                        <p className="user-game__status">{game.rank.toUpperCase()}</p>
-                    </div>
-                    <p className="user-game__summary" placeholder="Let your viewers know how you felt about this game">{game.summary}</p>
-                </div>
-            })
-            document.getElementById("profile-results-container").scrollIntoView({
-                behavior: "smooth"
-            })
-
-            console.log("searchArr length: ", searchArr.length);
-
-            if (searchArr.length === 0) {
-                let nullGameImg = <div className="user-game__nogame-container">
-                    <h2>No games found for this search</h2>
-                    <img src={nullGame} alt="no game found image" />
-                    </div>
-                gamesList = nullGameImg;
-            }
-        }
-
-        console.log("search length: ", search)
-    }
-
-    if (gameState === "dropped") {
-        // renderGames(droppedGames);
-    } else if (gameState === "upcoming") {
-        // renderGames(upcomingGames);
-    } else if (gameState === "completed") {
-        // renderGames(completedGames);
-    } else if (gameState === "playing") {
-        // renderGames(playingGames);
-    } else {
-        // renderGames(userGames);
-    }
-
-    // if (search.length > 0) {
-    //     searchGames();
-    // }
-
-
-
     if (user === null) {
         return <div>
                 <h1>Sorry that page doesn't exist (yet 😏)</h1>
@@ -369,8 +184,6 @@ export default function Profile (match) {
                 <h1>{user.twitch_default}</h1>
                 <p onClick={() => {
                     localStorage.setItem("reportUser", user.twitch_default);
-                    // dispatch(setReportUser(user.twitchName));
-                    // console.log("user: ", reportUser);
                     window.location.pathname = "/report";
                 }}>Report User</p>
                 <div>
@@ -392,30 +205,16 @@ export default function Profile (match) {
                             <select id="sort-direction" onChange={(e) => {
                                 setSortDirection(e.target.value);
                             }}>
-                                <option value="ascending" onClick={(e) => {
-                                    // setSortDirection("ascending");
-                                }}>Ascending</option>
-                                <option value="descending" onClick={(e) => {
-                                    // setSortDirection("descending")
-                                }}>Descending</option>
+                                <option value="ascending">Ascending</option>
+                                <option value="descending">Descending</option>
                             </select>
                             <select id="sort-focus" onChange={(e) => {
                                 setSortFocus(e.target.value);
                             }}>
-                                <option value="alpha" onClick={(e) =>{
-                                    // setSortFocus("alpha");
-                                }}>Alphabetical</option>
-                                <option value="date" onClick={(e) =>{
-                                    // setSortFocus("date");
-                                }}>Date</option>
-                                <option value="rating" onClick={(e) =>{
-                                    // setSortFocus("rating");
-                                }}>Rating</option>
+                                <option value="alpha">Alphabetical</option>
+                                <option value="date">Date</option>
+                                <option value="rating">Rating</option>
                             </select>
-                            {/*<input type="submit" id="sorting-btn" value="Submit" onClick={(e) => {
-                                e.preventDefault();
-                                alphaSort();
-                            }}/> */}
                         </form>
                     </div>
                     <div>
