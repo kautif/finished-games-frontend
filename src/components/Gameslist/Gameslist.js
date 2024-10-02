@@ -20,13 +20,7 @@ export default function Gameslist (){
     const [gameType, setGameType] = useState("all");
 
     const [gameState, setGameState] = useState("all");
-    const [sortedArr, setSortedArr] = useState([]);
-    const [searchArr, setSearchArr] = useState([]);
-    const [rank, setRank] = useState("");
-    const [rating, setRating] = useState(0);
     const [showModal, setShowModal] = useState(false);
-    const [summary, setSummary] = useState("");
-    const [date, setDate] = useState("");
     const [gameName, setGameName] = useState("");
 
     const [sortDirection, setSortDirection] = useState("ascending");

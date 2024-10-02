@@ -42,6 +42,47 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const validateTwitchToken = async (token) => {
+      try {
+        const response = await fetch(`https://id.twitch.tv/oauth2/validate`, {
+          headers: {
+            'Authorization': `OAuth ${token}`
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Invalid token');
+        }
+        const data = await response.json();
+        return data;  // Optionally handle more token validation data here
+      } catch (error) {
+        console.error('Twitch token validation failed:', error);
+        return null;
+      }
+    };
+  
+    const checkAuthStatus = async () => {
+      const authToken = getItem('authToken');
+      const twitchToken = getItem('twitchToken');
+  
+      if (authToken && twitchToken) {
+        const tokenData = await validateTwitchToken(twitchToken);
+  
+        if (tokenData) {
+          dispatch(setIsAuthenticated(true));
+        } else {
+          setItem('authToken', null);  // Clear invalid tokens
+          setItem('twitchToken', null);
+          dispatch(setIsAuthenticated(false));
+        }
+      } else {
+        dispatch(setIsAuthenticated(false));
+      }
+    };
+  
+    checkAuthStatus();
+  }, [dispatch]);
+
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
       <div className="App">
