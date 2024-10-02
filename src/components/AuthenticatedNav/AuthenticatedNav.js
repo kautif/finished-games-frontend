@@ -10,8 +10,9 @@ import { useNavigate } from 'react-router-dom';
 export default function AuthenticatedNav () {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
-     function logout () {
+    function logout () {
         axios({
             url: `${backendURL}/logout`,
             method: "POST",

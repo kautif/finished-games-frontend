@@ -7,7 +7,7 @@ import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
 
-export default function Gameslist (props){
+export default function Gameslist (){
     const navigate = useNavigate();
 
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -29,8 +29,6 @@ export default function Gameslist (props){
     const [date, setDate] = useState("");
     const [gameName, setGameName] = useState("");
 
-    let isDeleted = false;
-
     const [sortDirection, setSortDirection] = useState("ascending");
     const [sortFocus, setSortFocus] = useState("alpha");
 
@@ -41,6 +39,7 @@ export default function Gameslist (props){
     let phase2Arr = [];
     let phase3Arr;
     let matchArr;
+
 
     useEffect(() => {
         getUserGames();
@@ -56,6 +55,9 @@ export default function Gameslist (props){
                 })
             }
         }
+
+
+        console.log("phase3Arr: ", phase3Arr);
         getGameDate(userGames);
         getGameSummary(userGames);
     }, [userGames])
@@ -185,7 +187,9 @@ export default function Gameslist (props){
 
                 }).catch(err => {
                     console.error("Failed to delete: ", err.message);
+
                 })
+                window.location.reload();
     }
 
     async function getUserGames() {
@@ -258,9 +262,6 @@ export default function Gameslist (props){
                             }}>Update</p>
                         <p className="gameslist-game__add-btn" onClick={() => {
                             deleteGame(game.name);
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 390)
                         }}>Delete</p>
                     </div>
                 </div>
@@ -335,8 +336,8 @@ export default function Gameslist (props){
                 <input id="gameslist-games__search" type="text" onChange={(e) => {
                     setSearch(e.target.value);
                 }}/>
-                <input id="gameslist-submit" type="submit" value="Submit" onClick={(e) => {
-                    
+                <input type="submit" value="Submit" onClick={(e) => {
+                    e.preventDefault();
                 }}/>
             </form>
             <div className="gameslist-games">

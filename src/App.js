@@ -2,7 +2,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import './App.css';
 import Splash from './components/Splash/Splash';
 import AuthenticatedComponent from './components/AuthenticatedComponent'; // the component to show when the user is authenticated
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuthenticated } from './redux/gamesSlice';
 import { Route, Routes } from 'react-router-dom';
@@ -18,14 +18,13 @@ import FindUser from './components/FindUser/FindUser';
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.gamesReducer.isAuthenticated);
-  const [auToken, setAuToken] = useState("");
-  const [twToken, setTwToken] = useState("");
 
   useEffect(() => {
     // Get the token from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const authToken = urlParams.get('auth_token');
     const twitchToken = urlParams.get('twitch_token');
+
     if(authToken && twitchToken){
       setItem('authToken', authToken);
       setItem('twitchToken', twitchToken);
