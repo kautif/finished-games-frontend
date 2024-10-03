@@ -80,7 +80,7 @@ function App() {
       }
     };
   
-    checkAuthStatus();
+    // checkAuthStatus();
   }, [dispatch]);
 
   return (

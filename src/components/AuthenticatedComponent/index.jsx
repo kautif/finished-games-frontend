@@ -41,10 +41,6 @@ function AuthenticatedComponent() {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   console.log("data: ", data);
-  // }, [data])
-
   // console.log("index games: ", userGames);  
 
   return (
