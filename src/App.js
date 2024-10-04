@@ -19,6 +19,7 @@ import FindUser from './components/FindUser/FindUser';
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.gamesReducer.isAuthenticated);
+  const loginTime = useSelector(state => state.gamesReducer.loginTime);
   const [time, setTime] = useState(0);
 
   function checkToken (twToken) {
@@ -27,7 +28,7 @@ function App() {
     function myCallback() {
       // Your code here
       // Parameters are purely optional.
-
+      setTime(prevTime => prevTime + 1000);
       axios({
         url: "https://id.twitch.tv/oauth2/validate",
         headers: {
@@ -51,31 +52,46 @@ function App() {
     const authToken = urlParams.get('auth_token');
     const twitchToken = urlParams.get('twitch_token');
 
-    setItem('authToken', authToken);
-    setItem('twitchToken', twitchToken);
-
     if(authToken && twitchToken){
-      const tokenData = checkToken(twitchToken);
+      setItem('authToken', authToken);
+      setItem('twitchToken', twitchToken);
 
-      if (tokenData) {
-        dispatch(setIsAuthenticated(true));        
-      } else {
-        setItem('authToken', null);  // Clear invalid tokens
-        setItem('twitchToken', null);
+      axios({
+        url: "https://id.twitch.tv/oauth2/validate",
+        headers: {
+          'Authorization': `OAuth ${twitchToken}`
+        }
+      }).then((response) => {
+        dispatch(setIsAuthenticated(true));
+        console.log("validate: ", response)
+        return response.json();
+      }).catch(error => {
         dispatch(setIsAuthenticated(false));
+        console.error("validate error: ", error);
+        return null;
+      })
+
+      // const tokenData = checkToken(twitchToken);
+        dispatch(setIsAuthenticated(true));
+        const newUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);        
+      // if (tokenData) {
+        // dispatch(setIsAuthenticated(true));        
+      }  else if (getItem('authToken') && getItem('twitchToken')) {
+        dispatch(setIsAuthenticated(true));
       }
-
-      dispatch(setIsAuthenticated(true));
-
-      const newUrl = window.location.origin + window.location.pathname;
-      window.history.replaceState({}, document.title, newUrl);
-    } else {
+      
+      // else {
+      //   setItem('authToken', null);  // Clear invalid tokens
+      //   setItem('twitchToken', null);
+      //   dispatch(setIsAuthenticated(false));
+      // }
+    // }
+     else {
       dispatch(setIsAuthenticated(false));
     }
 
-    // else if (getItem('authToken') && getItem('twitchToken')) {
-    //   dispatch(setIsAuthenticated(true));
-    // } 
+ 
 
 
 

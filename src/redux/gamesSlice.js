@@ -3,7 +3,8 @@ import axios from "axios";
 const initialState = {
     userGames: [],
     reportUser: "",
-    isAuthenticated: false
+    isAuthenticated: false,
+    loginTime: 0
 }
 
 let twitchId;
@@ -23,9 +24,13 @@ export const gamesSlice = createSlice({
         setReportUser: (state, action) => {
             state.reportUser = action.payload;
             console.log("gamesSlice reportUser", action.payload);
+        },
+        setLoginTime: (state, action) => {
+            state.loginTime = action.payload;
+            console.log("gamesSlice loginTime: ", action.payload);
         }
     }
 })
 
-export const {setUserGames, setIsAuthenticated, setReportUser} = gamesSlice.actions;
+export const {setUserGames, setIsAuthenticated, setReportUser, setLoginTime} = gamesSlice.actions;
 export default gamesSlice.reducer;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getUserGames, setUserGames } from '../../redux/gamesSlice';
+import { getUserGames, setUserGames, setLoginTime } from '../../redux/gamesSlice';
 
 import axios from 'axios';
 import AuthenticatedNav from '../AuthenticatedNav/AuthenticatedNav';
@@ -11,6 +11,7 @@ function AuthenticatedComponent() {
       // const backendURL = "http://localhost:4000";
   const [data, setData] = useState([]);
   const userGames = useSelector(state => state.gamesReducer.userGames);
+  const loginTime = useSelector(state => state.gamesReducer.loginTime);
   let token;
   let fetchedGames;
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function AuthenticatedComponent() {
           }
         ).then(response => {
           setData(response.data);
+          // dispatch(setLoginTime(response.data.date));
           token = localStorage.getItem("auth_token");
           window.localStorage.setItem('twitchId', response.data.twitchId);
           window.localStorage.setItem('twitchName', response.data.twitchName);
@@ -35,13 +37,14 @@ function AuthenticatedComponent() {
             window.location.href = '/';
             clearStorage();
           }
-
         })
       };
     fetchData();
   }, []);
 
-  // console.log("index games: ", userGames);  
+  useEffect(() => {
+    console.log("loginTime: ", loginTime);
+  }, [data])
 
   return (
     <div> 

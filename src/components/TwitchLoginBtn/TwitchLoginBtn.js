@@ -1,9 +1,12 @@
 import React from "react";
+import { setLoginTime } from "../../redux/gamesSlice";
+import { useDispatch } from "react-redux";
 
 // 6/23/24
 // - in index.js (backend), in /auth/twitch/callback, no request body can be found which implies it is not being sent here. That may mean that it needs to be sent.
 const TwitchLoginBtn = () => {
-  const handleLogin = () => {
+    const dispatch = useDispatch();
+    const handleLogin = () => {
     const { REACT_APP_TWITCH_ID } = process.env;
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     console.log("backendURL: ", backendURL);
