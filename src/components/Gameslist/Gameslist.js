@@ -50,7 +50,6 @@ export default function Gameslist (){
             }
         }
 
-
         console.log("phase3Arr: ", phase3Arr);
         getGameDate(userGames);
         getGameSummary(userGames);
