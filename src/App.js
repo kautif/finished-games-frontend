@@ -66,7 +66,8 @@ function App() {
         console.log("validate: ", response)
         return response.json();
       }).catch(error => {
-        dispatch(setIsAuthenticated(false));
+        // When this is uncommented, it auto logs the user back out as soon as they login
+        // - dispatch(setIsAuthenticated(false));
         console.error("validate error: ", error);
         return null;
       })
