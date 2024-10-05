@@ -12,6 +12,7 @@ function AuthenticatedComponent() {
   const [data, setData] = useState([]);
   const userGames = useSelector(state => state.gamesReducer.userGames);
   const loginTime = useSelector(state => state.gamesReducer.loginTime);
+  const isAuthenticated = useSelector(state => state.gamesReducer.isAuthenticated);
   let token;
   let fetchedGames;
   const dispatch = useDispatch();
@@ -42,13 +43,9 @@ function AuthenticatedComponent() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log("loginTime: ", loginTime);
-  }, [data])
-
   return (
     <div> 
-      {data && (
+      {isAuthenticated && (
         <div>
           {/* <h1>{JSON.stringify(data.message, null, 2)}</h1> */}
           <h1>{data.message}</h1>
