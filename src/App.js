@@ -134,7 +134,7 @@ function App() {
     // };
   
     // checkAuthStatus();
-  }, []);
+  });
 
   // useEffect(() => {
   //   if (isAuthenticated === false) {
