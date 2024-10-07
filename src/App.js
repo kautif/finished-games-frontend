@@ -1,100 +1,113 @@
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import './App.css';
-import Splash from './components/Splash/Splash';
-import AuthenticatedComponent from './components/AuthenticatedComponent'; // the component to show when the user is authenticated
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsAuthenticated } from './redux/gamesSlice';
-import { Route, Routes } from 'react-router-dom';
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import "./App.css";
+import Splash from "./components/Splash/Splash";
+import AuthenticatedComponent from "./components/AuthenticatedComponent"; // the component to show when the user is authenticated
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsAuthenticated } from "./redux/gamesSlice";
+import { Route, Routes } from "react-router-dom";
 import axios from "axios";
-import Search from './components/Search/Search';
-import Gameslist from './components/Gameslist/Gameslist';
-import Profile from './components/Profile/Profile';
-import { getItem, setItem } from './utils/localStorage';
-import Donate from './components/Donate/Donate';
-import Feedback from './components/Feedback/Feedback';
-import Report from './components/Report/Report';
-import FindUser from './components/FindUser/FindUser';
+import Search from "./components/Search/Search";
+import Gameslist from "./components/Gameslist/Gameslist";
+import Profile from "./components/Profile/Profile";
+import {
+  clearStorage,
+  getItem,
+  removeItem,
+  setItem,
+} from "./utils/localStorage";
+import Donate from "./components/Donate/Donate";
+import Feedback from "./components/Feedback/Feedback";
+import Report from "./components/Report/Report";
+import FindUser from "./components/FindUser/FindUser";
 
 function App() {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(state => state.gamesReducer.isAuthenticated);
-  const loginTime = useSelector(state => state.gamesReducer.loginTime);
+  const isAuthenticated = useSelector(
+    (state) => state.gamesReducer.isAuthenticated
+  );
+  const loginTime = useSelector((state) => state.gamesReducer.loginTime);
   const [time, setTime] = useState(0);
 
-  function checkToken (twToken) {
+  function checkToken(twToken) {
     const intervalID = setInterval(myCallback, 1000, "Parameter 1");
 
     function myCallback() {
       // Your code here
       // Parameters are purely optional.
-      setTime(prevTime => prevTime + 1000);
+      setTime((prevTime) => prevTime + 1000);
       axios({
         url: "https://id.twitch.tv/oauth2/validate",
         headers: {
-          'Authorization': `OAuth ${twToken}`
-        }
-      }).then((response) => {
-        console.log("validate: ", response)
-        return response.json();
-      }).catch(error => {
-        console.error("validate error: ", error);
-        return null;
+          Authorization: `OAuth ${twToken}`,
+        },
       })
+        .then((response) => {
+          console.log("validate: ", response);
+          return response.json();
+        })
+        .catch((error) => {
+          console.error("validate error: ", error);
+          return null;
+        });
     }
-      return intervalID;
+    return intervalID;
   }
-
 
   useEffect(() => {
     // Get the token from the URL
     const urlParams = new URLSearchParams(window.location.search);
-    const authToken = urlParams.get('auth_token');
-    const twitchToken = urlParams.get('twitch_token');
+    const authToken = urlParams.get("auth_token");
+    const refreshToken = urlParams.get("refresh_token");
+    const twitchToken = urlParams.get("twitch_token");
 
-    if(authToken && twitchToken){
-      setItem('authToken', authToken);
-      setItem('twitchToken', twitchToken);
+    if (authToken && twitchToken && refreshToken) {
+      setItem("authToken", authToken);
+      setItem("twitchToken", twitchToken);
+      setItem("refreshToken", refreshToken);
+      setItem("reload", true);
 
       axios({
         url: "https://id.twitch.tv/oauth2/validate",
         headers: {
-          'Authorization': `OAuth ${twitchToken}`
-        }
-      }).then((response) => {
-        dispatch(setIsAuthenticated(true));
-        console.log("validate: ", response)
-        return response.json();
-      }).catch(error => {
-        // When this is uncommented, it auto logs the user back out as soon as they login
-        // - dispatch(setIsAuthenticated(false));
-        console.error("validate error: ", error);
-        return null;
+          Authorization: `OAuth ${twitchToken}`,
+        },
       })
+        .then((response) => {
+          dispatch(setIsAuthenticated(true));
+          console.log("validate: ", response);
+          return response.json();
+        })
+        .catch((error) => {
+          // When this is uncommented, it auto logs the user back out as soon as they login
+          // - dispatch(setIsAuthenticated(false));
+          console.error("validate error: ", error);
+          return null;
+        });
 
       // const tokenData = checkToken(twitchToken);
-        dispatch(setIsAuthenticated(true));
-        const newUrl = window.location.origin + window.location.pathname;
-        window.history.replaceState({}, document.title, newUrl);        
+      dispatch(setIsAuthenticated(true));
+      const newUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
       // if (tokenData) {
-        // dispatch(setIsAuthenticated(true));        
-      }  else if (getItem('authToken') && getItem('twitchToken')) {
-        dispatch(setIsAuthenticated(true));
-      }
-      
-      // else {
-      //   setItem('authToken', null);  // Clear invalid tokens
-      //   setItem('twitchToken', null);
-      //   dispatch(setIsAuthenticated(false));
-      // }
-    // }
-     else {
-      dispatch(setIsAuthenticated(false));
+      // dispatch(setIsAuthenticated(true));
+    } else if (
+      getItem("authToken") &&
+      getItem("twitchToken") &&
+      getItem("refreshToken")
+    ) {
+      dispatch(setIsAuthenticated(true));
     }
 
- 
-
-
+    // else {
+    //   setItem('authToken', null);  // Clear invalid tokens
+    //   setItem('twitchToken', null);
+    //   dispatch(setIsAuthenticated(false));
+    // }
+    // }
+    else {
+      dispatch(setIsAuthenticated(false));
+    }
 
     // const validateTwitchToken = async (token) => {
     //   try {
@@ -113,14 +126,14 @@ function App() {
     //     return null;
     //   }
     // };
-  
+
     // const checkAuthStatus = async () => {
     //   const authToken = getItem('authToken');
     //   const twitchToken = getItem('twitchToken');
-  
+
     //   if (authToken && twitchToken) {
     //     const tokenData = await validateTwitchToken(twitchToken);
-  
+
     //     if (tokenData) {
     //       dispatch(setIsAuthenticated(true));
     //     } else {
@@ -132,7 +145,7 @@ function App() {
     //     dispatch(setIsAuthenticated(false));
     //   }
     // };
-  
+
     // checkAuthStatus();
   });
 
@@ -143,33 +156,51 @@ function App() {
   //   }
   // }, [isAuthenticated])
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (getItem("reload")) {
+        if (document.visibilityState === "visible") {
+          window.location.reload(); // Reload the current page
+          removeItem("reload");
+        }
+      }
+    };
+
+    // Adding event listener for visibility change
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isAuthenticated]);
+
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
       <div className="App">
-          {isAuthenticated ? (
-            <>
-              <AuthenticatedComponent />
-              <Routes>
-                  <Route exact path="/search" element={<Search />} />
-                  <Route exact path="/games" element={<Gameslist />} />
-                  <Route exact path="/finduser" element={<FindUser />}></Route>
-                  <Route exact path="/:user" element={<Profile />}></Route>
-                  <Route exact path="/donate" element={<Donate />}></Route>
-                  <Route exact path="/feedback" element={<Feedback />}></Route>
-                  <Route exact path="/report" element={<Report />}></Route>
-              </Routes>
-            </>
-            
-          ) : (
-            <>
-              <Routes>
-                <Route exact path="/" element={<Splash />}></Route>
-                <Route exact path="/:user" element={<Profile />}></Route>
-                <Route exact path="/donate" element={<Donate />}></Route>
-                <Route exact path="/feedback" element={<Feedback />}></Route>
-              </Routes>
-            </>
-          )}
+        {isAuthenticated ? (
+          <>
+            <AuthenticatedComponent />
+            <Routes>
+              <Route exact path="/search" element={<Search />} />
+              <Route exact path="/games" element={<Gameslist />} />
+              <Route exact path="/finduser" element={<FindUser />}></Route>
+              <Route exact path="/:user" element={<Profile />}></Route>
+              <Route exact path="/donate" element={<Donate />}></Route>
+              <Route exact path="/feedback" element={<Feedback />}></Route>
+              <Route exact path="/report" element={<Report />}></Route>
+            </Routes>
+          </>
+        ) : (
+          <>
+            <Routes>
+              <Route exact path="/" element={<Splash />}></Route>
+              <Route exact path="/:user" element={<Profile />}></Route>
+              <Route exact path="/donate" element={<Donate />}></Route>
+              <Route exact path="/feedback" element={<Feedback />}></Route>
+            </Routes>
+          </>
+        )}
       </div>
     </GoogleOAuthProvider>
   );
