@@ -2,7 +2,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./App.css";
 import Splash from "./components/Splash/Splash";
 import AuthenticatedComponent from "./components/AuthenticatedComponent"; // the component to show when the user is authenticated
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthenticated } from "./redux/gamesSlice";
 import { Route, Routes } from "react-router-dom";
@@ -14,12 +14,15 @@ import {
   clearStorage,
   getItem,
   removeItem,
+  setAuthTokenExpiry,
   setItem,
 } from "./utils/localStorage";
 import Donate from "./components/Donate/Donate";
 import Feedback from "./components/Feedback/Feedback";
 import Report from "./components/Report/Report";
 import FindUser from "./components/FindUser/FindUser";
+import axiosInstance from "./service/interceptor";
+import { validateAuthToken } from "./service";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +31,7 @@ function App() {
   );
   const loginTime = useSelector((state) => state.gamesReducer.loginTime);
   const [time, setTime] = useState(0);
+  const intervalRef = useRef(null); // Store interval ID
 
   function checkToken(twToken) {
     const intervalID = setInterval(myCallback, 1000, "Parameter 1");
@@ -54,6 +58,41 @@ function App() {
     return intervalID;
   }
 
+  const validateToken = async () => {
+    try {
+      const status = await validateAuthToken();
+      if (status == 200) {
+        clearTimeout(intervalRef.current);
+        intervalRef.current = null;
+        setAuthTokenExpiry();
+        checkTokenExpiry();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const checkTokenExpiry = () => {
+    const tokenExpiry = getItem("authToken_expiry");
+
+    if (tokenExpiry) {
+      const expiryTime = new Date(tokenExpiry).getTime();
+      const currentTime = Date.now();
+
+      const timeLeft = expiryTime - currentTime;
+      // Check if 60 minutes (3600000 milliseconds) have passed
+      if (timeLeft > 0) {
+        // If interval is not set, start it
+        if (!intervalRef.current) {
+          // Set the interval to refresh the token exactly when it expires
+          intervalRef.current = setTimeout(() => {
+            validateToken();
+          }, timeLeft);
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     // Get the token from the URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -66,6 +105,7 @@ function App() {
       setItem("twitchToken", twitchToken);
       setItem("refreshToken", refreshToken);
       setItem("reload", true);
+      setAuthTokenExpiry();
 
       axios({
         url: "https://id.twitch.tv/oauth2/validate",
@@ -82,7 +122,6 @@ function App() {
           // When this is uncommented, it auto logs the user back out as soon as they login
           // - dispatch(setIsAuthenticated(false));
           console.error("validate error: ", error);
-          return null;
         });
 
       // const tokenData = checkToken(twitchToken);
@@ -149,6 +188,8 @@ function App() {
     // checkAuthStatus();
   });
 
+  // Empty dependency array means this effect runs only on mount
+
   // useEffect(() => {
   //   if (isAuthenticated === false) {
   //     setItem('authToken', null);  // Clear invalid tokens
@@ -172,6 +213,20 @@ function App() {
     // Clean up the event listener on component unmount
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      checkTokenExpiry();
+    }
+
+    // Cleanup function to clear the interval on component unmount
+    return () => {
+      if (intervalRef.current) {
+        clearTimeout(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
   }, [isAuthenticated]);
 

@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserGames } from "../../redux/gamesSlice";
 import AuthenticatedNav from "../AuthenticatedNav/AuthenticatedNav";
 import axiosInstance from "../../service/interceptor";
+import { clearStorage, getItem, setItem } from "../../utils/localStorage";
+import axios from "axios";
+import { getUserInfo } from "../../service";
 
 function AuthenticatedComponent() {
   // const backendURL = "http://localhost:4000";
   const [data, setData] = useState([]);
+  const token = getItem("authToken");
+  const refreshToken = getItem("refreshToken");
 
   const isAuthenticated = useSelector(
     (state) => state.gamesReducer.isAuthenticated
@@ -50,9 +55,61 @@ function AuthenticatedComponent() {
   //     });
   // };
 
+  // const intervalIdRef = useRef(null); // Store the interval ID
+  // const startNewInterval = (intervalTime) => {
+  //   console.log("intervalTime", intervalTime);
+
+  //   // Clear any existing interval
+  //   if (intervalIdRef.current) {
+  //     clearInterval(intervalIdRef.current);
+  //   }
+
+  //   // Start a new interval
+  //   intervalIdRef.current = setInterval(async () => {
+  //     console.log("Interval is running");
+  //     clearInterval(intervalIdRef.current);
+  //     const time = await fetchTime(); // Use await to get the resolved value
+  //     console.log({ time });
+  //     if (time) startNewInterval(time);
+  //     // Your interval logic here
+  //   }, intervalTime); // 1000 ms = 1 second
+  // };
+
+  // const fetchTime = async () => {
+  //   try {
+  //     const response = await axiosInstance.post(
+  //       "http://localhost:4000/check-access-token"
+  //     );
+
+  //     // Log the response for debugging
+
+  //     return response?.data?.time; // Return the time from the original response
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const fetchTimeAndStartInterval = async () => {
+  //   if (isAuthenticated) {
+  //     const time = await fetchTime(); // Use await to get the resolved value
+  //     console.log({ time });
+  //     if (time) startNewInterval(time);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchTimeAndStartInterval(); // Call the async function
+  //   // Cleanup function to clear the interval on component unmount
+  //   return () => {
+  //     if (intervalIdRef.current) {
+  //       clearInterval(intervalIdRef.current);
+  //     }
+  //   };
+  // }, [isAuthenticated, token]);
+
   const fetchData = async () => {
     try {
-      const response = await axiosInstance.get(`/protected/userid`);
+      const response = await getUserInfo();
       setData(response.data);
       // Set local storage items based on response data
       window.localStorage.setItem("twitchId", response.data.twitchId);
@@ -60,7 +117,9 @@ function AuthenticatedComponent() {
       dispatch(setUserGames(response.data.games));
     } catch (error) {
       console.error("Error fetching data from protected route", error.message);
-      // No need to handle 401 or 403 errors here, they are handled in the interceptor
+      window.location.href = "/";
+      clearStorage();
+      setItem("reload", true);
     }
   };
 
