@@ -86,7 +86,10 @@ function App() {
         if (!intervalRef.current) {
           // Set the interval to refresh the token exactly when it expires
           intervalRef.current = setTimeout(() => {
-            validateToken();
+            if (document.visibilityState === "visible") {
+              // Call validateToken only if the tab is active
+              validateToken();
+            }
           }, timeLeft);
         }
       }
