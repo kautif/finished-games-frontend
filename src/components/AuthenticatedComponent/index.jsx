@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserGames } from "../../redux/gamesSlice";
+import { setIsAuthenticated, setUserGames } from "../../redux/gamesSlice";
 import AuthenticatedNav from "../AuthenticatedNav/AuthenticatedNav";
 import axiosInstance from "../../service/interceptor";
 import { clearStorage, getItem, setItem } from "../../utils/localStorage";
@@ -120,6 +120,7 @@ function AuthenticatedComponent() {
       window.location.href = "/";
       clearStorage();
       setItem("reload", true);
+      dispatch(setIsAuthenticated(false));
     }
   };
 
