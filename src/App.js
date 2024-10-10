@@ -81,7 +81,8 @@ function App() {
       const currentTime = Date.now();
 
       const timeLeft = expiryTime - currentTime;
-      // Check if 60 minutes (3600000 milliseconds) have passed
+
+      // Check if token has not expired yet
       if (timeLeft > 0) {
         // If interval is not set, start it
         if (!intervalRef.current) {
@@ -93,6 +94,11 @@ function App() {
             }
           }, timeLeft);
         }
+      } else if (isAuthenticated) {
+        // If token has expired but user is still authenticated, retry after 10 seconds
+        setTimeout(() => {
+          checkTokenExpiry();
+        }, 10000); // Retry after 10 seconds
       }
     }
   };
