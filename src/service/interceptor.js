@@ -1,5 +1,10 @@
 import axios from "axios";
-import { clearStorage, getItem, setItem } from "../utils/localStorage";
+import {
+  clearStorage,
+  getItem,
+  setAuthTokenExpiry,
+  setItem,
+} from "../utils/localStorage";
 
 const backendURL =
   process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -29,6 +34,7 @@ axiosInstance.interceptors.response.use(
     // Check for new auth_token in response headers and update localStorage if present
     if (response.headers?.auth_token) {
       setItem("authToken", response.headers?.auth_token);
+      setAuthTokenExpiry();
     }
     return response;
   },
