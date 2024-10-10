@@ -1,17 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthenticated, setUserGames } from "../../redux/gamesSlice";
 import AuthenticatedNav from "../AuthenticatedNav/AuthenticatedNav";
-import axiosInstance from "../../service/interceptor";
 import { clearStorage, getItem, setItem } from "../../utils/localStorage";
-import axios from "axios";
 import { getUserInfo } from "../../service";
+import "./index.css";
 
 function AuthenticatedComponent() {
-  // const backendURL = "http://localhost:4000";
-  const [data, setData] = useState([]);
-  const token = getItem("authToken");
-  const refreshToken = getItem("refreshToken");
+  const [data, setData] = useState();
 
   const isAuthenticated = useSelector(
     (state) => state.gamesReducer.isAuthenticated
@@ -130,14 +126,20 @@ function AuthenticatedComponent() {
 
   return (
     <div>
-      {isAuthenticated && (
-        <div>
-          {/* <h1>{JSON.stringify(data.message, null, 2)}</h1> */}
-          <h1>{data.message}</h1>
-          <h2>This data is from protected route</h2>
-          <AuthenticatedNav />
-        </div>
-      )}
+      {isAuthenticated &&
+        (data ? (
+          <div>
+            {/* <h1>{JSON.stringify(data.message, null, 2)}</h1> */}
+            <h1>{data?.message}</h1>
+            <h2>This data is from protected route</h2>
+            <AuthenticatedNav />
+          </div>
+        ) : (
+          <div className="fetching-data">
+            <h1>Fetching your data from server</h1>
+            <p>This may take a while</p>
+          </div>
+        ))}
     </div>
   );
 }
