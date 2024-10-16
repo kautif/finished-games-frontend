@@ -40,12 +40,12 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     if (error.response) {
-      // if (error.response.status === 401) {
-      //   // Handle unauthorized error
-      //   // Optionally, you could retry the request here
-      //   return axiosInstance.request(error.config); // Retry the original request
-      // }
-      if (error.response.status === 403 || error.response.status === 401) {
+      if (error.response.status === 401) {
+        // Handle unauthorized error
+        // Optionally, you could retry the request here
+        return axiosInstance.request(error.config); // Retry the original request
+      }
+      if (error.response.status === 403) {
         // Handle forbidden error
         window.location.href = "/";
         clearStorage();
