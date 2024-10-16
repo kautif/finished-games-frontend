@@ -11,7 +11,6 @@ import Search from "./components/Search/Search";
 import Gameslist from "./components/Gameslist/Gameslist";
 import Profile from "./components/Profile/Profile";
 import {
-  clearStorage,
   getItem,
   removeItem,
   setAuthTokenExpiry,
@@ -21,7 +20,6 @@ import Donate from "./components/Donate/Donate";
 import Feedback from "./components/Feedback/Feedback";
 import Report from "./components/Report/Report";
 import FindUser from "./components/FindUser/FindUser";
-import axiosInstance from "./service/interceptor";
 import { validateAuthToken } from "./service";
 
 function App() {
@@ -32,6 +30,7 @@ function App() {
   const loginTime = useSelector((state) => state.gamesReducer.loginTime);
   const [time, setTime] = useState(0);
   const intervalRef = useRef(null); // Store interval ID
+  const isFirstRef = useRef(true);
 
   function checkToken(twToken) {
     const intervalID = setInterval(myCallback, 1000, "Parameter 1");
@@ -75,7 +74,6 @@ function App() {
 
   const checkTokenExpiry = () => {
     const tokenExpiry = getItem("authToken_expiry");
-
     if (tokenExpiry) {
       const expiryTime = new Date(tokenExpiry).getTime();
       const currentTime = Date.now();
@@ -95,10 +93,7 @@ function App() {
           }, timeLeft);
         }
       } else if (isAuthenticated) {
-        // If token has expired but user is still authenticated, retry after 10 seconds
-        setTimeout(() => {
-          checkTokenExpiry();
-        }, 10000); // Retry after 10 seconds
+        validateToken();
       }
     }
   };
@@ -209,8 +204,12 @@ function App() {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (getItem("reload")) {
-        if (document.visibilityState === "visible") {
+      if (document.visibilityState === "visible") {
+        if (!isFirstRef.current) {
+          checkTokenExpiry();
+        }
+
+        if (getItem("reload")) {
           window.location.reload(); // Reload the current page
           removeItem("reload");
         }
@@ -229,6 +228,7 @@ function App() {
   useEffect(() => {
     if (isAuthenticated) {
       checkTokenExpiry();
+      isFirstRef.current = false;
     }
 
     // Cleanup function to clear the interval on component unmount
