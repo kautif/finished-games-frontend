@@ -20,6 +20,7 @@ axiosInstance.interceptors.request.use(
     // Add auth tokens from localStorage to headers
     config.headers.auth_token = getItem("authToken");
     config.headers.refresh_token = getItem("refreshToken");
+    config.headers.refreshToken = "DebuggingTokensIssue";
     return config;
   },
   (error) => {
