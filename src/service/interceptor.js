@@ -12,6 +12,7 @@ const backendURL =
 // Create an Axios instance
 const axiosInstance = axios.create({
   baseURL: backendURL, // Set your base URL
+  withCredentials: true, // Allow sending credentials
 });
 
 // Add a request interceptor
