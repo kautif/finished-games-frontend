@@ -1,16 +1,14 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setIsAuthenticated } from "../../redux/gamesSlice";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./AuthenticatedNav.css";
-import { clearStorage, getItem } from "../../utils/localStorage";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getItem } from "../../utils/localStorage";
+import { setIsAuthenticated } from "../../redux/gamesSlice";
 import { handleUnauthorizedRedirect } from "../../utils";
+import "./AuthenticatedNav.css";
 
 export default function AuthenticatedNav() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const backendURL =
     process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -20,7 +18,7 @@ export default function AuthenticatedNav() {
       method: "POST",
       headers: {
         Accept: "application/json",
-        twitch_token: getItem("twitchToken"),
+        authorization: getItem("twitchToken"),
       },
     })
       .then((response) => {
