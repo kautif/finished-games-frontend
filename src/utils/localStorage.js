@@ -41,5 +41,5 @@ export const keyExists = (key) => {
 };
 
 export const setAuthTokenExpiry = () => {
-  setItem("authToken_expiry", new Date(Date.now() + 15000).toISOString());
+  setItem("authToken_expiry", new Date(Date.now() + 3600000).toISOString());
 };
