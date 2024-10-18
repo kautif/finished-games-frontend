@@ -14,7 +14,7 @@ export default function AuthenticatedNav() {
     process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
   function logout() {
     axios({
-      url: `${backendURL}logout`,
+      url: `${backendURL}/logout`,
       method: "POST",
       headers: {
         Accept: "application/json",
