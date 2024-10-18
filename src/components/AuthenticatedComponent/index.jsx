@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsAuthenticated, setUserGames } from "../../redux/gamesSlice";
+import { handleUnauthorizedRedirect } from "../../utils";
 import AuthenticatedNav from "../AuthenticatedNav/AuthenticatedNav";
-import { clearStorage, getItem, setItem } from "../../utils/localStorage";
+import { setIsAuthenticated, setUserGames } from "../../redux/gamesSlice";
 import { getUserInfo } from "../../service";
 import "./index.css";
 
@@ -106,6 +106,7 @@ function AuthenticatedComponent() {
   const fetchData = async () => {
     try {
       const response = await getUserInfo();
+
       setData(response.data);
       // Set local storage items based on response data
       window.localStorage.setItem("twitchId", response.data.twitchId);
@@ -113,9 +114,7 @@ function AuthenticatedComponent() {
       dispatch(setUserGames(response.data.games));
     } catch (error) {
       console.error("Error fetching data from protected route", error.message);
-      window.location.href = "/";
-      clearStorage();
-      setItem("reload", true);
+      handleUnauthorizedRedirect();
       dispatch(setIsAuthenticated(false));
     }
   };
