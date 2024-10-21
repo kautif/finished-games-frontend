@@ -18,6 +18,17 @@ export default function Profile (match) {
     // const backendURL = "http://localhost:4000";
     const [user, setUser] = useState({});
     const [userGames, setUserGames] = useState([]);
+
+    const [title, setTitle] = useState("");
+    const [gameSummary, setGameSummary] = useState("");
+    const [gameImg, setGameImg] = useState("");
+    const [gameDate, setGameDate] = useState("");
+    const [gameRating, setGameRating] = useState("");
+    const [gameRank, setGameRank] = useState("");
+
+    const [showModal, setShowModal] = useState(false);
+
+
     const [gameType, setGameType] = useState("all");
     let gamesArr = [];
     let games;
@@ -155,6 +166,15 @@ export default function Profile (match) {
                         <h3>Comments</h3>
                         <p className="user-game__summary">{game.summary}</p>
                     </div>
+                        <p className="user-game__readmore" onClick={() => {
+                            setShowModal(true);
+                            setTitle(game.name);
+                            setGameSummary(game.summary);
+                            setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
+                            setGameRank(game.rank);
+                            setGameRating(game.rating);
+                            setGameDate(new Date(game.date_added).toDateString().substring(4));
+                        }}>Read More</p>
                 </div>
             })
         }
@@ -219,6 +239,38 @@ export default function Profile (match) {
                     </div>
                     <div>
                         <h2>Game Type</h2>
+                        {showModal && 
+                        <div id="user-game__modal">
+                            <p className="user-game__modal__close" onClick={() => {
+                                setShowModal(false);
+                            }}>X</p>
+                            <div id="user-game__modal__selected">
+                                <div className="user-game__modal__flex">
+                                    <div>
+                                        <h1 className="user-game__modal__title">{title}</h1>
+                                        <img className="user-game__modal__img" src={gameImg} alt={`${title} cover`} />
+                                    </div>
+                                    <div className="user-game__modal__text-container">
+                                        <div>
+                                            <h2 className="user-game__modal__text">Comments</h2>
+                                            <p className="user-game__modal__summary">{gameSummary}</p>
+                                        </div>
+                                        <div className="user-game__modal__text-flex">
+                                            <p className="user-game__modal__text">Date: </p>
+                                            <p className="user-game__modal__date">{gameDate}</p>
+                                        </div>
+                                        <div className="user-game__modal__text-flex">
+                                            <p className="user-game__modal__text">Game Status: </p>
+                                            <p className="user-game__modal__rank">{gameRank.toUpperCase()}</p>
+                                        </div>
+                                        <div className="user-game__modal__text-flex">
+                                            <p className="user-game__modal__text">Rating: </p>
+                                            <p className="user-game__modal__rating">{gameRating}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>}
                         <form>
                             <select onChange={(e) => {
                                 setGameType(e.target.value);
