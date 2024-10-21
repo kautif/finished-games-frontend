@@ -11,11 +11,11 @@ import Search from "./components/Search/Search";
 import Gameslist from "./components/Gameslist/Gameslist";
 import Profile from "./components/Profile/Profile";
 import {
-  clearStorage,
   getItem,
-  removeItem,
+  getSessionitem,
   setAuthTokenExpiry,
   setItem,
+  setSessionitem,
 } from "./utils/localStorage";
 import Donate from "./components/Donate/Donate";
 import Feedback from "./components/Feedback/Feedback";
@@ -23,6 +23,7 @@ import Report from "./components/Report/Report";
 import FindUser from "./components/FindUser/FindUser";
 import axiosInstance from "./service/interceptor";
 import { validateAuthToken } from "./service";
+import { handleUnauthorizedRedirect } from "./utils";
 
 function App() {
   const dispatch = useDispatch();
@@ -109,12 +110,12 @@ function App() {
     const authToken = urlParams.get("auth_token");
     const refreshToken = urlParams.get("refresh_token");
     const twitchToken = urlParams.get("twitch_token");
-
     if (authToken && twitchToken && refreshToken) {
       setItem("authToken", authToken);
       setItem("twitchToken", twitchToken);
       setItem("refreshToken", refreshToken);
-      setItem("reload", true);
+      setItem("reloadLogin", true);
+      setSessionitem("reloadLogin", true);
       setAuthTokenExpiry();
 
       axios({
@@ -209,10 +210,16 @@ function App() {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (getItem("reload")) {
-        if (document.visibilityState === "visible") {
+      if (document.visibilityState === "visible") {
+        if (isAuthenticated) {
+          checkTokenExpiry();
+          if (!getItem("authToken")) {
+            handleUnauthorizedRedirect();
+          }
+        }
+        if (getItem("reloadLogin") && !getSessionitem("reloadLogin")) {
           window.location.reload(); // Reload the current page
-          removeItem("reload");
+          setSessionitem("reloadLogin", true);
         }
       }
     };
@@ -230,7 +237,6 @@ function App() {
     if (isAuthenticated) {
       checkTokenExpiry();
     }
-
     // Cleanup function to clear the interval on component unmount
     return () => {
       if (intervalRef.current) {

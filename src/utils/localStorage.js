@@ -43,3 +43,26 @@ export const keyExists = (key) => {
 export const setAuthTokenExpiry = () => {
   setItem("authToken_expiry", new Date(Date.now() + 3600000).toISOString());
 };
+
+export const setSessionitem = (key, value) => {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch (error) {
+    console.error("Error setting item in local storage", error);
+  }
+};
+export const getSessionitem = (key) => {
+  try {
+    return sessionStorage.getItem(key);
+  } catch (error) {
+    console.error("Error setting item in local storage", error);
+  }
+};
+
+export const clearSessionStorage = () => {
+  try {
+    sessionStorage.clear();
+  } catch (error) {
+    console.error("Error clearing local storage", error);
+  }
+};
