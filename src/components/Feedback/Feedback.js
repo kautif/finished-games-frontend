@@ -7,6 +7,7 @@ export default function Feedback () {
     const [formData, setFormData] = useState({});
     const [topic, setTopic] = useState("games");
     const [message, setMessage] = useState("");
+    const [feedbackSent, setFeedbackSent] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     const handleSubmit = async (e) => {
         try {
@@ -72,9 +73,11 @@ export default function Feedback () {
                     onClick={(e) => {
                         e.preventDefault();
                         handleSubmit(e);
+                        setFeedbackSent(true);
                     }}
                 />
             </form>
+            {feedbackSent && <p>Feedback Submitted</p>}
         </div>
     ) 
 }

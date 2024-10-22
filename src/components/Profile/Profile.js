@@ -155,7 +155,7 @@ export default function Profile (match) {
                         <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
                     </div>
                     <div className="user-game__rating">
-                        <label>Rating: </label>
+                        <p>Rating: </p>
                         <p className="user-game__rating__num">{game.rating === 0 ? "-" : game.rating}</p>    
                     </div>
                     <div className="user-game__status-container">
@@ -249,6 +249,7 @@ export default function Profile (match) {
                                     <div>
                                         <h1 className="user-game__modal__title">{title}</h1>
                                         <img className="user-game__modal__img" src={gameImg} alt={`${title} cover`} />
+                                        <p className="user-game__scroll-warning">(scroll if needed)</p>
                                     </div>
                                     <div className="user-game__modal__text-container">
                                         <div>
