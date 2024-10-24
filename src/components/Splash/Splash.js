@@ -9,7 +9,7 @@ export default function Splash () {
             <Header />
             <div>
                 <TwitchLoginBtn />
-                balls
+                balls2
             </div>
         </div>
     )

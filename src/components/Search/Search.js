@@ -39,7 +39,7 @@ export default function Search () {
         })
         .then(response => {
             setGames(response.data.results);
-        }).catch(error => {
+        }).catch((error) => {
             console.error("error: ", error);
         })
     }
@@ -88,7 +88,7 @@ export default function Search () {
                 console.log("addGame: ", result)
                 getUserGames();
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log("addGame error: ", error);
             })
     }
@@ -241,7 +241,8 @@ export default function Search () {
                     console.log(customDate);
                     let titleField = document.getElementsByClassName('custom-game__field__text')[0];
                     const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
-                    if (!hasInvalidCharacters) {
+                    if (!hasInvalidCharacters && customGameTitle !== "") {
+                        console.log("customGameTitle: ", customGameTitle);
                             addGame(customGameTitle, "", customSummary, customStatus, customDate, 0, customRating, customGame);
                             // <p className="search-result__add-btn" onClick={(e) => 
                             //     addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
@@ -252,9 +253,8 @@ export default function Search () {
                             document.getElementById("custom-game__status").value = "playing";
                             defaultDate(document.getElementsByClassName("custom-game__date"), 0);
                             document.getElementById("custom-game__rating__num").value = "10";
-
                     } else {
-                        setCustomGameMsg("No special characters (except '&')");
+                        setCustomGameMsg("No special characters (except '&') and game title can't be empty");
                     }
                 }}>Add Game</p>
                 <div id="custom-game__notif-container">
