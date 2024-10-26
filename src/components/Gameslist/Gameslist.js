@@ -8,13 +8,13 @@ import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
 
 export default function Gameslist (){
-    const navigate = useNavigate();
 
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
     const [userGames, setUserGames] = useState([]);
+    const [loading, setLoading] = useState();
 
     let selectedGameTypeArr = [];
     const [gameType, setGameType] = useState("all");
@@ -34,10 +34,9 @@ export default function Gameslist (){
     let phase3Arr;
     let matchArr;
 
-
     useEffect(() => {
         getUserGames();
-    }, [])
+    }, [loading])
 
     useEffect(() => {
         if (userGames.length === 0) {
@@ -53,6 +52,7 @@ export default function Gameslist (){
         console.log("phase3Arr: ", phase3Arr);
         getGameDate(userGames);
         getGameSummary(userGames);
+        setLoading(false);
     }, [userGames])
 
     useEffect(() => {
@@ -186,14 +186,23 @@ export default function Gameslist (){
 
     async function getUserGames() {
         twitchId = window.localStorage.getItem("twitchId");
-
+        setLoading(true);
         await axios(`${backendURL}/games`, {
             method: "get",
             params: {
                 twitchName: twitchName
             }
         }).then(result => {
-            setUserGames(result.data.response.games);
+            if (result.data.response === null) {
+                console.log("no games: ", result);
+            } else {
+                setUserGames(result.data.response.games);
+                console.log("found games: ", result.data.response.games);
+            }
+        }).catch(err => {
+            console.error("Failed to get Games: ", err.message);
+        }).finally(end => {
+            setLoading(false);
         })
     }
 
@@ -277,7 +286,8 @@ export default function Gameslist (){
     }
 
     return (
-        <div className="gameslist-games-container"> 
+        <div className="gameslist-games-container">
+            {/* {!loading && getUserGames()}  */}
             <h1>Your Games</h1>
             <div>
                 <p>Filter Games</p>

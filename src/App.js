@@ -5,7 +5,7 @@ import AuthenticatedComponent from "./components/AuthenticatedComponent"; // the
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsAuthenticated } from "./redux/gamesSlice";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
 import Search from "./components/Search/Search";
 import Gameslist from "./components/Gameslist/Gameslist";
@@ -197,6 +197,7 @@ function App() {
             <Routes>
               <Route exact path="/search" element={<Search />} />
               <Route exact path="/games" element={<Gameslist />} />
+              <Route exact path ="/" element={<Navigate to="/games" />}/>
               <Route exact path="/finduser" element={<FindUser />}></Route>
               <Route exact path="/:user" element={<Profile />}></Route>
               <Route exact path="/donate" element={<Donate />}></Route>
