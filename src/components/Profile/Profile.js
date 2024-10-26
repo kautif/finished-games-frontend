@@ -249,7 +249,6 @@ export default function Profile (match) {
                                     <div>
                                         <h1 className="user-game__modal__title">{title}</h1>
                                         <img className="user-game__modal__img" src={gameImg} alt={`${title} cover`} />
-                                        <p className="user-game__scroll-warning">(scroll if needed)</p>
                                     </div>
                                     <div className="user-game__modal__text-container">
                                         <div>
@@ -257,12 +256,12 @@ export default function Profile (match) {
                                             <p className="user-game__modal__summary">{gameSummary}</p>
                                         </div>
                                         <div className="user-game__modal__text-flex">
-                                            <p className="user-game__modal__text">Date: </p>
-                                            <p className="user-game__modal__date">{gameDate}</p>
-                                        </div>
-                                        <div className="user-game__modal__text-flex">
                                             <p className="user-game__modal__text">Game Status: </p>
                                             <p className="user-game__modal__rank">{gameRank.toUpperCase()}</p>
+                                        </div>
+                                        <div className="user-game__modal__text-flex">
+                                            <p className="user-game__modal__text">Date: </p>
+                                            <p className="user-game__modal__date">{gameDate}</p>
                                         </div>
                                         <div className="user-game__modal__text-flex">
                                             <p className="user-game__modal__text">Rating: </p>
@@ -297,7 +296,11 @@ export default function Profile (match) {
                         }}/>
                     </form>
                 </div>
-                <div id="profile-results-container" className="profile-results">
+                <div id="profile-results-container" className="profile-results" onClick={() => {
+                    if (showModal) {
+                        setShowModal(false);
+                    }
+                }}>
                     {user.games !== undefined && 
                     gamesList
                     }

@@ -5,9 +5,27 @@ import "./FindUser.css";
 export default function FindUser () {
     const [user, setUser] = useState("");
     const [foundUsers, setFoundUsers] = useState([]);
-    
-
+    const [userList, setUserList] = useState([]);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+
+    function getUserList () {
+        axios(
+            {
+                url: `${backendURL}/getusers`,
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json'
+                },
+                params: {
+                    user: ""
+                }
+            }).then(response => {
+                console.log("backend response: ", response);
+                setUserList(response.data.users);
+            }).catch(err => {
+                console.error("Get all users Error: ", err.message);
+            })
+    }
 
     function getUsers (user) {
         axios(
@@ -29,6 +47,14 @@ export default function FindUser () {
     }
 
     useEffect(() => {
+        getUserList("");
+    }, [])
+
+    useEffect(() => {
+        console.log("user list: ", userList);
+    })
+
+    useEffect(() => {
         console.log(foundUsers);
     }, [foundUsers])
 
@@ -40,6 +66,9 @@ export default function FindUser () {
                     e.preventDefault();
                     getUsers(user);
                 }}/>
+            </form>
+            <form>
+                <input type="submit" value="Submit" />
             </form>
             <div className="find-user__results">
                 {foundUsers.map(foundUser => {
