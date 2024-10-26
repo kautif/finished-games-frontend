@@ -68,6 +68,21 @@
     width: 100%;
 }
 
+.user-game__rating__red {
+    color: rgba(189, 10, 10, 0.942);
+    font-weight: bolder;
+}
+
+.user-game__rating__yellow {
+    color: rgb(215, 215, 12);
+    font-weight: bolder;
+}
+
+.user-game__rating__green {
+    color: rgb(10, 109, 10);
+    font-weight: bolder
+}
+
 .user-game__status-container {
     display: flex;
     justify-content: space-around;

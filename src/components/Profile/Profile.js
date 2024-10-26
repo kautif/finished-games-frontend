@@ -156,7 +156,7 @@ export default function Profile (match) {
                     </div>
                     <div className="user-game__rating">
                         <p>Rating: </p>
-                        <p className="user-game__rating__num">{game.rating === 0 ? "-" : game.rating}</p>    
+                        <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>    
                     </div>
                     <div className="user-game__status-container">
                         <p>Game Status</p>
