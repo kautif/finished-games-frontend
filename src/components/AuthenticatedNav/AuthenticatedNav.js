@@ -33,13 +33,13 @@ export default function AuthenticatedNav() {
   return (
     <ul className="auth-nav">
       <Link className="auth-nav__link" to="/games">
-        Games
+        My Games
       </Link>
       <Link className="auth-nav__link" to="/search">
         Add Game
       </Link>
-      <Link className="auth-nav__link" to="/finduser">
-        Find User
+      <Link className="auth-nav__link" to="/browseusers">
+        Browse Users
       </Link>
       <Link className="auth-nav__link" to="/donate">
         Donate
