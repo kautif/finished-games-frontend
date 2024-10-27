@@ -195,7 +195,7 @@ function App() {
           <>
             <AuthenticatedComponent />
             <Routes>
-              <Route exact path="/search" element={<Search />} />
+              <Route exact path="/discover" element={<Search />} />
               <Route exact path="/games" element={<Gameslist />} />
               <Route exact path ="/" element={<Navigate to="/games" />}/>
               <Route exact path="/browseusers" element={<FindUser />}></Route>

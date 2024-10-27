@@ -10,6 +10,9 @@
     flex-direction: column;
     width: 30%;
 }
+.user-game__img:hover {
+    cursor: pointer;
+}
 
 .user-game__img img {
     width: 390px;
@@ -107,6 +110,10 @@
     z-index: 9999999;
     top: 12%;
     left: 14%;
+}
+
+.user-game__modal__close:hover {
+    cursor: pointer;
 }
 
 .user-game__modal__close {

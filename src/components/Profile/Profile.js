@@ -149,7 +149,15 @@ export default function Profile (match) {
             gamesList = games.map(game => {
                 return <div className="user-game">
                     <div className="user-game__title"><h2>{game.name}</h2></div>
-                    <div className="user-game__img"><img src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} /></div>
+                    <div className="user-game__img" onClick={() => {
+                        setShowModal(true);
+                        setTitle(game.name);
+                        setGameSummary(game.summary);
+                        setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
+                        setGameRank(game.rank);
+                        setGameRating(game.rating);
+                        setGameDate(new Date(game.date_added).toDateString().substring(4));
+                    }}><img src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} /></div>
                     <div className="user-game__date-container">
                         <p>Date:</p>
                         <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
@@ -251,10 +259,6 @@ export default function Profile (match) {
                                         <img className="user-game__modal__img" src={gameImg} alt={`${title} cover`} />
                                     </div>
                                     <div className="user-game__modal__text-container">
-                                        <div>
-                                            <h2 className="user-game__modal__text">Comments</h2>
-                                            <p className="user-game__modal__summary">{gameSummary}</p>
-                                        </div>
                                         <div className="user-game__modal__text-flex">
                                             <p className="user-game__modal__text">Game Status: </p>
                                             <p className="user-game__modal__rank">{gameRank.toUpperCase()}</p>
@@ -266,6 +270,10 @@ export default function Profile (match) {
                                         <div className="user-game__modal__text-flex">
                                             <p className="user-game__modal__text">Rating: </p>
                                             <p className="user-game__modal__rating">{gameRating}</p>
+                                        </div>
+                                        <div>
+                                            <h2 className="user-game__modal__text">Comments</h2>
+                                            <p className="user-game__modal__summary">{gameSummary}</p>
                                         </div>
                                     </div>
                                 </div>
