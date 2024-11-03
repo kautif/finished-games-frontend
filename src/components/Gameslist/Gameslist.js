@@ -298,7 +298,7 @@ export default function Gameslist (){
             <h1>Your Games</h1>
             <Container>
                 <Row>
-                    <Col>
+                    <Col lg={3} sm={6} xs={12}>
                         <h2>Filter Games</h2>
                         <Form.Select onChange={(e) => {
                             setGameState(e.target.value);
@@ -311,7 +311,7 @@ export default function Gameslist (){
                             <option value="dropped">Dropped</option>
                         </Form.Select>
                     </Col>
-                    <Col>
+                    <Col lg={3} sm={6} xs={12}>
                         <h2>Game Type</h2>
                         <Form className="w-33 mx-auto">
                             <Form.Select onChange={(e) => {
@@ -327,7 +327,7 @@ export default function Gameslist (){
                             </Form.Select>
                         </Form>
                     </Col>
-                    <Col>
+                    <Col lg={3} sm={6} xs={12}>
                         <h2>Sorting</h2>
                         <Form>
                             <Form.Select id="sort-direction" onChange={(e) => {
@@ -345,7 +345,7 @@ export default function Gameslist (){
                             </Form.Select>
                         </Form>
                     </Col>
-                    <Col>
+                    <Col lg={3} sm={6} xs={12}>
                         <Form className="w-33 mx-auto">
                         <h2>Search</h2>
                         <Form.Control id="gameslist-games__search" type="text" onChange={(e) => {
