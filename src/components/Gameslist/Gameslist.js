@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
+import Image from "react-bootstrap/Image";
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import axios from "axios";
 import "./Gameslist.css";
 import smwCart from "../../assets/vh_smw_cart.webp";
@@ -223,16 +228,17 @@ export default function Gameslist (){
             gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
         } else {
             gamesList = games.map((game, i) => {
-                return <div className="gameslist-game">
+                return <Col xl={3} lg={4} sm={6} xs={12}><Row className="gameslist-game d-flex flex-column mx-2">
                     <h2 className="gameslist-game__title">{game.name}</h2>
-                    <img className="gameslist-game__img" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} />
-                    <div className="gameslist-game__date-container">
+                    <Image className="gameslist-game__img align-self-center" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded />
+                    <div className="gameslist-game__date-container flex-column justify-content-around">
                         <label>Date:</label>
-                        <input className="gameslist-game__date" type="date" name="date-added" />
+                        {/* <input className="gameslist-game__date" type="date" name="date-added" /> */}
+                        <Form.Control type="date" className="gameslist-game__date" name="date-added"></Form.Control>
                     </div>
-                    <div className="gameslist-game__rating">
+                    <div className="gameslist-game__rating flex-column justify-content-around">
                         <label>Rating: </label>
-                        <select className="gameslist-game__rating__num">
+                        <Form.Select className="gameslist-game__rating__num">
                             <option selected={game.rating === 10 ? true : false} value="10">10</option>
                             <option selected={game.rating === 9 ? true : false} value="9">9</option>
                             <option selected={game.rating === 8 ? true : false} value="8">8</option>
@@ -244,18 +250,18 @@ export default function Gameslist (){
                             <option selected={game.rating === 2 ? true : false} value="2">2</option>
                             <option selected={game.rating === 1 ? true : false} value="1">1</option>
                             <option selected={game.rating === 0 ? true : false} value="0">-</option>
-                        </select>    
+                        </Form.Select>
                     </div>
-                    <div className="gameslist-game__status">
+                    <div className="gameslist-game__status flex-column justify-content-around my-4">
                         <label>Game Status</label>
-                        <select className="gameslist-game__rank">
+                        <Form.Select className="gameslist-game__rank">
                             <option selected={game.rank === "playing" ? true : false} value="playing">Playing</option>
                             <option selected={game.rank === "upcoming" ? true : false} value="upcoming">Upcoming</option>
                             <option selected={game.rank === "completed" ? true : false} value="completed">Completed</option>
                             <option selected={game.rank === "dropped" ? true : false} value="dropped">Dropped</option>
-                        </select>
+                        </Form.Select>
                     </div>
-                    <textarea className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game"></textarea>
+                    <Form.Control as="textarea" className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game"/>
                     <div className="gameslist-btn-container">
                         <p className="gameslist-game__add-btn" onClick={(e) => {
                             updateSummary(game.name, document.getElementsByClassName("gameslist-game__summary")[i].value, document.getElementsByClassName("gameslist-game__date")[i].value, document.getElementsByClassName("gameslist-game__rank")[i].value, document.getElementsByClassName("gameslist-game__rating__num")[i].value);
@@ -268,7 +274,8 @@ export default function Gameslist (){
                             }, 390)
                         }}>Delete</p>
                     </div>
-                </div>
+                </Row>
+                </Col>
             })
         }        
     }
@@ -289,62 +296,72 @@ export default function Gameslist (){
         <div className="gameslist-games-container">
             {/* {!loading && getUserGames()}  */}
             <h1>Your Games</h1>
-            <div>
-                <p>Filter Games</p>
-                <select onChange={(e) => {
-                    setGameState(e.target.value);
-                }} className="gameslist-games__filter">
-                    <option disabled selected>Select Game State</option>
-                    <option value="all">Show All Games</option>
-                    <option value="playing">Playing</option>
-                    <option value="upcoming">Upcoming</option>
-                    <option value="completed">Completed</option>
-                    <option value="dropped">Dropped</option>
-                </select>
-            </div>
-            <div>
-                <h2>Sorting</h2>
-                <form>
-                    <select id="sort-direction" onChange={(e) => {
-                        setSortDirection(e.target.value);
-                    }}>
-                        <option value="ascending">Ascending</option>
-                        <option value="descending" >Descending</option>
-                    </select>
-                    <select id="sort-focus" onChange={(e) => {
-                        setSortFocus(e.target.value);
-                    }}>
-                        <option value="alpha">Alphabetical</option>
-                        <option value="date">Date</option>
-                        <option value="rating">Rating</option>
-                    </select>
-                </form>
-            </div>
-            <div>
-                <h2>Game Type</h2>
-                <form>
-                    <select onChange={(e) => {
-                        setGameType(e.target.value);
-                    }}>
-                        <option value="all">All</option>
-                        <option value="regular">Regular</option>
-                        <option value="custom">All Custom</option>
-                        <option value="other">Other</option>
-                        <option value="mario">Super Mario</option>
-                        <option value="pokemon">Pokemon</option>
-                        <option value="minecraft">Minecraft Mod</option>
-                    </select>
-                </form>
-            </div>
-            <form>
-                <h2>Search</h2>
-                <input id="gameslist-games__search" type="text" onChange={(e) => {
-                    setSearch(e.target.value);
-                }}/>
-            </form>
-            <div className="gameslist-games">
+            <Container>
+                <Row>
+                    <Col>
+                        <h2>Filter Games</h2>
+                        <Form.Select onChange={(e) => {
+                            setGameState(e.target.value);
+                        }} className="gameslist-games__filter w-33 mx-auto">
+                            <option disabled selected>Select Game State</option>
+                            <option value="all">Show All Games</option>
+                            <option value="playing">Playing</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                            <option value="dropped">Dropped</option>
+                        </Form.Select>
+                    </Col>
+                    <Col>
+                        <h2>Game Type</h2>
+                        <Form className="w-33 mx-auto">
+                            <Form.Select onChange={(e) => {
+                                setGameType(e.target.value);
+                            }}>
+                                <option value="all">All</option>
+                                <option value="regular">Regular</option>
+                                <option value="custom">All Custom</option>
+                                <option value="other">Other</option>
+                                <option value="mario">Super Mario</option>
+                                <option value="pokemon">Pokemon</option>
+                                <option value="minecraft">Minecraft Mod</option>
+                            </Form.Select>
+                        </Form>
+                    </Col>
+                    <Col>
+                        <h2>Sorting</h2>
+                        <Form>
+                            <Form.Select id="sort-direction" onChange={(e) => {
+                                setSortDirection(e.target.value);
+                            }}>
+                                <option value="ascending">Ascending</option>
+                                <option value="descending">Descending</option>
+                            </Form.Select>
+                            <Form.Select id="sort-focus" onChange={(e) => {
+                                setSortFocus(e.target.value);
+                            }}>
+                                <option value="alpha">Alphabetical</option>
+                                <option value="date">Date</option>
+                                <option value="rating">Rating</option>
+                            </Form.Select>
+                        </Form>
+                    </Col>
+                    <Col>
+                        <Form className="w-33 mx-auto">
+                        <h2>Search</h2>
+                        <Form.Control id="gameslist-games__search" type="text" onChange={(e) => {
+                            setSearch(e.target.value);
+                        }}/>
+                        </Form>
+                    </Col>
+
+                </Row>
+            </Container>
+            {/* <div className="gameslist-games">
                 {gamesList}
-            </div>
+            </div> */}
+            <Container className="gameslist-games">
+                {gamesList}
+            </Container>
 
             {showModal ? <div className="gameslist-games__update">
                 <p>Summary for {gameName} has been updated</p>

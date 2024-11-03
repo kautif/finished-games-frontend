@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Image from "react-bootstrap/Image";
 import axios from "axios";
 import Custom from "../Custom/Custom";
 import "./Search.css";

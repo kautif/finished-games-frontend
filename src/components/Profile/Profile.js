@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import { setReportUser } from "../../redux/gamesSlice";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Column from "react-bootstrap/Col";
+import Stack from "react-bootstrap/Stack";
+import Image from "react-bootstrap/Image";
 import axios from "axios";
 import "./Profile.css";
 import smwCart from "../../assets/vh_smw_cart.webp";
 import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
+import Col from "react-bootstrap/Col";
 
 export default function Profile (match) {
     const dispatch = useDispatch();
@@ -148,8 +154,33 @@ export default function Profile (match) {
         } else {
             gamesList = games.map(game => {
                 return <div className="user-game">
-                    <div className="user-game__title"><h2>{game.name}</h2></div>
-                    <div className="user-game__img" onClick={() => {
+                <div className="user-game__title"><h2>{game.name}</h2></div>
+                <div className="user-game__img" onClick={() => {
+                    setShowModal(true);
+                    setTitle(game.name);
+                    setGameSummary(game.summary);
+                    setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
+                    setGameRank(game.rank);
+                    setGameRating(game.rating);
+                    setGameDate(new Date(game.date_added).toDateString().substring(4));
+                }}><Image src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded /></div>
+                <div className="user-game__date-container">
+                    <p>Date:</p>
+                    <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
+                </div>
+                <div className="user-game__rating">
+                    <p>Rating: </p>
+                    <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>    
+                </div>
+                <div className="user-game__status-container">
+                    <p>Game Status</p>
+                    <p className="user-game__status">{game.rank.toUpperCase()}</p>
+                </div>
+                <div className="user-game__summary-container">
+                    <h3>Comments</h3>
+                    <p className="user-game__summary">{game.summary}</p>
+                </div>
+                    <p className="user-game__readmore" onClick={() => {
                         setShowModal(true);
                         setTitle(game.name);
                         setGameSummary(game.summary);
@@ -157,33 +188,14 @@ export default function Profile (match) {
                         setGameRank(game.rank);
                         setGameRating(game.rating);
                         setGameDate(new Date(game.date_added).toDateString().substring(4));
-                    }}><img src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} /></div>
-                    <div className="user-game__date-container">
-                        <p>Date:</p>
-                        <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
-                    </div>
-                    <div className="user-game__rating">
-                        <p>Rating: </p>
-                        <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>    
-                    </div>
-                    <div className="user-game__status-container">
-                        <p>Game Status</p>
-                        <p className="user-game__status">{game.rank.toUpperCase()}</p>
-                    </div>
-                    <div className="user-game__summary-container">
-                        <h3>Comments</h3>
-                        <p className="user-game__summary">{game.summary}</p>
-                    </div>
-                        <p className="user-game__readmore" onClick={() => {
-                            setShowModal(true);
-                            setTitle(game.name);
-                            setGameSummary(game.summary);
-                            setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
-                            setGameRank(game.rank);
-                            setGameRating(game.rating);
-                            setGameDate(new Date(game.date_added).toDateString().substring(4));
-                        }}>Read More</p>
-                </div>
+                    }}>Read More</p>
+            </div>
+                // <Row>
+                //             <Column>
+                //                 <div className="user-game__title"><h2>{game.name}</h2></div>
+                //                 <Image width="390px" height="250px" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded />
+                //             </Column>
+                //         </Row>
             })
         }
     }
@@ -304,7 +316,7 @@ export default function Profile (match) {
                         }}/>
                     </form>
                 </div>
-                <div id="profile-results-container" className="profile-results" onClick={() => {
+                <Stack gap={3} direction="horizontal" id="profile-results-container" className="profile-results" onClick={() => {
                     if (showModal) {
                         setShowModal(false);
                     }
@@ -312,7 +324,7 @@ export default function Profile (match) {
                     {user.games !== undefined && 
                     gamesList
                     }
-                </div>
+                </Stack>
             </div>
         )
     }

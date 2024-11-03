@@ -45,6 +45,9 @@
     height: 90px;
     margin-left: auto;
     margin-right: auto;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
 }
 
 .user-game__rating {

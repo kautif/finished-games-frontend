@@ -5,6 +5,7 @@
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
+    align-items: baseline;
 }
 
 .search-game__name {
