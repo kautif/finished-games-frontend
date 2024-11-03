@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./FindUser.css";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Image from "react-bootstrap/Image";
+import Form from 'react-bootstrap/Form';
 
 export default function FindUser () {
     const [user, setUser] = useState("");
@@ -59,28 +64,27 @@ export default function FindUser () {
     }, [foundUsers])
 
     return (
-        <div>
-            <form>
+        <Container>
+            <Form>
                 <input placeholder="Enter username or term" onChange={(e) => setUser(e.target.value.toLowerCase())}/>
                 <input type="submit" value="Submit" onClick={(e) => {
                     e.preventDefault();
                     getUsers(user);
                 }}/>
-            </form>
-            <form>
-                <input type="submit" value="Submit" />
-            </form>
-            <div className="find-user__results">
+            </Form>
+            <div className="find-user__results d-flex flex-wrap">
                 {foundUsers.map(foundUser => {
                     return (
-                        <div>
-                            <h1>{foundUser.twitch_default}</h1>
-                            <img src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`}/>
-                            <p className="found-user__btn"><a href={`/${foundUser.twitchName}`}>See Profile</a></p>
-                        </div>
+                        <Row>
+                            <Col>
+                                <h1 className="mt-4">{foundUser.twitch_default}</h1>
+                                <Image src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>
+                                <p className="found-user__btn mt-3"><a href={`/${foundUser.twitchName}`}>See Profile</a></p>
+                            </Col>
+                        </Row>
                     )
                 })}
             </div>
-        </div>
+        </Container>
     ) 
 }

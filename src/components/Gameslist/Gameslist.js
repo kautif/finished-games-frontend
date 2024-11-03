@@ -229,53 +229,53 @@ export default function Gameslist (){
         } else {
             gamesList = games.map((game, i) => {
                 return <Col xl={3} lg={4} sm={6} xs={12}><Row className="gameslist-game d-flex flex-column mx-2">
-                    <h2 className="gameslist-game__title">{game.name}</h2>
-                    <Image className="gameslist-game__img align-self-center" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded />
-                    <div className="gameslist-game__date-container flex-column justify-content-around">
-                        <label>Date:</label>
-                        {/* <input className="gameslist-game__date" type="date" name="date-added" /> */}
-                        <Form.Control type="date" className="gameslist-game__date" name="date-added"></Form.Control>
-                    </div>
-                    <div className="gameslist-game__rating flex-column justify-content-around">
-                        <label>Rating: </label>
-                        <Form.Select className="gameslist-game__rating__num">
-                            <option selected={game.rating === 10 ? true : false} value="10">10</option>
-                            <option selected={game.rating === 9 ? true : false} value="9">9</option>
-                            <option selected={game.rating === 8 ? true : false} value="8">8</option>
-                            <option selected={game.rating === 7 ? true : false} value="7">7</option>
-                            <option selected={game.rating === 6 ? true : false} value="6">6</option>
-                            <option selected={game.rating === 5 ? true : false} value="5">5</option>
-                            <option selected={game.rating === 4 ? true : false} value="4">4</option>
-                            <option selected={game.rating === 3 ? true : false} value="3">3</option>
-                            <option selected={game.rating === 2 ? true : false} value="2">2</option>
-                            <option selected={game.rating === 1 ? true : false} value="1">1</option>
-                            <option selected={game.rating === 0 ? true : false} value="0">-</option>
-                        </Form.Select>
-                    </div>
-                    <div className="gameslist-game__status flex-column justify-content-around my-4">
-                        <label>Game Status</label>
-                        <Form.Select className="gameslist-game__rank">
-                            <option selected={game.rank === "playing" ? true : false} value="playing">Playing</option>
-                            <option selected={game.rank === "upcoming" ? true : false} value="upcoming">Upcoming</option>
-                            <option selected={game.rank === "completed" ? true : false} value="completed">Completed</option>
-                            <option selected={game.rank === "dropped" ? true : false} value="dropped">Dropped</option>
-                        </Form.Select>
-                    </div>
-                    <Form.Control as="textarea" className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game"/>
-                    <div className="gameslist-btn-container">
-                        <p className="gameslist-game__add-btn" onClick={(e) => {
-                            updateSummary(game.name, document.getElementsByClassName("gameslist-game__summary")[i].value, document.getElementsByClassName("gameslist-game__date")[i].value, document.getElementsByClassName("gameslist-game__rank")[i].value, document.getElementsByClassName("gameslist-game__rating__num")[i].value);
-                            setShowModal(true);
-                            }}>Update</p>
-                        <p className="gameslist-game__add-btn" onClick={() => {
-                            deleteGame(game.name);
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 390)
-                        }}>Delete</p>
-                    </div>
-                </Row>
-                </Col>
+                                <h2 className="gameslist-game__title">{game.name}</h2>
+                                <Image className="gameslist-game__img align-self-center" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded />
+                                <div className="gameslist-game__date-container flex-column justify-content-around">
+                                    <label>Date:</label>
+                                    {/* <input className="gameslist-game__date" type="date" name="date-added" /> */}
+                                    <Form.Control type="date" className="gameslist-game__date" name="date-added"></Form.Control>
+                                </div>
+                                <div className="gameslist-game__rating flex-column justify-content-around">
+                                    <label>Rating: </label>
+                                    <Form.Select className="gameslist-game__rating__num">
+                                        <option selected={game.rating === 10 ? true : false} value="10">10</option>
+                                        <option selected={game.rating === 9 ? true : false} value="9">9</option>
+                                        <option selected={game.rating === 8 ? true : false} value="8">8</option>
+                                        <option selected={game.rating === 7 ? true : false} value="7">7</option>
+                                        <option selected={game.rating === 6 ? true : false} value="6">6</option>
+                                        <option selected={game.rating === 5 ? true : false} value="5">5</option>
+                                        <option selected={game.rating === 4 ? true : false} value="4">4</option>
+                                        <option selected={game.rating === 3 ? true : false} value="3">3</option>
+                                        <option selected={game.rating === 2 ? true : false} value="2">2</option>
+                                        <option selected={game.rating === 1 ? true : false} value="1">1</option>
+                                        <option selected={game.rating === 0 ? true : false} value="0">-</option>
+                                    </Form.Select>
+                                </div>
+                                <div className="gameslist-game__status flex-column justify-content-around my-4">
+                                    <label>Game Status</label>
+                                    <Form.Select className="gameslist-game__rank">
+                                        <option selected={game.rank === "playing" ? true : false} value="playing">Playing</option>
+                                        <option selected={game.rank === "upcoming" ? true : false} value="upcoming">Upcoming</option>
+                                        <option selected={game.rank === "completed" ? true : false} value="completed">Completed</option>
+                                        <option selected={game.rank === "dropped" ? true : false} value="dropped">Dropped</option>
+                                    </Form.Select>
+                                </div>
+                                <Form.Control as="textarea" className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game"/>
+                                <div className="gameslist-btn-container">
+                                    <p className="gameslist-game__add-btn" onClick={(e) => {
+                                        updateSummary(game.name, document.getElementsByClassName("gameslist-game__summary")[i].value, document.getElementsByClassName("gameslist-game__date")[i].value, document.getElementsByClassName("gameslist-game__rank")[i].value, document.getElementsByClassName("gameslist-game__rating__num")[i].value);
+                                        setShowModal(true);
+                                        }}>Update</p>
+                                    <p className="gameslist-game__add-btn" onClick={() => {
+                                        deleteGame(game.name);
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        }, 390)
+                                    }}>Delete</p>
+                                </div>
+                            </Row>
+                        </Col>
             })
         }        
     }
