@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "react-bootstrap/Image";
+import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import Custom from "../Custom/Custom";
 import "./Search.css";
@@ -16,10 +17,14 @@ export default function Search () {
     const [search, setSearch] = useState("");
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
+    const today = new Date();
     const [date, setDate] = useState("");
     const [games, setGames] = useState([]);
     const [rank, setRank] = useState("");
     const [rating, setRating] = useState(0);
+    const [title, setTitle] = useState("");
+    const [gameStatus, setGameStatus] = useState("playing");
+    const [summary, setSummary] = useState("");
     const [searchGames, setSearchGames] = useState(userGames);
     const [customGameMsg, setCustomGameMsg] = useState("");
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -88,6 +93,11 @@ export default function Search () {
             .then(result => {
                 console.log("addGame: ", result)
                 getUserGames();
+                setTitle("");
+                setRating(0);
+                setGameStatus("playing");
+                setSummary("");
+                setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0));
             })
             .catch((error) => {
                 console.log("addGame error: ", error);
@@ -95,7 +105,7 @@ export default function Search () {
     }
 
     function defaultDate (gameDate, index) {
-        gameDate[index].valueAsDate = new Date();
+        gameDate[index].valueAsDate = new Date;
         const newDate = new Date(gameDate[index].value);
         setDate(prevDate => newDate);
     }
@@ -103,9 +113,13 @@ export default function Search () {
     function getDate (dateField, index) {
         const newDate = new Date(dateField[index].value);
         setDate(prevDate => newDate);
+        setDate(newDate);
     }
 
     let retrievedGames;
+
+    useEffect(() => {
+    }, [])
 
     useEffect(() => {
         twitchId = window.localStorage.getItem("twitchId");
@@ -118,8 +132,9 @@ export default function Search () {
 
     useEffect(() => {
         if (gameType === "custom") {
-            defaultDate(document.getElementsByClassName("custom-game__date"), 0);
+            setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0))
         }
+
     }, [gameType])
 
     let userGameNames = [];
@@ -201,13 +216,20 @@ export default function Search () {
                         </select>
                     </div>
                     <img src={customGame === "mario" ? smwCart : customGame === "pokemon" ? pokemonCart : customGame === "minecraft" ? mcCart : otherCart} />
-                    <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" placeholder="Title - Only permitted special characters are & and !"/>
+                    <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" value={title} placeholder="Title - Only permitted special characters are & and !" onChange={(e) => {
+                        setTitle(e.target.value);
+                    }}/>
                     <div className="custom-game__field">
-                        <label>Date:</label><input className="custom-game__date" type="date" name="date-added"/>
+                        <label>Date:</label><Form.Control className="custom-game__date" type="date" name="date-added" value={date} onChange={(e) => {
+                            console.log("date: ", e);
+                            setDate(e.target.value);
+                        }}/>
                     </div>
                 <div className="custom-game__field custom-game__rating">
                     <label>Rating: </label>
-                    <select id="custom-game__rating__num">
+                    <select id="custom-game__rating__num" value={rating} onChange={(e) => {
+                        setRating(e.target.value);
+                    }}>
                         <option value="10">10</option>
                         <option value="9">9</option>
                         <option value="8">8</option>
@@ -218,19 +240,23 @@ export default function Search () {
                         <option value="3">3</option>
                         <option value="2">2</option>
                         <option value="1">1</option>
-                        <option selected value="0">-</option>    
+                        <option selected value="0">-</option> 
                     </select>    
                 </div>
                 <div className="custom-game__field custom-game__status">
                     <label>Game Status</label>
-                    <select id="custom-game__status">
+                    <select id="custom-game__status" value={gameStatus} onChange={(e) => {
+                        setGameStatus(e.target.value);
+                    }}>
                         <option selected="selected" value="playing">Playing</option>
                         <option value="upcoming">Upcoming</option>
                         <option value="completed">Completed</option>
                         <option value="dropped">Dropped</option>
                     </select>
                 </div>
-                <textarea id="custom-game__summary" className="custom-game__field" placeholder="Let your viewers know how you felt about this game" ></textarea>
+                <textarea id="custom-game__summary" className="custom-game__field" placeholder="Let your viewers know how you felt about this game" value={summary} onChange={(e) => {
+                    setSummary(e.target.value);
+                }}></textarea>
                 {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value, i)}>Add Game</p>} */}
                 <p className="custom-game__add-btn" onClick={() => {
                     let customGameTitle = document.getElementById("custom-game__title").value;
@@ -244,16 +270,13 @@ export default function Search () {
                     const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
                     if (!hasInvalidCharacters && customGameTitle !== "") {
                         console.log("customGameTitle: ", customGameTitle);
-                            addGame(customGameTitle, "", customSummary, customStatus, customDate, 0, customRating, customGame);
-                            // <p className="search-result__add-btn" onClick={(e) => 
-                            //     addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
-                            //      document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, customGame)}>Add Game</p>
+                            addGame(title, "", summary, gameStatus, customDate, 0, rating, customGame);
                             setCustomGameMsg(`${customGameTitle} has been added`);
-                            document.getElementById("custom-game__title").value = "";
-                            document.getElementById("custom-game__summary").value = "";
-                            document.getElementById("custom-game__status").value = "playing";
+                            // document.getElementById("custom-game__title").value = "";
+                            // document.getElementById("custom-game__summary").value = "";
+                            // document.getElementById("custom-game__status").value = "playing";
                             defaultDate(document.getElementsByClassName("custom-game__date"), 0);
-                            document.getElementById("custom-game__rating__num").value = "10";
+                            // document.getElementById("custom-game__rating__num").value = "10";
                     } else {
                         setCustomGameMsg("No special characters (except '&') and game title can't be empty");
                     }
