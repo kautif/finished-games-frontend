@@ -11,18 +11,32 @@ export default function Report () {
     const [report, setReport] = useState(localStorage.getItem("reportUser"));
     const [issue, setIssue] = useState("game");
     const [details, setDetails] = useState("");
+    const [submitted, setSubmitted] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
-    const handleSubmit = async (e) => {
-        try {
-            await axios.post(`${backendURL}/send-report`, {
-                user: report,
-                issue: issue,
-                details: details
-            });
-          } catch (error) {
+    async function handleSubmit (e) {
+        await axios.post(`${backendURL}/send-report`, {
+            user: report,
+            issue: issue,
+            details: details
+        }).then(response => {
+        }).catch (error => {
             console.error('There was an error sending the email!', error);
-          }
+        })
     }
+
+    useEffect(() => {
+        setSubmitted(false);
+    }, [report, issue, details])
+
+    useEffect(() => {
+        setTimeout(function () {
+            if (submitted === true) {
+                setReport("");
+                setIssue("game");
+                setDetails("");
+            }
+        }, 1000)
+    }, [submitted])
 
     return (
         <div className="report-container">
@@ -34,7 +48,7 @@ export default function Report () {
                     <label>Issue</label>
                     <select required onChange={(e) => {
                         setIssue(e.target.value);
-                    }}>
+                    }} value={issue}>
                         <option value="game">Game</option>
                         <option value="summary">Summary</option>
                         <option value="user">User</option>
@@ -43,15 +57,17 @@ export default function Report () {
                 </div>
                 <div className="report__details">
                     <label>Details</label>
-                    <textarea className="report__field" required placeholder="Tell us what the issue is. Step by step, tell us what actions/events take place to lead to it" onChange={(e) => {
+                    <textarea className="report__field" required placeholder="Tell us what the issue is. Step by step, tell us what actions/events take place to lead to it" value={details} onChange={(e) => {
                         setDetails(e.target.value);
                     }}></textarea>
                 </div>
                 <input className="report__submit-btn" type="submit" value="Submit" onClick={(e) => {
                     e.preventDefault();
                     handleSubmit();
+                    setSubmitted(true);
                 }}/>
             </form>
+            {submitted && <p>Report Submitted</p>}
         </div>
     )
 }
