@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import Form from 'react-bootstrap/Form';
 import "./Feedback.css"
 
 export default function Feedback () {
@@ -9,26 +10,41 @@ export default function Feedback () {
     const [message, setMessage] = useState("");
     const [feedbackSent, setFeedbackSent] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
-    const handleSubmit = async (e) => {
-        try {
-            await axios.post(`${backendURL}/send-email`, formData);
-          } catch (error) {
-            console.error('There was an error sending the email!', error);
-          }
+    async function handleSubmit (e) {
+        await axios.post(`${backendURL}/send-email`, formData)
+            .then(response => {
+            }).catch(err => {
+                console.error("Error: ", err.message);
+            })
+        // try {
+        //   } catch (error) {
+        //     console.error('There was an error sending the email!', error);
+        //   }
     }
 
     useEffect(() => {
-        console.log(topic);
         setFormData({
             username: username,
             topic: topic,
             message: message
         })
+        setFeedbackSent(false);
     }, [username, message, topic])
+
+    useEffect(() => {
+        setTimeout(function () {
+            setUsername("");
+            setMessage("")
+            setTopic("games");
+        }, 1000)
+    }, [feedbackSent])
     
     return (
         <div>
-            <form className="feedback-form">
+            <Form className="feedback-form" 
+                onSubmit={() => {
+                    console.log("submit");
+                }}>
                 <input 
                     id="feedback-username"
                     className="feedback-field"
@@ -44,7 +60,7 @@ export default function Feedback () {
                     <label>Topic:</label>
                     <select onChange={(e) => {
                         setTopic(e.target.value);
-                    }}>
+                    }} value={topic}>
                         <option value="games">Games</option>
                         <option value="custom">Custom Games</option>
                         <option value="searching">Searching Games</option>
@@ -76,7 +92,7 @@ export default function Feedback () {
                         setFeedbackSent(true);
                     }}
                 />
-            </form>
+            </Form>
             {feedbackSent && <p>Feedback Submitted</p>}
         </div>
     ) 
