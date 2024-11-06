@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Form from 'react-bootstrap/Form';
+import { ToastContainer, toast } from 'react-toastify';
 import "./Feedback.css"
 
 export default function Feedback () {
@@ -10,6 +11,10 @@ export default function Feedback () {
     const [message, setMessage] = useState("");
     const [feedbackSent, setFeedbackSent] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+
+    function notify () {
+        toast("Feedback Submitted");
+    }
     async function handleSubmit (e) {
         await axios.post(`${backendURL}/send-email`, formData)
             .then(response => {
@@ -90,10 +95,11 @@ export default function Feedback () {
                         e.preventDefault();
                         handleSubmit(e);
                         setFeedbackSent(true);
+                        notify();
                     }}
                 />
             </Form>
-            {feedbackSent && <p>Feedback Submitted</p>}
+            <ToastContainer />
         </div>
     ) 
 }

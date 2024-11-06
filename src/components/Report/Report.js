@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import "./Report.css"
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Report () {    
     // const reportUser = useSelector((state) => state.gamesReducer.reportUser);
@@ -13,6 +14,11 @@ export default function Report () {
     const [details, setDetails] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+
+    function notify (user) {
+        toast(`${user} has been reported. Thank you`);
+    }
+
     async function handleSubmit (e) {
         await axios.post(`${backendURL}/send-report`, {
             user: report,
@@ -64,10 +70,11 @@ export default function Report () {
                 <input className="report__submit-btn" type="submit" value="Submit" onClick={(e) => {
                     e.preventDefault();
                     handleSubmit();
+                    notify(report);
                     setSubmitted(true);
                 }}/>
             </form>
-            {submitted && <p>Report Submitted</p>}
+            <ToastContainer />
         </div>
     )
 }
