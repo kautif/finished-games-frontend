@@ -5,6 +5,9 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import "./Gameslist.css";
 import smwCart from "../../assets/vh_smw_cart.webp";
@@ -25,7 +28,9 @@ export default function Gameslist (){
     const [gameType, setGameType] = useState("all");
 
     const [gameState, setGameState] = useState("all");
+    
     const [showModal, setShowModal] = useState(false);
+
     const [gameName, setGameName] = useState("");
 
     const [sortDirection, setSortDirection] = useState("ascending");
@@ -74,6 +79,11 @@ export default function Gameslist (){
         getGameSummary(phase3Arr);
         getGameDate(phase3Arr);
     }, [gameType, gameState, sortDirection, sortFocus])
+
+
+    function notifyUpdate (gameTitle) {
+        toast(`${gameTitle} has been updated`);
+    }
 
     let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];
     let gameStateArr = ["all", "playing", "upcoming", "completed", "dropped"];
@@ -265,7 +275,7 @@ export default function Gameslist (){
                                 <div className="gameslist-btn-container">
                                     <p className="gameslist-game__add-btn" onClick={(e) => {
                                         updateSummary(game.name, document.getElementsByClassName("gameslist-game__summary")[i].value, document.getElementsByClassName("gameslist-game__date")[i].value, document.getElementsByClassName("gameslist-game__rank")[i].value, document.getElementsByClassName("gameslist-game__rating__num")[i].value);
-                                        setShowModal(true);
+                                        notifyUpdate(game.name);
                                         }}>Update</p>
                                     <p className="gameslist-game__add-btn" onClick={() => {
                                         deleteGame(game.name);
@@ -353,7 +363,7 @@ export default function Gameslist (){
                         }}/>
                         </Form>
                     </Col>
-
+                    <ToastContainer />
                 </Row>
             </Container>
             {/* <div className="gameslist-games">
@@ -362,11 +372,11 @@ export default function Gameslist (){
             <Container className="gameslist-games">
                 {gamesList}
             </Container>
-
-            {showModal ? <div className="gameslist-games__update">
+            {/* {showModal ? 
+            <div className="gameslist-games__update">
                 <p>Summary for {gameName} has been updated</p>
                 <span className="gameslist-games__update__close" onClick={() => setShowModal(false)}>X</span>
-            </div> : ""}
+            </div> : ""} */}
         </div>
     )
 }
