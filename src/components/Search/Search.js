@@ -111,6 +111,7 @@ export default function Search () {
     }
 
     function getDate (dateField, index) {
+
         const newDate = new Date(dateField[index].value);
         setDate(prevDate => newDate);
         setDate(newDate);
@@ -152,7 +153,10 @@ export default function Search () {
         return <div className="search-game">
             <h2 className="search-game__name">{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
-            <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => getDate("search-game__date", i)}/>
+            <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => {
+                console.log(e.target.value);
+                getDate(document.getElementsByClassName("search-game__date"), i)
+            }}/>
             <div className="search-game__rating">
                 <label>Rating: </label>
                 <select className="search-game__rating__num">
@@ -221,7 +225,7 @@ export default function Search () {
                     }}/>
                     <div className="custom-game__field">
                         <label>Date:</label><Form.Control className="custom-game__date" type="date" name="date-added" value={date} onChange={(e) => {
-                            console.log("date: ", e);
+                            console.log("date: ", e.target.value);
                             setDate(e.target.value);
                         }}/>
                     </div>
