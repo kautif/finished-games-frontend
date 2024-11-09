@@ -105,14 +105,24 @@
     }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 500px) {
     .header-container {
         background-image: url("../../assets/vh_vertical_scroll.png");
     }
 
+    .header-flex {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        height: ;
+        align-content: space-around;
+        height: 59%;
+        padding-top: 34%;
+    }
+
     .vh-logo {
-        margin-top: 66%;
         width: 69%;
+        align-self: center;
     }
 
     .header__cta {

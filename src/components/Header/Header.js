@@ -6,9 +6,11 @@ import TwitchLoginBtn from "../TwitchLoginBtn/TwitchLoginBtn";
 export default function Header () {
     return (
         <div className="header-container">
-            <img className="vh-logo" src={logo} alt="Victory History logo" />
-            <p className="header__cta">Become a Victory Historian today!</p>
-            <TwitchLoginBtn />
+            <div className="header-flex">
+                <img className="vh-logo" src={logo} alt="Victory History logo" />
+                <p className="header__cta">Become a Victory Historian today!</p>
+                <div><TwitchLoginBtn /></div>
+            </div>
         </div>
     )
 }
