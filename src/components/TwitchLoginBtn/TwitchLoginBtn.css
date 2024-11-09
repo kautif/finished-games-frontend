@@ -1,0 +1,21 @@
+@font-face {
+    font-family: vt323;
+    src: url("../../assets/fonts/VT323-Regular.ttf");
+}
+
+.vh__login-btn {
+    font-family: vt323;
+    background-color: #8E43FC;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 2px 3px 5px 2px #313030;
+    border: none;
+    font-size: 1.5em;
+}
+
+@media (max-width: 768px) {
+    .vh__login-btn {
+        font-size: 1.25em;
+    }
+}

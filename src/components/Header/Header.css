@@ -1,3 +1,124 @@
+@font-face {
+    font-family: vt323;
+    src: url("../../assets/fonts/VT323-Regular.ttf");
+}
+
+@font-face {
+    font-family: alk;
+    src: url("../../assets/fonts/Alkhemikal.ttf");
+}
+
 .vh-logo {
-    width: 50%;
+    width: 36%;
+    margin-top: 9%;
+    /* position: absolute;
+    top: 17%;
+    left: 32%; */
+}
+
+.splash-container {
+    background-position-x: center;
+    background-position-y: 0;
+    background-size: cover;
+}
+
+.header-container {
+    background-image: url("../../assets/vh_blank_scroll.png");
+    background-repeat: no-repeat;
+    background-size: 60%;
+    height: 100%;
+    background-position-x: 50%;
+    background-position-y: 29%;
+    position: relative;
+}
+
+.header__cta {
+    font-family: alk;
+    color: #6C3F29;
+    /* position: absolute;
+    top: 50%;
+    left: 34%; */
+    font-size: 3em;
+}
+
+@media (max-width: 1440px) and (min-width: 1281px) {
+    .splash-container {
+        background-position-x: center;
+        background-position-y: 42%;
+      }
+
+      .header-container {
+        background-size: 67%;
+      }
+
+      .vh-logo {
+        width: 40%;
+      }
+
+    .header__cta {
+        font-size: 2.5em;
+    }
+
+    .vh__login-btn {
+        font-size: 1.25em;
+    }
+}
+
+@media (max-width: 1280px) and (min-width: 1181px) {
+    .header-container {
+        background-size: 80%;
+    }
+
+    .splash-container {
+        background-position-x: center;
+        background-position-y: 37%;
+    }
+}
+
+@media (max-width: 1180px) and (min-width: 769px) {
+    .splash-container {
+        background-position-x: center;
+        background-position-y: 29%;
+    }
+
+    .header-container {
+        background-size: 92%;
+    }
+
+    .vh-logo {
+        width: 54%;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        background-size: 100%;
+    }
+
+    .vh-logo {
+        width: 52%;
+        margin-top: 17%;
+    }
+
+    .header__cta {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 430px) {
+    .header-container {
+        background-image: url("../../assets/vh_vertical_scroll.png");
+    }
+
+    .vh-logo {
+        margin-top: 66%;
+        width: 69%;
+    }
+
+    .header__cta {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.5em;
+    }
 }

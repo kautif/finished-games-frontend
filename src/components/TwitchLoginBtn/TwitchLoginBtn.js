@@ -1,6 +1,7 @@
 import React from "react";
 import { setLoginTime } from "../../redux/gamesSlice";
 import { useDispatch } from "react-redux";
+import "./TwitchLoginBtn.css";
 
 // 6/23/24
 // - in index.js (backend), in /auth/twitch/callback, no request body can be found which implies it is not being sent here. That may mean that it needs to be sent.
@@ -15,7 +16,7 @@ const TwitchLoginBtn = () => {
     window.location.href = authUrl;
   };
 
-  return <button onClick={handleLogin}>Login with Twitch</button>;
+  return <button className="vh__login-btn" onClick={handleLogin}>Login with Twitch</button>;
 };
 
 export default TwitchLoginBtn;
