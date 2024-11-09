@@ -134,6 +134,10 @@ export default function Search () {
     useEffect(() => {
         if (gameType === "custom") {
             setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0))
+        } else {
+            retrievedGames.map((game, i) => {
+                defaultDate(document.getElementsByClassName("search-game__date"), i);
+            })
         }
 
     }, [gameType])
