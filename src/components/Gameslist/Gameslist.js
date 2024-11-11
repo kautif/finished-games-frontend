@@ -5,6 +5,8 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
@@ -31,6 +33,10 @@ export default function Gameslist (){
     const [showModal, setShowModal] = useState(false);
 
     const [gameName, setGameName] = useState("");
+    const [gameImg, setGameImg] = useState("");
+    const [gameSummary, setGameSummary] = useState("");
+    const [gameRating, setGameRating] = useState(0);
+    const [gameDate, setGameDate] = useState("");
 
     const [sortDirection, setSortDirection] = useState("ascending");
     const [sortFocus, setSortFocus] = useState("alpha");
@@ -78,7 +84,12 @@ export default function Gameslist (){
         getGameSummary(phase3Arr);
         getGameDate(phase3Arr);
     }, [gameType, gameState, sortDirection, sortFocus])
-
+    
+    useEffect(() => {
+        // if (showModal) {
+        //     document.getElementById("gameslist-game__date").valueAsDate = gameDate;
+        // } 
+    }, [gameDate])
 
     function notifyUpdate (gameTitle) {
         toast(`${gameTitle} has been updated`);
@@ -154,18 +165,18 @@ export default function Gameslist (){
         renderGames(phase3Arr);
     }
 
-    async function updateSummary (gameName, gameSummary, gameDate, gameRank, gameRating) {
+    async function updateSummary (name, summary, gameDate, rank, rating) {
         let config = {
             method: "put",
             url: `${backendURL}/updategame`,
             data: {
                 twitchName: twitchName,
                 games: {
-                    name: gameName,
-                    summary: gameSummary,
+                    name: name,
+                    summary: summary,
                     date_added: gameDate,
-                    rank: gameRank,
-                    rating: gameRating
+                    rank: rank,
+                    rating: rating
                 }
             }
         }
@@ -272,10 +283,18 @@ export default function Gameslist (){
                                 </div>
                                 <Form.Control as="textarea" className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game"/>
                                 <div className="gameslist-btn-container">
-                                    <p className="gameslist-game__add-btn" onClick={(e) => {
+                                    {/* <p className="gameslist-game__add-btn" onClick={(e) => {
                                         updateSummary(game.name, document.getElementsByClassName("gameslist-game__summary")[i].value, document.getElementsByClassName("gameslist-game__date")[i].value, document.getElementsByClassName("gameslist-game__rank")[i].value, document.getElementsByClassName("gameslist-game__rating__num")[i].value);
                                         notifyUpdate(game.name);
-                                        }}>Update</p>
+                                        }}>Update</p> */}
+                                        <Button onClick={() => {
+                                            setShowModal(true);
+                                            setGameName(game.name); 
+                                            setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
+                                            setGameSummary(game.summary);
+                                            setGameRating(game.rating);
+                                            setGameDate(game.date_added);
+                                        }}>Press Me</Button>
                                     <p className="gameslist-game__add-btn" onClick={() => {
                                         deleteGame(game.name);
                                         setTimeout(function () {
@@ -303,7 +322,6 @@ export default function Gameslist (){
 
     return (
         <div className="gameslist-games-container">
-            {/* {!loading && getUserGames()}  */}
             <h1>Your Games</h1>
             <Container>
                 <Row>
@@ -362,6 +380,38 @@ export default function Gameslist (){
                         }}/>
                         </Form>
                     </Col>
+                    <Modal show={showModal}>
+                        <Modal.Header>
+                            <Modal.Title>
+                                 {gameName}
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Image 
+                                className="gameslist__game-img"
+                                src={gameImg}
+                            />
+                            <Form.Control type="date" id="gameslist-game__date" name="date-added"></Form.Control>
+                            <Form.Select className="gameslist-game__rating__num">
+                                <option selected={gameRating === 10 ? true : false} value="10">10</option>
+                                <option selected={gameRating === 9 ? true : false} value="9">9</option>
+                                <option selected={gameRating === 8 ? true : false} value="8">8</option>
+                                <option selected={gameRating === 7 ? true : false} value="7">7</option>
+                                <option selected={gameRating === 6 ? true : false} value="6">6</option>
+                                <option selected={gameRating === 5 ? true : false} value="5">5</option>
+                                <option selected={gameRating === 4 ? true : false} value="4">4</option>
+                                <option selected={gameRating === 3 ? true : false} value="3">3</option>
+                                <option selected={gameRating === 2 ? true : false} value="2">2</option>
+                                <option selected={gameRating === 1 ? true : false} value="1">1</option>
+                                <option selected={gameRating === 0 ? true : false} value="0">-</option>
+                            </Form.Select>
+                            <textarea className="gameslist-game-summary">{gameSummary}</textarea>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button>Save</Button>
+                            <Button onClick={() => setShowModal(false)}>Close</Button>
+                        </Modal.Footer>
+                    </Modal>
                     <ToastContainer />
                 </Row>
             </Container>
@@ -371,11 +421,6 @@ export default function Gameslist (){
             <Container className="gameslist-games">
                 {gamesList}
             </Container>
-            {/* {showModal ? 
-            <div className="gameslist-games__update">
-                <p>Summary for {gameName} has been updated</p>
-                <span className="gameslist-games__update__close" onClick={() => setShowModal(false)}>X</span>
-            </div> : ""} */}
         </div>
     )
 }

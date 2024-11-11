@@ -19,7 +19,7 @@
 .gameslist-game img,
 .gameslist__search-game img {
     width: 390px;
-    height: 250px;
+    height: 220px;
 }
 
 .gameslist-game__date-container {
@@ -101,4 +101,13 @@
 .gameslist-game__no-results {
     text-align: center;
     width: 100%;
+}
+
+.gameslist__game-img,
+.gameslist-game-summary {
+    width: 100%;
+}
+
+.gameslist-game-summary {
+    height: 100px;
 }

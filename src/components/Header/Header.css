@@ -11,9 +11,6 @@
 .vh-logo {
     width: 36%;
     margin-top: 9%;
-    /* position: absolute;
-    top: 17%;
-    left: 32%; */
 }
 
 .splash-container {
@@ -27,33 +24,38 @@
     background-repeat: no-repeat;
     background-size: 60%;
     height: 100%;
-    background-position-x: 50%;
-    background-position-y: 29%;
+    background-position: 50% 29%;
     position: relative;
+}
+
+.header-flex {
+    position: absolute;
+    left: 3%;
 }
 
 .header__cta {
     font-family: alk;
     color: #6C3F29;
-    /* position: absolute;
-    top: 50%;
-    left: 34%; */
     font-size: 3em;
 }
 
 @media (max-width: 1440px) and (min-width: 1281px) {
     .splash-container {
-        background-position-x: center;
         background-position-y: 42%;
-      }
+    }
 
-      .header-container {
+    .header-container {
         background-size: 67%;
-      }
+    }
 
-      .vh-logo {
+    .header-flex {
+        left: 0;
+        top: 7%;
+    }
+
+    .vh-logo {
         width: 40%;
-      }
+    }
 
     .header__cta {
         font-size: 2.5em;
@@ -70,14 +72,21 @@
     }
 
     .splash-container {
-        background-position-x: center;
         background-position-y: 37%;
+    }
+
+    .header-flex {
+        left: 0;
+        top: 8%;
+    }
+
+    .vh-logo {
+        width: 47%;
     }
 }
 
-@media (max-width: 1180px) and (min-width: 769px) {
+@media (max-width: 1180px) and (min-width: 981px) {
     .splash-container {
-        background-position-x: center;
         background-position-y: 29%;
     }
 
@@ -85,8 +94,47 @@
         background-size: 92%;
     }
 
+    .header-flex {
+        left: 0;
+        top: 8%;
+    }
+
     .vh-logo {
         width: 54%;
+    }
+}
+
+@media (max-width: 981px) and (min-width: 881px) {
+    .header-container {
+        background-size: 100%;
+    }
+
+    .vh-logo {
+        width: 63%;
+    }
+
+    .header-flex {
+        left: 0;
+        top: 9%;
+    }
+}
+
+@media (max-width: 880px) and (min-width: 769px) {
+    .header-container {
+        background-size: 100%;
+    }
+
+    .vh-logo {
+        width: 63%;
+    }
+
+    .header-flex {
+        left: 0;
+        top: 9%;
+    }
+
+    .header__cta {
+        font-size: 2.5em;
     }
 }
 
@@ -96,12 +144,23 @@
     }
 
     .vh-logo {
-        width: 52%;
+        width: 63%;
         margin-top: 17%;
+    }
+
+    .header-flex {
+        left: 0;
+        top: 5%;
     }
 
     .header__cta {
         font-size: 2em;
+    }
+}
+
+@media (max-width: 634px) {
+    .header-flex {
+        top: 9%;
     }
 }
 
@@ -112,12 +171,9 @@
 
     .header-flex {
         display: flex;
-        justify-content: space-around;
         flex-direction: column;
-        /* height: ; */
-        align-content: space-around;
         height: 59%;
-        padding-top: 34%;
+        padding-top: 19%;
     }
 
     .vh-logo {
@@ -127,8 +183,7 @@
 
     .header__cta {
         width: 50%;
-        margin-left: auto;
-        margin-right: auto;
+        margin: 0 auto;
         font-size: 1.5em;
     }
 }
