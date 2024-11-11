@@ -22,12 +22,17 @@
     height: 220px;
 }
 
+.gameslist__game-info-flex {
+    display: flex;
+    justify-content: space-around;
+}
+
 .gameslist-game__date-container {
     margin-top: 8%;
 }
 
 .gameslist-game__rating {
-    margin-top: 5%;
+    margin-top: 8%;
 }
 
 .gameslist-game__summary {
