@@ -291,7 +291,8 @@ export default function Gameslist (){
                                             <option selected={game.rating === 1 ? true : false} value="1">1</option>
                                             <option selected={game.rating === 0 ? true : false} value="0">-</option>
                                         </Form.Select> */}
-                                        <p>{game.rating}</p>
+                                        {/* <p>{game.rating}</p> */}
+                                        <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>
                                     </div>
                                     <div className="gameslist-game__status flex-column justify-content-around my-4">
                                         <label>Game Status</label>
