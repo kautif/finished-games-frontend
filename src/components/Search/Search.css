@@ -26,7 +26,18 @@
     margin-right: 2%;
 }
 
-.search-game img, .profile-game img {
+.search-game {
+    width: 25%;
+}
+
+.search-game img {
+    width: 302px;
+    height: 222px;    
+}
+
+
+
+.profile-game img {
     width: 390px;
     height: 250px;
 }

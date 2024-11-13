@@ -1,20 +1,21 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
-import Image from "react-bootstrap/Image";
+import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Search from '../Search/Search';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from "axios";
-import "./Gameslist.css";
-import smwCart from "../../assets/vh_smw_cart.webp";
-import mcCart from "../../assets/vh_minecraft_cart.webp";
-import pokemonCart from "../../assets/vh_pokemon_cart.webp";
-import otherCart from "../../assets/vh_other_cart.webp";
+import axios from 'axios';
+import './Gameslist.css';
+import smwCart from '../../assets/vh_smw_cart.webp';
+import mcCart from '../../assets/vh_minecraft_cart.webp';
+import pokemonCart from '../../assets/vh_pokemon_cart.webp';
+import otherCart from '../../assets/vh_other_cart.webp';
 
 export default function Gameslist (){
 
@@ -31,6 +32,7 @@ export default function Gameslist (){
     const [gameState, setGameState] = useState("all");
     
     const [showModal, setShowModal] = useState(false);
+    const [showDiscover, setShowDiscover] = useState(false);
 
     const [gameName, setGameName] = useState("");
     const [gameImg, setGameImg] = useState("");
@@ -274,7 +276,7 @@ export default function Gameslist (){
                                         <label>Date:</label>
                                         {/* <input className="gameslist-game__date" type="date" name="date-added" /> */}
                                         {/* <Form.Control type="date" className="gameslist-game__date" name="date-added"></Form.Control> */}
-                                        <p>{`${month}/${day}/${year}`}</p>
+                                        <p className="gameslist-game__detail">{`${month}/${day}/${year}`}</p>
                                     </div>
                                     <div className="gameslist-game__rating flex-column justify-content-around">
                                         <label>Rating: </label>
@@ -292,7 +294,7 @@ export default function Gameslist (){
                                             <option selected={game.rating === 0 ? true : false} value="0">-</option>
                                         </Form.Select> */}
                                         {/* <p>{game.rating}</p> */}
-                                        <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>
+                                        <p className={`user-game__rating__num gameslist-game__detail ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>
                                     </div>
                                     <div className="gameslist-game__status flex-column justify-content-around my-4">
                                         <label>Game Status</label>
@@ -302,7 +304,7 @@ export default function Gameslist (){
                                             <option selected={game.rank === "completed" ? true : false} value="completed">Completed</option>
                                             <option selected={game.rank === "dropped" ? true : false} value="dropped">Dropped</option>
                                         </Form.Select> */}
-                                        <p>{(game.rank).toUpperCase()}</p>
+                                        <p className="gameslist-game__detail">{(game.rank).toUpperCase()}</p>
                                     </div>
                                 </div>
 
@@ -321,12 +323,12 @@ export default function Gameslist (){
                                             setGameDate(new Date(game.date_added));
                                             setGameRank(game.rank);
                                         }}>Edit</p>
-                                    <p className="gameslist-game__add-btn" onClick={() => {
+                                    {/* <p className="gameslist-game__add-btn" onClick={() => {
                                         deleteGame(game.name);
                                         setTimeout(function () {
                                             window.location.reload();
                                         }, 390)
-                                    }}>Delete</p>
+                                    }}>Delete</p> */}
                                 </div>
                             </Row>
                         </Col>
@@ -349,6 +351,7 @@ export default function Gameslist (){
     return (
         <div className="gameslist-games-container">
             <Container>
+                <Button onClick={() => setShowDiscover(true)}>Discover</Button>
                 <Row>
                     <Col lg={3} sm={6} xs={12}>
                         <h2>Filter Games</h2>
@@ -438,17 +441,36 @@ export default function Gameslist (){
                                 setGameSummary(e.target.value);
                             }}>{gameSummary}</textarea>
                         </Modal.Body>
-                        <Modal.Footer>
-                            <Button onClick={() => {
+                        <Modal.Footer id="gameslist-game-flex-container">
+                            <p className="gameslist-game__add-btn modal-btn text-center" onClick={() => {
+                                        deleteGame(gameName);
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        }, 390)
+                                    }}>Delete</p>
+                            <Button className="modal-btn" onClick={() => {
                                 updateGame(gameName, gameSummary, gameDate, gameRank, gameRating)
                                 setShowModal(false);
                                 setTimeout(function () {
                                     window.location.reload();
                                 }, 390)
                             }}>Save</Button>
-                            <Button onClick={() => setShowModal(false)}>Cancel</Button>
+                            <Button className="modal-btn" onClick={() => setShowModal(false)}>Cancel</Button>
                         </Modal.Footer>
                     </Modal>
+                    <Modal id="discover" show={showDiscover}>
+                        <Modal.Header>
+                            <Modal.Title>Discover</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Search />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={() => setShowDiscover(false)}>Close</Button>
+                        </Modal.Footer>
+                    </Modal>
+
+
                     <ToastContainer />
                 </Row>
             </Container>

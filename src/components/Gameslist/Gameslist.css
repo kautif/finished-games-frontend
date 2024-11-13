@@ -35,6 +35,14 @@
     margin-top: 8%;
 }
 
+.gameslist-game__detail {
+    margin-bottom: 0;
+}
+
+#gameslist-game-flex-container {
+    justify-content: space-around;
+}
+
 .gameslist-game__summary {
     resize: none;
     margin-bottom: 5%;
@@ -115,4 +123,18 @@
 
 .gameslist-game-summary {
     height: 100px;
+}
+
+#discover {
+    max-width: 80%;
+}
+
+.modal-btn {
+    width: 30%;
+    box-shadow: initial;
+    padding: 11px 5px;
+}
+
+.modal-btn:hover {
+    cursor: pointer;
 }

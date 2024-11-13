@@ -68,7 +68,7 @@ export default function Search () {
                         gameDate, index, gameRating, customGame) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
-        getDate(gameDate, index);
+        // getDate(gameDate, index);
         let gameObj = {
             name: gameName,
             custom_game: customGame,
@@ -110,12 +110,12 @@ export default function Search () {
         setDate(prevDate => newDate);
     }
 
-    function getDate (dateField, index) {
+    // function getDate (dateField, index) {
 
-        const newDate = new Date(dateField[index].value);
-        setDate(prevDate => newDate);
-        setDate(newDate);
-    }
+    //     const newDate = new Date(dateField[index].value);
+    //     setDate(prevDate => newDate);
+    //     setDate(newDate);
+    // }
 
     let retrievedGames;
 
@@ -126,17 +126,17 @@ export default function Search () {
         twitchId = window.localStorage.getItem("twitchId");
         getUserGames();
         retrievedGames.map((game, i) => {
-            defaultDate(document.getElementsByClassName("search-game__date"), i);
+            // defaultDate(document.getElementsByClassName("search-game__date"), i);
             // getRating(i);
         })
     }, [games])
 
     useEffect(() => {
         if (gameType === "custom") {
-            setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0))
+            // setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0))
         } else {
             retrievedGames.map((game, i) => {
-                defaultDate(document.getElementsByClassName("search-game__date"), i);
+                // defaultDate(document.getElementsByClassName("search-game__date"), i);
             })
         }
 
@@ -157,11 +157,11 @@ export default function Search () {
         return <div className="search-game">
             <h2 className="search-game__name">{game.name}</h2>
             <img src={game.background_image} alt={game.name + " image"} />
-            <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => {
+            {/* <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => {
                 console.log(e.target.value);
                 getDate(document.getElementsByClassName("search-game__date"), i)
-            }}/>
-            <div className="search-game__rating">
+            }}/> */}
+            {/* <div className="search-game__rating">
                 <label>Rating: </label>
                 <select className="search-game__rating__num">
                     <option selected value="10">10</option>
@@ -176,8 +176,8 @@ export default function Search () {
                     <option value="1">1</option>
                     <option selected value="0">-</option> 
                 </select>    
-            </div>
-            <div className="search-game__status">
+            </div> */}
+            {/* <div className="search-game__status">
                 <label>Game Status</label>
                 <select>
                     <option selected="selected" value="playing">Playing</option>
@@ -185,11 +185,13 @@ export default function Search () {
                     <option value="completed">Completed</option>
                     <option value="dropped">Dropped</option>
                 </select>
-            </div>
-            <textarea placeholder="Let your viewers know how you felt about this game" ></textarea>
-                {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => 
+            </div> */}
+            {/* <textarea placeholder="Let your viewers know how you felt about this game" ></textarea> */}
+                {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn text-center" onClick={(e) => 
                            addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
-                            document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>}
+                            document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>} */}
+
+        <p className="search-result__add-btn text-center">Add Game</p>
         </div>
     })
 
