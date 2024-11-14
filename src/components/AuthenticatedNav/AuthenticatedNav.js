@@ -35,9 +35,6 @@ export default function AuthenticatedNav() {
       <Link className="auth-nav__link" to="/games">
         My Games
       </Link>
-      <Link className="auth-nav__link" to="/discover">
-        Discover
-      </Link>
       <Link className="auth-nav__link" to="/browseusers">
         Browse Users
       </Link>

@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Image from "react-bootstrap/Image";
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+
 import Custom from "../Custom/Custom";
+import AddGame from "../AddGame/AddGame";
 import "./Search.css";
-import { setUserGames } from "../../redux/gamesSlice";
+import { setUserGames, setShowGame, setShowSearch, setSearchGameName, setSearchGameImg } from "../../redux/gamesSlice";
 import smwCart from "../../assets/vh_smw_cart.webp";
 import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
@@ -14,6 +17,11 @@ import otherCart from "../../assets/vh_other_cart.webp";
 export default function Search () {
     const dispatch = useDispatch();
     let userGames = useSelector((state) => state.gamesReducer.userGames);
+    let showGame = useSelector((state) => state.gamesReducer.showGame);
+    let showSearch = useSelector((state) => state.gamesReducer.showSearch);
+    let searchGameName = useSelector((state) => state.gamesReducer.searchGameName);
+    let searchGameImg = useSelector((state) => state.gamesReducer.searchGameImg);
+
     const [search, setSearch] = useState("");
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
@@ -34,6 +42,11 @@ export default function Search () {
     let twitchName;
     twitchId = window.localStorage.getItem("twitchId");
     twitchName = window.localStorage.getItem("twitchName");
+
+    function notifyUpdate (gameTitle) {
+        toast(`${gameTitle} has been updated`);
+    }
+
     function getGames (e) {
         e.preventDefault();
         axios({
@@ -120,7 +133,10 @@ export default function Search () {
     let retrievedGames;
 
     useEffect(() => {
-    }, [])
+        if (!showGame) {
+            // notifyUpdate(searchGameName);
+        }
+    }, [showGame])
 
     useEffect(() => {
         twitchId = window.localStorage.getItem("twitchId");
@@ -191,7 +207,12 @@ export default function Search () {
                            addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
                             document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>} */}
 
-        <p className="search-result__add-btn text-center">Add Game</p>
+        <p className="search-result__add-btn text-center" onClick={() => {
+            dispatch(setShowGame(true));
+            dispatch(setShowSearch(false));
+            dispatch(setSearchGameName(game.name));
+            dispatch(setSearchGameImg(game.background_image));
+        }}>Add Game</p>
         </div>
     })
 

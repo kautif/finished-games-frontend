@@ -1,0 +1,38 @@
+.addgame-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.addgame-intro {
+    display: flex;
+    flex-direction: column;
+    flex-basis: flex-start;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.addgame-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 27%;
+}
+
+.addgame-img {
+    width: 780px;
+    height: 440px;
+}
+
+.search-result__add-btn {
+    background-color: #8E43FC;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 4px;
+    box-shadow: 2px 3px 5px 2px #313030;
+    margin-top: 4%;
+}
+
+.search-result__add-btn:hover {
+    cursor: pointer;
+}

@@ -11,13 +11,21 @@ import Search from '../Search/Search';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+
+import { setShowGame, setShowSearch } from "../../redux/gamesSlice";
+
 import './Gameslist.css';
 import smwCart from '../../assets/vh_smw_cart.webp';
 import mcCart from '../../assets/vh_minecraft_cart.webp';
 import pokemonCart from '../../assets/vh_pokemon_cart.webp';
 import otherCart from '../../assets/vh_other_cart.webp';
+import { useDispatch, useSelector } from 'react-redux';
+import AddGame from '../AddGame/AddGame';
 
 export default function Gameslist (){
+    const dispatch = useDispatch();
+    let showGame = useSelector((state) => state.gamesReducer.showGame);
+    let showSearch = useSelector((state) => state.gamesReducer.showSearch);
 
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";
@@ -25,7 +33,6 @@ export default function Gameslist (){
     let twitchName = window.localStorage.getItem("twitchName");
     const [userGames, setUserGames] = useState([]);
     const [loading, setLoading] = useState();
-
     let selectedGameTypeArr = [];
     const [gameType, setGameType] = useState("all");
 
@@ -463,7 +470,8 @@ export default function Gameslist (){
                             <Modal.Title>Discover</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Search />
+                            {showSearch && <Search />}
+                            {showGame && <AddGame />}
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={() => setShowDiscover(false)}>Close</Button>

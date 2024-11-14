@@ -4,6 +4,10 @@ const initialState = {
     userGames: [],
     reportUser: "",
     isAuthenticated: false,
+    showGame: false,
+    showSearch: true,
+    searchGameName: "",
+    searchGameImg: "",
     loginTime: 0
 }
 
@@ -28,9 +32,25 @@ export const gamesSlice = createSlice({
         setLoginTime: (state, action) => {
             state.loginTime = action.payload;
             console.log("gamesSlice loginTime: ", action.payload);
+        },
+        setShowGame: (state, action) => {
+            state.showGame = action.payload;
+            console.log("gamesSlice showGame?: ", action.payload);
+        },
+        setShowSearch: (state, action) => {
+            state.showSearch = action.payload;
+            console.log("gamesSlice showSearch?: ", action.payload);
+        },
+        setSearchGameName: (state, action) => {
+            state.searchGameName = action.payload;
+            console.log("gamesSlice searchGameName?: ", action.payload);
+        },
+        setSearchGameImg: (state, action) => {
+            state.searchGameImg = action.payload;
+            console.log("gamesSlice searchGameImg?: ", action.payload);
         }
     }
 })
 
-export const {setUserGames, setIsAuthenticated, setReportUser, setLoginTime} = gamesSlice.actions;
+export const {setUserGames, setIsAuthenticated, setReportUser, setLoginTime, setShowGame, setShowSearch, setSearchGameName, setSearchGameImg} = gamesSlice.actions;
 export default gamesSlice.reducer;
