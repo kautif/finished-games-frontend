@@ -129,6 +129,16 @@
     max-width: 80%;
 }
 
+#discover__title-flex {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#discover__title-flex button {
+    align-self: center;
+}
+
 .modal-btn {
     width: 30%;
     box-shadow: initial;

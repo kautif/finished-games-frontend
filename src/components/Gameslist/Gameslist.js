@@ -102,7 +102,13 @@ export default function Gameslist (){
     }, [gameDate])
 
     function notifyUpdate (gameTitle) {
-        toast(`${gameTitle} has been updated`);
+        toast(`${gameTitle} has been updated`, {
+            autoClose: 1000,
+            position: "top-center",
+            onClose: () => {
+                window.location.reload();
+            }
+        });
     }
 
     function notifyDelete(gameTitle) {
@@ -466,16 +472,20 @@ export default function Gameslist (){
                             <Button className="modal-btn" onClick={() => {
                                 updateGame(gameName, gameSummary, gameDate, gameRank, gameRating)
                                 setShowModal(false);
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 390)
+                                notifyUpdate(gameName);
                             }}>Save</Button>
                             <Button className="modal-btn" onClick={() => setShowModal(false)}>Cancel</Button>
                         </Modal.Footer>
                     </Modal>
                     <Modal id="discover" show={showDiscover}>
                         <Modal.Header>
-                            <Modal.Title>Discover</Modal.Title>
+                            <Modal.Title id="discover__title-flex">
+                                <h1>Discover</h1>
+                                {showGame && <Button onClick={() => {
+                                    dispatch(setShowGame(false));
+                                    dispatch(setShowSearch(true));
+                                }}>Back</Button>}
+                            </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             {showSearch && <Search />}
