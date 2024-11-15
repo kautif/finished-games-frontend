@@ -31,6 +31,16 @@ export default function AddGame () {
         setDate(prevDate => newDate);
     }
 
+    function notifyUpdate (game) {
+        toast(`${game} has been added`, {
+            position: "top-center",
+            autoClose: 1000,
+            onClose: () => {
+                window.location.reload();
+            }
+        });
+    }
+
     function addGame (gameName, gameImg, gameSummary, gameStatus, gameRating, customGame) {
         let gameObj = {
             name: gameName,
@@ -120,8 +130,9 @@ export default function AddGame () {
                     setSummary(e.target.value);
                 }}placeholder="Let your viewers know how you felt about this game" ></textarea>
                 <p className="search-result__add-btn text-center" onClick={() => {
-                    dispatch(setShowGame(false));
-                    dispatch(setShowSearch(true));
+                    // dispatch(setShowGame(false));
+                    // dispatch(setShowSearch(true));
+                    notifyUpdate(searchGameName);
                     console.log("date: ", date);
                     console.log("rating: ", rating);
                     console.log("status: ", gameRank);

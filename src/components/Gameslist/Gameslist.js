@@ -105,6 +105,16 @@ export default function Gameslist (){
         toast(`${gameTitle} has been updated`);
     }
 
+    function notifyDelete(gameTitle) {
+        toast(`${gameTitle} has been deleted`, {
+            position: "top-center",
+            autoClose: 1000,
+            onClose: () => {
+                window.location.reload();
+            }
+        });
+    }
+
     let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];
     let gameStateArr = ["all", "playing", "upcoming", "completed", "dropped"];
     function filterOrSort () {
@@ -451,9 +461,7 @@ export default function Gameslist (){
                         <Modal.Footer id="gameslist-game-flex-container">
                             <p className="gameslist-game__add-btn modal-btn text-center" onClick={() => {
                                         deleteGame(gameName);
-                                        setTimeout(function () {
-                                            window.location.reload();
-                                        }, 390)
+                                        notifyDelete(gameName);
                                     }}>Delete</p>
                             <Button className="modal-btn" onClick={() => {
                                 updateGame(gameName, gameSummary, gameDate, gameRank, gameRating)
