@@ -1,0 +1,7 @@
+.gamedata__row-status {
+    font-weight: bold;
+}
+
+tr:nth-child(odd) {
+    background-color: #d1cfc9; /* Light color */
+}

@@ -6,6 +6,8 @@ import Image from "react-bootstrap/esm/Image";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowGame, setShowSearch } from "../../redux/gamesSlice";
 import { ToastContainer, toast } from 'react-toastify';
+import Col from "react-bootstrap/esm/Col";
+import Row from "react-bootstrap/esm/Row";
 
 export default function AddGame () {
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -41,7 +43,7 @@ export default function AddGame () {
         });
     }
 
-    function addGame (gameName, gameImg, gameSummary, gameStatus, gameRating, customGame) {
+    function addGame (gameName, gameImg, gameSummary, gameStatus, gameRating, gameHours, customGame) {
         let gameObj = {
             name: gameName,
             custom_game: customGame,
@@ -82,67 +84,65 @@ export default function AddGame () {
     }, [searchGameName])
 
     return (
-        <div className="addgame-container">
-            <div className="addgame-intro">
-                <h1 className="text-left">{searchGameName}</h1>
-                <Image 
-                    className="addgame-img"
-                    src={searchGameImg}
-                />
-            </div>
-            <div className="addgame-details">
-                <label>Date:</label><input className="search-game__date" type="date" name="date-added" 
-                onChange={(e) => {
-                    setDate(e.target.value);
-                    console.log(e.target.value);
-                }}
-                />
-                <div className="search-game__rating">
-                    <label>Rating: </label>
-                    <select className="search-game__rating__num" onChange={(e) => {
-                        setRating(e.target.value)
-                    }}>
-                        <option selected value="10">10</option>
-                        <option value="9">9</option>
-                        <option value="8">8</option>
-                        <option value="7">7</option>
-                        <option value="6">6</option>
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
-                        <option selected value="0">-</option> 
-                    </select>    
+        <Col>
+            <Row className="addgame-container">
+                <div className="addgame-intro">
+                    <h1 className="text-left">{searchGameName}</h1>
+                    <Image
+                        className="addgame-img"
+                        src={searchGameImg}
+                    />
                 </div>
-                <div className="search-game__status" onChange={(e) => {
-                    setGameRank(e.target.value);
-                }}>
-                    <label>Game Status</label>
-                    <select>
-                        <option selected="selected" value="playing">Playing</option>
-                        <option value="upcoming">Upcoming</option>
-                        <option value="completed">Completed</option>
-                        <option value="dropped">Dropped</option>
-                    </select>
-                </div> 
-                <textarea onChange={(e) => {
-                    setSummary(e.target.value);
-                }}placeholder="Let your viewers know how you felt about this game" ></textarea>
-                <p className="search-result__add-btn text-center" onClick={() => {
-                    // dispatch(setShowGame(false));
-                    // dispatch(setShowSearch(true));
-                    notifyUpdate(searchGameName);
-                    console.log("date: ", date);
-                    console.log("rating: ", rating);
-                    console.log("status: ", gameRank);
-                    console.log("summary: ", summary);
-                    addGame(searchGameName, searchGameImg, summary, gameRank, rating, "")
-                    // dispatch(setSearchGameName(game.name));
-                    // dispatch(setSearchGameImg(game.background_image));
-                }}>Add Game</p>
-            </div>
-            <ToastContainer />
-        </div>
+                <div className="addgame-details">
+                    <label>Date:</label><input className="search-game__date" type="date" name="date-added" 
+                    onChange={(e) => {
+                        setDate(e.target.value);
+                        console.log(e.target.value);
+                    }}
+                    />
+                    <div className="search-game__rating">
+                        <label>Rating: </label>
+                        <select className="search-game__rating__num" onChange={(e) => {
+                            setRating(e.target.value)
+                        }}>
+                            <option selected value="10">10</option>
+                            <option value="9">9</option>
+                            <option value="8">8</option>
+                            <option value="7">7</option>
+                            <option value="6">6</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                            <option selected value="0">-</option> 
+                        </select>    
+                    </div>
+                    <div className="search-game__status" onChange={(e) => {
+                        setGameRank(e.target.value);
+                    }}>
+                        <label>Game Status</label>
+                        <select>
+                            <option selected="selected" value="playing">Playing</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="completed">Completed</option>
+                            <option value="dropped">Dropped</option>
+                        </select>
+                    </div>
+                    <textarea onChange={(e) => {
+                        setSummary(e.target.value);
+                    }}placeholder="Let your viewers know how you felt about this game" ></textarea>
+                    <p className="search-result__add-btn text-center" onClick={() => {
+                        // dispatch(setShowGame(false));
+                        // dispatch(setShowSearch(true));
+                        notifyUpdate(searchGameName);
+                        addGame(searchGameName, searchGameImg, summary, gameRank, rating, "")
+                        // dispatch(setSearchGameName(game.name));
+                        // dispatch(setSearchGameImg(game.background_image));
+                    }}>Add Game</p>
+                </div>
+                <ToastContainer />
+            </Row>
+        </Col>
     )
 }

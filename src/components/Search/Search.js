@@ -13,6 +13,9 @@ import smwCart from "../../assets/vh_smw_cart.webp";
 import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
+import Container from "react-bootstrap/esm/Container";
+import Col from "react-bootstrap/esm/Col";
+import Row from "react-bootstrap/esm/Row";
 
 export default function Search () {
     const dispatch = useDispatch();
@@ -170,50 +173,55 @@ export default function Search () {
     })
 
     retrievedGames = games.map((game, i) => {
-        return <div className="search-game">
-            <h2 className="search-game__name">{game.name}</h2>
-            <img src={game.background_image} alt={game.name + " image"} />
-            {/* <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => {
-                console.log(e.target.value);
-                getDate(document.getElementsByClassName("search-game__date"), i)
-            }}/> */}
-            {/* <div className="search-game__rating">
-                <label>Rating: </label>
-                <select className="search-game__rating__num">
-                    <option selected value="10">10</option>
-                    <option value="9">9</option>
-                    <option value="8">8</option>
-                    <option value="7">7</option>
-                    <option value="6">6</option>
-                    <option value="5">5</option>
-                    <option value="4">4</option>
-                    <option value="3">3</option>
-                    <option value="2">2</option>
-                    <option value="1">1</option>
-                    <option selected value="0">-</option> 
-                </select>    
-            </div> */}
-            {/* <div className="search-game__status">
-                <label>Game Status</label>
-                <select>
-                    <option selected="selected" value="playing">Playing</option>
-                    <option value="upcoming">Upcoming</option>
-                    <option value="completed">Completed</option>
-                    <option value="dropped">Dropped</option>
-                </select>
-            </div> */}
-            {/* <textarea placeholder="Let your viewers know how you felt about this game" ></textarea> */}
-                {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn text-center" onClick={(e) => 
-                           addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
-                            document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>} */}
+        return <Col xl={3} 
+        lg={4} 
+        sm={6} 
+        xs={12}>
+            <Row className="search-game">
+                <h2 className="search-game__name text-center">{game.name}</h2>
+                <img src={game.background_image} alt={game.name + " image"} />
+                {/* <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => {
+                    console.log(e.target.value);
+                    getDate(document.getElementsByClassName("search-game__date"), i)
+                }}/> */}
+                {/* <div className="search-game__rating">
+                    <label>Rating: </label>
+                    <select className="search-game__rating__num">
+                        <option selected value="10">10</option>
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                        <option selected value="0">-</option> 
+                    </select>    
+                </div> */}
+                {/* <div className="search-game__status">
+                    <label>Game Status</label>
+                    <select>
+                        <option selected="selected" value="playing">Playing</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="completed">Completed</option>
+                        <option value="dropped">Dropped</option>
+                    </select>
+                </div> */}
+                {/* <textarea placeholder="Let your viewers know how you felt about this game" ></textarea> */}
+                    {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn text-center" onClick={(e) => 
+                            addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
+                                document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>} */}
 
-        <p className="search-result__add-btn text-center" onClick={() => {
-            dispatch(setShowGame(true));
-            dispatch(setShowSearch(false));
-            dispatch(setSearchGameName(game.name));
-            dispatch(setSearchGameImg(game.background_image));
-        }}>Add Game</p>
-        </div>
+            <p className="search-result__add-btn text-center" onClick={() => {
+                dispatch(setShowGame(true));
+                dispatch(setShowSearch(false));
+                dispatch(setSearchGameName(game.name));
+                dispatch(setSearchGameImg(game.background_image));
+            }}>Add Game</p>
+            </Row>
+        </Col>
     })
 
     return (
@@ -319,7 +327,9 @@ export default function Search () {
             </div> 
             : ""}
             <div className="search-results">
-                {gameType === "regular" ? retrievedGames : ""}
+                <Container className="d-flex flex-wrap">
+                    {gameType === "regular" ? retrievedGames : ""}
+                </Container>
             </div>
         </div>
     )

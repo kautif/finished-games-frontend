@@ -9,6 +9,7 @@
     flex-basis: flex-start;
     align-items: center;
     flex-grow: 1;
+    width: 50%;
 }
 
 .addgame-details {
@@ -35,4 +36,38 @@
 
 .search-result__add-btn:hover {
     cursor: pointer;
+}
+
+@media (min-width: 768px) and (max-width: 1550px) {
+    #discover {
+        max-width: 100% !important;
+    }
+
+    .addgame-img {
+        width: 100%;
+    }
+}
+
+@media (min-width: 330px) and (max-width: 767px) {
+    .addgame-container {
+        flex-direction: column;
+    }
+
+    .addgame-intro {
+        width: 100%;
+    }
+
+    .addgame-details {
+        width: 69%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #discover {
+        max-width: 100% !important;
+    }
+
+    .addgame-img {
+        width: 100%;
+    }
 }
