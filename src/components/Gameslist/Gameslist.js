@@ -137,8 +137,6 @@ export default function Gameslist (){
     let minecraftArr = [];
     let pokemonArr = [];
     let smwArr = [];
-    let gameTypes = ["regular", "mario", "pokemon", "minecraft", "other"];
-    let gameStatuses = ["playing", "upcoming", "dropped", "completed"];
 
     const [sortDirection, setSortDirection] = useState("ascending");
     const [sortFocus, setSortFocus] = useState("alpha");

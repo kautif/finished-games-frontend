@@ -14,6 +14,7 @@ import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
 import Col from "react-bootstrap/Col";
+import GameData from "../GameData/GameData";
 
 export default function Profile (match) {
     const dispatch = useDispatch();
@@ -43,6 +44,95 @@ export default function Profile (match) {
     let phase2Arr = [];
     let phase3Arr;
     let matchArr;
+
+    const [regCount, setRegCount] = useState(0);
+    const [regUpCount, setRegUpCount] = useState(0);
+    const [regCompCount, setRegCompCount] = useState(0);
+    const [regDroppedCount, setRegDroppedCount] = useState(0);
+    
+    const [marioCount, setMarioCount] = useState(0);
+    const [marioUpCount, setMarioUpCount] = useState(0);
+    const [marioCompCount, setMarioCompCount] = useState(0);
+    const [marioDroppedCount, setMarioDroppedCount] = useState(0);
+
+    const [pokemonCount, setPokemonCount] = useState(0);
+    const [pokemonUpCount, setPokemonUpCount] = useState(0);
+    const [pokemonCompCount, setPokemonCompCount] = useState(0);
+    const [pokemonDroppedCount, setPokemonDroppedCount] = useState(0);
+
+    const [minecraftCount, setMinecraftCount] = useState(0);
+    const [minecraftUpCount, setMinecraftUpCount] = useState(0);
+    const [minecraftCompCount, setMinecraftCompCount] = useState(0);
+    const [minecraftDroppedCount, setMinecraftDroppedCount] = useState(0);
+
+    const [otherCount, setOtherCount] = useState(0);
+    const [otherUpCount, setOtherUpCount] = useState(0);
+    const [otherCompCount, setOtherCompCount] = useState(0);
+    const [otherDroppedCount, setOtherDroppedCount] = useState(0);
+
+    const [gamesObj, setGamesObj] = useState({
+        regular: {
+            playing: 0,
+            upcoming: 0,
+            completed: 0,
+            dropped: 0
+        },
+        mario: {
+            playing: 0,
+            upcoming: 0,
+            completed: 0,
+            dropped: 0
+        },
+        pokemon: {
+            playing: 0,
+            upcoming: 0,
+            completed: 0,
+            dropped: 0
+        },
+        minecraft: {
+            playing: 0,
+            upcoming: 0,
+            completed: 0,
+            dropped: 0
+        },
+        other: {
+            playing: 0,
+            upcoming: 0,
+            completed: 0,
+            dropped: 0
+        }
+    })
+    
+    let regPlaying = 0;
+    let regUp = 0;
+    let regComp = 0;
+    let regDropped = 0;
+
+    let smwPlaying = 0;
+    let smwUp = 0;
+    let smwComp = 0;
+    let smwDropped = 0;
+
+    let pokemonPlaying = 0;
+    let pokemonUp = 0;
+    let pokemonComp = 0;
+    let pokemonDropped = 0;
+
+    let minecraftPlaying = 0;
+    let minecraftUp = 0;
+    let minecraftComp = 0;
+    let minecraftDropped = 0;
+
+    let otherPlaying = 0;
+    let otherUp = 0;
+    let otherComp = 0;
+    let otherDropped = 0;
+
+    let regularArr = [];
+    let otherArr = [];
+    let minecraftArr = [];
+    let pokemonArr = [];
+    let smwArr = [];
 
     const [gameState, setGameState] = useState("all");
 
@@ -76,8 +166,115 @@ export default function Profile (match) {
     }, [])
 
     useEffect(() => {
+        if (userGames) {
+            userGames.map(game => {
+                if (game.custom_game === "regular") {
+                    regularArr.push(game);
+                }
+
+                if (game.custom_game === "other") {
+                    otherArr.push(game);
+                }
+
+                if (game.custom_game === "minecraft") {
+                    minecraftArr.push(game);
+                }
+
+                if (game.custom_game === "mario") {
+                    smwArr.push(game);
+                }
+
+                if (game.custom_game === "pokemon") {
+                    pokemonArr.push(game);
+                }
+            })
+        }
+
+        console.log("profile regularArr", regularArr);
+        console.log("profile smwArr", smwArr);
+        console.log("profile pokemonArr", pokemonArr);
+        console.log("profile minecraftArr", minecraftArr);
+        console.log("profile otherArr", otherArr);
+
+        organizeGameData(regularArr, "playing", regPlaying, setRegCount);
+        organizeGameData(regularArr, "upcoming", regUp, setRegUpCount);
+        organizeGameData(regularArr, "completed", regComp, setRegCompCount);
+        organizeGameData(regularArr, "dropped", regDropped, setRegDroppedCount);
+
+        organizeGameData(smwArr, "playing", smwPlaying, setMarioCount);
+        organizeGameData(smwArr, "upcoming", smwUp, setMarioUpCount);
+        organizeGameData(smwArr, "completed", smwComp, setMarioCompCount);
+        organizeGameData(smwArr, "dropped", smwDropped, setMarioDroppedCount);
+
+        organizeGameData(pokemonArr, "playing", pokemonPlaying, setPokemonCount);
+        organizeGameData(pokemonArr, "upcoming", pokemonUp, setPokemonUpCount);
+        organizeGameData(pokemonArr, "completed", pokemonComp, setPokemonCompCount);
+        organizeGameData(pokemonArr, "dropped", pokemonDropped, setPokemonDroppedCount);
+
+        organizeGameData(minecraftArr, "playing", minecraftPlaying, setMinecraftCount);
+        organizeGameData(minecraftArr, "upcoming", minecraftUp, setMinecraftUpCount);
+        organizeGameData(minecraftArr, "completed", minecraftComp, setMinecraftCompCount);
+        organizeGameData(minecraftArr, "dropped", minecraftDropped, setMinecraftDroppedCount);
+
+        organizeGameData(otherArr, "playing", otherPlaying, setOtherCount);
+        organizeGameData(otherArr, "upcoming", otherUp, setOtherUpCount);
+        organizeGameData(otherArr, "completed", otherComp, setOtherCompCount);
+        organizeGameData(otherArr, "dropped", otherDropped, setOtherDroppedCount);
+    }, [userGames])
+
+    useEffect(() => {
+        setGamesObj((prevObj) => ({
+            ...prevObj,
+            regular: {
+                ...prevObj.regular,
+                playing: regCount,
+                upcoming: regUpCount,
+                completed: regCompCount,
+                dropped: regDroppedCount
+            },
+            mario: {
+                ...prevObj.mario,
+                playing: marioCount,
+                upcoming: marioUpCount,
+                completed: marioCompCount,
+                dropped: marioDroppedCount
+            },
+            pokemon: {
+                ...prevObj.pokemon,
+                playing: pokemonCount,
+                upcoming: pokemonUpCount,
+                completed: pokemonCompCount,
+                dropped: pokemonDroppedCount
+            },
+            minecraft: {
+                ...prevObj.minecraft,
+                playing: minecraftCount,
+                upcoming: minecraftUpCount,
+                completed: minecraftCompCount,
+                dropped: minecraftDroppedCount
+            },
+            other: {
+                ...prevObj.other,
+                playing: otherCount,
+                upcoming: otherUpCount,
+                completed: otherCompCount,
+                dropped: otherDroppedCount
+            }
+        }))
+    }, [regCount, regUpCount, regCompCount, regDroppedCount])
+
+    useEffect(() => {
         console.log("gameType: ", gameType);
     }, [gameType, gameState, sortDirection, sortFocus])
+
+    function organizeGameData (gameTypeArr, gameStatus, counter, setCount) {
+        gameTypeArr.map(game => {
+            if (game.rank === gameStatus) {
+                counter++;
+            }
+            setCount(counter);
+        })
+    }
 
     let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];
     let gameStateArr = ["all", "playing", "upcoming", "completed", "dropped"];
@@ -220,6 +417,9 @@ export default function Profile (match) {
     } else {
         return (
             <div>
+                <GameData 
+                    gamesObj={gamesObj}
+                />
                 <img src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
                 <h1>{user.twitch_default}</h1>
                 <p onClick={() => {

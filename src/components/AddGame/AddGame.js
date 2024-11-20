@@ -43,7 +43,7 @@ export default function AddGame () {
         });
     }
 
-    function addGame (gameName, gameImg, gameSummary, gameStatus, gameRating, gameHours, customGame) {
+    function addGame (gameName, gameImg, gameSummary, gameStatus, gameRating, customGame) {
         let gameObj = {
             name: gameName,
             custom_game: customGame,
@@ -136,7 +136,7 @@ export default function AddGame () {
                         // dispatch(setShowGame(false));
                         // dispatch(setShowSearch(true));
                         notifyUpdate(searchGameName);
-                        addGame(searchGameName, searchGameImg, summary, gameRank, rating, "")
+                        addGame(searchGameName, searchGameImg, summary, gameRank, rating, "regular")
                         // dispatch(setSearchGameName(game.name));
                         // dispatch(setSearchGameImg(game.background_image));
                     }}>Add Game</p>
