@@ -48,6 +48,7 @@ export default function Gameslist (){
     const [gameRating, setGameRating] = useState(0);
     const [gameDate, setGameDate] = useState("");
     const [gameRank, setGameRank] = useState("");
+    const [gameIndex, setGameIndex] = useState(0);
 
     const [regCount, setRegCount] = useState(0);
     const [regUpCount, setRegUpCount] = useState(0);
@@ -260,10 +261,6 @@ export default function Gameslist (){
     }, [regCount])
 
     useEffect(() => {
-        console.log("gamesObj: ", gamesObj);
-    }, [gamesObj])
-
-    useEffect(() => {
         if (matchArr !== undefined) {
             getGameSummary(matchArr);
             getGameDate(matchArr);
@@ -294,13 +291,23 @@ export default function Gameslist (){
     }
 
     function notifyUpdate (gameTitle) {
-        toast(`${gameTitle} has been updated`, {
-            autoClose: 1000,
-            position: "top-center",
-            onClose: () => {
-                window.location.reload();
-            }
-        });
+        if (userGames[gameIndex].name === gameName && userGames[gameIndex].summary === gameSummary && new Date(userGames[gameIndex].date_added).toDateString() === gameDate.toDateString()) {
+            toast(`${gameTitle} details did not change`, {
+                autoClose: 1000,
+                position: "top-center",
+                onClose: () => {
+                    // window.location.reload();
+                }
+            });
+        } else {
+            toast(`${gameTitle} has been updated`, {
+                autoClose: 1000,
+                position: "top-center",
+                onClose: () => {
+                    window.location.reload();
+                }
+            });
+        }
     }
 
     function notifyDelete(gameTitle) {
@@ -378,7 +385,6 @@ export default function Gameslist (){
             sortFocus === "rating") {
                 phase3Arr = [...phase2Arr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0))];
         }
-        console.log("phase3Arr: ", phase3Arr);
 
         renderGames(phase3Arr);
     }
@@ -440,7 +446,6 @@ export default function Gameslist (){
                 console.log("no games: ", result);
             } else {
                 setUserGames(result.data.response.games);
-                console.log("found games: ", result.data.response.games);
             }
         }).catch(err => {
             console.error("Failed to get Games: ", err.message);
@@ -482,7 +487,6 @@ export default function Gameslist (){
                     day = formattedDate.getDate() + 1;
                 }
                 let year = formattedDate.getFullYear();
-                console.log("month: ", month);
                 return <Col xl={3} lg={4} sm={6} xs={12}><Row className="gameslist-game d-flex flex-column me-2">
                                 <h2 className="gameslist-game__title">{game.name}</h2>
                                 <Image className="gameslist-game__img align-self-center" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded />
@@ -537,6 +541,7 @@ export default function Gameslist (){
                                             setGameRating(game.rating);
                                             setGameDate(new Date(game.date_added));
                                             setGameRank(game.rank);
+                                            setGameIndex(i);
                                         }}>Edit</p>
                                     {/* <p className="gameslist-game__add-btn" onClick={() => {
                                         deleteGame(game.name);
@@ -665,7 +670,9 @@ export default function Gameslist (){
                                         notifyDelete(gameName);
                                     }}>Delete</p>
                             <Button className="modal-btn" onClick={() => {
-                                updateGame(gameName, gameSummary, gameDate, gameRank, gameRating)
+                                if (userGames[gameIndex].name !== gameName || userGames[gameIndex].summary !== gameSummary || new Date(userGames[gameIndex].date_added).toDateString() !== gameDate.toDateString()) {
+                                    updateGame(gameName, gameSummary, gameDate, gameRank, gameRating);
+                                }
                                 setShowModal(false);
                                 notifyUpdate(gameName);
                             }}>Save</Button>
@@ -690,8 +697,6 @@ export default function Gameslist (){
                             <Button onClick={() => setShowDiscover(false)}>Close</Button>
                         </Modal.Footer>
                     </Modal>
-
-
                     <ToastContainer />
                 </Row>
             </Container>

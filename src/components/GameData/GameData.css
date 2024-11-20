@@ -5,3 +5,9 @@
 tr:nth-child(odd) {
     background-color: #d1cfc9; /* Light color */
 }
+
+@media (min-width: 300px) and (max-width: 767px) {
+    td, th {
+        font-size: 0.75em;
+    }
+}
