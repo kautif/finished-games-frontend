@@ -7,6 +7,10 @@ import Col from 'react-bootstrap/Col';
 import Image from "react-bootstrap/Image";
 import Form from 'react-bootstrap/Form';
 
+import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+
 export default function FindUser () {
     const [user, setUser] = useState("");
     const [foundUsers, setFoundUsers] = useState([]);
@@ -66,11 +70,30 @@ export default function FindUser () {
     return (
         <Container>
             <Form>
-                <input placeholder="Enter username or term" onChange={(e) => setUser(e.target.value.toLowerCase())}/>
-                <input type="submit" value="Submit" onClick={(e) => {
-                    e.preventDefault();
-                    getUsers(user);
-                }}/>
+                <Stack>
+                <Autocomplete
+                                // freeSolo
+                                id="free-solo-2-demo"
+                                disableClearable
+                                noOptionsText="No results found"
+                                options={userList.map((option) => option.twitch_default)}
+                                onChange={(e) => {
+                                    getUsers(e.target.textContent.toLowerCase())
+                                }}
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Enter a username"
+                                    slotProps={{
+                                    input: {
+                                        ...params.InputProps,
+                                        type: 'search',
+                                    },
+                                    }}
+                                />
+                                )}
+                            />
+                </Stack>
             </Form>
             <div className="find-user__results d-flex flex-wrap">
                 {foundUsers.map(foundUser => {
