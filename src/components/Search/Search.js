@@ -46,8 +46,14 @@ export default function Search () {
     twitchId = window.localStorage.getItem("twitchId");
     twitchName = window.localStorage.getItem("twitchName");
 
-    function notifyUpdate (gameTitle) {
-        toast(`${gameTitle} has been updated`);
+    function notifyCustom (gameTitle) {
+        toast(`${gameTitle} has been added`, {
+            position: "top-center",
+            autoClose: 1000,
+            onClose: () => {
+                window.location.reload();
+            }
+        });
     }
 
     function getGames (e) {
@@ -152,7 +158,7 @@ export default function Search () {
 
     useEffect(() => {
         if (gameType === "custom") {
-            // setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0))
+            setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0))
         } else {
             retrievedGames.map((game, i) => {
                 // defaultDate(document.getElementsByClassName("search-game__date"), i);
@@ -297,7 +303,7 @@ export default function Search () {
                     setSummary(e.target.value);
                 }}></textarea>
                 {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn" onClick={(e) => addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value, i)}>Add Game</p>} */}
-                <p className="custom-game__add-btn" onClick={() => {
+                <p className="custom-game__add-btn text-center" onClick={() => {
                     let customGameTitle = document.getElementById("custom-game__title").value;
                     let customSummary = document.getElementById("custom-game__summary").value;
                     let customStatus = document.getElementById("custom-game__status").value;
@@ -310,11 +316,11 @@ export default function Search () {
                     if (!hasInvalidCharacters && customGameTitle !== "") {
                         console.log("customGameTitle: ", customGameTitle);
                             addGame(title, "", summary, gameStatus, customDate, 0, rating, customGame);
-                            setCustomGameMsg(`${customGameTitle} has been added`);
                             // document.getElementById("custom-game__title").value = "";
                             // document.getElementById("custom-game__summary").value = "";
                             // document.getElementById("custom-game__status").value = "playing";
                             defaultDate(document.getElementsByClassName("custom-game__date"), 0);
+                            notifyCustom(customGameTitle);
                             // document.getElementById("custom-game__rating__num").value = "10";
                     } else {
                         setCustomGameMsg("No special characters (except '&') and game title can't be empty");
@@ -324,6 +330,7 @@ export default function Search () {
                     <p id="custom-game__notif__msg">{customGameMsg}</p>
                 </div>
                 </form>
+                <ToastContainer />
             </div> 
             : ""}
             <div className="search-results">
