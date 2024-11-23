@@ -47,7 +47,7 @@ export default function AddGame () {
         let gameObj = {
             name: gameName,
             custom_game: customGame,
-            img_url: customGame.length === 0 ? gameImg : "",
+            img_url: customGame === "regular" ? gameImg : "",
             summary: gameSummary,
             date_added: date,
             rank: gameStatus,

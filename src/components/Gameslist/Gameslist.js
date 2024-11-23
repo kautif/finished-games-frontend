@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Dropdown from 'react-bootstrap/Dropdown';
 import Search from '../Search/Search';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -320,6 +321,16 @@ export default function Gameslist (){
         });
     }
 
+    function notifyDeleteUser () {
+        toast(`Account Deleted. Login to recreate.`, {
+            position: "top-center",
+            autoClose: 1000,
+            onClose: () => {
+                window.location.reload();
+            }
+        });
+    }
+
     let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];
     let gameStateArr = ["all", "playing", "upcoming", "completed", "dropped"];
     function filterOrSort () {
@@ -425,6 +436,22 @@ export default function Gameslist (){
             }
         }
             axios.delete(`${backendURL}/deletegame`, config)
+                .then(response => {
+
+                }).catch(err => {
+                    console.error("Failed to delete: ", err.message);
+
+                })
+    }
+
+    function deleteUser (user) {
+        let config = {
+            data: {
+                twitchName: twitchName,
+            }
+        }
+
+        axios.delete(`${backendURL}/deleteuser`, config)
                 .then(response => {
 
                 }).catch(err => {
@@ -570,6 +597,17 @@ export default function Gameslist (){
 
     return (
         <div className="gameslist-games-container">
+            <Dropdown id="user-settings">
+                <Dropdown.Toggle id="dropdown-basic">
+                        <span id="user-settings__gear">&#9881;</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => {
+                        deleteUser(twitchName);
+                        notifyDeleteUser();
+                    }}>Delete Account</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
             {<GameData 
                 gamesObj={gamesObj}
             />}

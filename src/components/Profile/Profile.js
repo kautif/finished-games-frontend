@@ -190,12 +190,6 @@ export default function Profile (match) {
             })
         }
 
-        console.log("profile regularArr", regularArr);
-        console.log("profile smwArr", smwArr);
-        console.log("profile pokemonArr", pokemonArr);
-        console.log("profile minecraftArr", minecraftArr);
-        console.log("profile otherArr", otherArr);
-
         organizeGameData(regularArr, "playing", regPlaying, setRegCount);
         organizeGameData(regularArr, "upcoming", regUp, setRegUpCount);
         organizeGameData(regularArr, "completed", regComp, setRegCompCount);
