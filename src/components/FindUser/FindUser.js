@@ -15,6 +15,7 @@ export default function FindUser () {
     const [user, setUser] = useState("");
     const [foundUsers, setFoundUsers] = useState([]);
     const [userList, setUserList] = useState([]);
+    const [inputValue, setInputValue] = useState("");
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
 
     function getUserList () {
@@ -75,8 +76,16 @@ export default function FindUser () {
                                 // freeSolo
                                 id="free-solo-2-demo"
                                 disableClearable
+                                inputValue={inputValue}
+                                open={inputValue.length > 0}
+                                onInputChange={(e, value) => setInputValue(value)}
                                 noOptionsText="No results found"
                                 options={userList.map((option) => option.twitch_default)}
+                                filterOptions={(options, state) =>
+                                    options.filter((option) =>
+                                      option.toLowerCase().includes(state.inputValue.toLowerCase())
+                                    ).slice(0, 10) // Limit to 5 results
+                                  }
                                 onChange={(e) => {
                                     getUsers(e.target.textContent.toLowerCase())
                                 }}
