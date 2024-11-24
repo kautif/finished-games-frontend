@@ -42,6 +42,7 @@ export default function Gameslist (){
     
     const [showModal, setShowModal] = useState(false);
     const [showDiscover, setShowDiscover] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
 
     const [gameName, setGameName] = useState("");
     const [gameImg, setGameImg] = useState("");
@@ -603,8 +604,7 @@ export default function Gameslist (){
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item onClick={() => {
-                        deleteUser(twitchName);
-                        notifyDeleteUser();
+                        setShowDelete(true);
                     }}>Delete Account</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
@@ -734,6 +734,29 @@ export default function Gameslist (){
                         <Modal.Footer>
                             <Button onClick={() => setShowDiscover(false)}>Close</Button>
                         </Modal.Footer>
+                    </Modal>
+                    <Modal show={showDelete} id="delete-modal">
+                        <Modal.Header>
+                            <Modal.Title id="delete-modal__title">
+                                <h2>Delete Account</h2>    
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                                <p>If you click on delete, you will lose all your games and users will not be able to find you. Click the Delete button if you want to continue or the Cancel button if you've changed your mind.</p>
+                                <div className="delete-btns-container">
+                                    <Button onClick={() => {
+                                        deleteUser(twitchName);
+                                        notifyDeleteUser();
+                                    }}>Delete</Button>
+                                    <Button
+                                        onClick={() => {
+                                            setShowDelete(false);
+                                        }} 
+                                        variant="danger">
+                                        Cancel
+                                    </Button>
+                                </div>
+                        </Modal.Body>
                     </Modal>
                     <ToastContainer />
                 </Row>

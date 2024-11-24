@@ -6,6 +6,17 @@
     font-size: 2em;
 }
 
+.delete-btns-container {
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#delete-modal__title {
+    text-align: center;
+    width: 100%;
+}
+
 .gameslist-games-container {
     position: relative;
 }
