@@ -29,8 +29,8 @@
 }
 
 .header-flex {
-    position: absolute;
-    left: 3%;
+    /* position: absolute;
+    left: 3%; */
 }
 
 .header__cta {
@@ -94,9 +94,8 @@
         background-size: 92%;
     }
 
-    .header-flex {
-        left: 0;
-        top: 8%;
+    .header__cta {
+        font-size: 2.75em;
     }
 
     .vh-logo {
@@ -111,11 +110,11 @@
 
     .vh-logo {
         width: 63%;
+        margin-top: 12%;
     }
 
-    .header-flex {
-        left: 0;
-        top: 9%;
+    .header__cta {
+        font-size: 2.5em;
     }
 }
 
@@ -126,6 +125,7 @@
 
     .vh-logo {
         width: 63%;
+        margin-top: 15%;
     }
 
     .header-flex {
@@ -134,7 +134,7 @@
     }
 
     .header__cta {
-        font-size: 2.5em;
+        font-size: 2.25em;
     }
 }
 
@@ -159,8 +159,21 @@
 }
 
 @media (max-width: 634px) {
+    .header-container {
+        position: absolute;
+    }
+
     .header-flex {
-        top: 9%;
+        position: relative;
+        top: 14%;
+    }
+
+    .header__cta {
+        font-size: 1.75em;
+    }
+
+    .vh-logo {
+        margin-top: 5%;
     }
 }
 
