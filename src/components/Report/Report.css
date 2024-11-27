@@ -31,7 +31,6 @@
 }
 
 .report__submit-btn {
-    background-color: #8E43FC;
     color: white;
     padding: 10px;
     border-radius: 4px;
@@ -40,4 +39,20 @@
     margin-left: auto;
     margin-right: auto;
     font-size: 1.25em;
+}
+
+.report__submit__enabled {
+    background-color: #8E43FC;
+}
+
+.report__submit__disabled {
+    background-color: #ddd;
+    color: grey;
+    /* padding: 10px;
+    border-radius: 4px;
+    box-shadow: 2px 3px 5px 2px #313030;
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.25em; */
 }

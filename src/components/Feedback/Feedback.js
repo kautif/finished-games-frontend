@@ -54,7 +54,7 @@ export default function Feedback () {
                 feedbackYear = datePosted.getFullYear();
                 if (feedbackMonth === currentMonth && 
                     feedbackYear === currentYear &&
-                    Math.abs(currentDay - feedbackDay) > 0
+                    Math.abs(currentDay - feedbackDay) < 1
                 ) {
                     setHasSubmittedRecently(true);
                     break;

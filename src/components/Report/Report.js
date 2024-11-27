@@ -8,27 +8,85 @@ export default function Report () {
     // const reportUser = useSelector((state) => state.gamesReducer.reportUser);
     console.log("reportUser", localStorage.getItem("reportUser"));
     console.log("reporting user", localStorage.getItem("twitchName"));
+    let twitchId = localStorage.getItem("twitchId");
 
     const [report, setReport] = useState(localStorage.getItem("reportUser"));
     const [issue, setIssue] = useState("game");
     const [details, setDetails] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [hasSubmittedRecently, setHasSubmittedRecently] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
 
     function notify (user) {
-        toast(`${user} has been reported. Thank you`);
+        toast(`${user} has been reported. Thank you`, {
+            autoClose: 1000,
+            position: "top-center",
+            onClose: () => {
+                window.location.reload();
+            }
+        });
+    }
+
+    function notifyReportDenied (user) {
+        toast(`You've already reported a user today. Thank you`, {
+            autoClose: 1000,
+            position: "top-center"
+        });
+    }
+
+    let reportInstance;
+    let reportMonth;
+    let reportDay;
+    let reportYear;
+    let currentMonth = new Date().getMonth() + 1;
+    let currentDay = new Date().getDate();
+    let currentYear = new Date().getFullYear();
+    async function getReports () {
+        await axios(`${backendURL}/report`, {
+            method: "get",
+            params: {
+                twitchId: twitchId
+            }
+        }).then(results => {
+            reportInstance = results;
+            for (let i = 0; i < reportInstance.data.response.length; i++) {
+                let datePosted = new Date(reportInstance.data.response[i].date);
+                reportMonth = datePosted.getMonth() + 1;
+                reportDay = datePosted.getDate();
+                reportYear = datePosted.getFullYear();
+                if (reportMonth === currentMonth && 
+                    reportYear === currentYear &&
+                    Math.abs(currentDay - reportDay) < 1
+                ) {
+                    setHasSubmittedRecently(true);
+                    break;
+                }
+            }
+        })
     }
 
     async function handleSubmit (e) {
-        await axios.post(`${backendURL}/send-report`, {
-            user: report,
-            issue: issue,
-            details: details
-        }).then(response => {
-        }).catch (error => {
-            console.error('There was an error sending the email!', error);
-        })
+        if (!hasSubmittedRecently) {
+            const date = new Date();
+            await axios.post(`${backendURL}/send-report`, {
+                twitchId: twitchId,
+                date: date,
+                user: report,
+                issue: issue,
+                details: details
+            }).then(response => {
+            }).catch (error => {
+                console.error('There was an error sending the email!', error);
+            })
+        }
     }
+
+    useEffect(() => {
+        getReports();
+        if (hasSubmittedRecently) {
+            notifyReportDenied();
+        }
+    }, [hasSubmittedRecently])
 
     useEffect(() => {
         setSubmitted(false);
@@ -46,7 +104,13 @@ export default function Report () {
 
     return (
         <div className="report-container">
-            <form>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                if (hasSubmittedRecently) {
+                    notifyReportDenied();
+                    return false; 
+                }
+            }}>
                 <input className="report__field" required value={report} placeholder="Enter username" onChange={(e) => {
                     setReport(e.target.value);
                 }}/>
@@ -67,7 +131,7 @@ export default function Report () {
                         setDetails(e.target.value);
                     }}></textarea>
                 </div>
-                <input className="report__submit-btn" type="submit" value="Submit" onClick={(e) => {
+                <input className={`report__submit-btn ${!hasSubmittedRecently ? "report__submit__enabled" : "report__submit__disabled"}`} disabled={hasSubmittedRecently} type="submit" value="Submit" onClick={(e) => {
                     e.preventDefault();
                     handleSubmit();
                     notify(report);
