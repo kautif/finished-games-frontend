@@ -129,8 +129,8 @@ function AuthenticatedComponent() {
         (data ? (
           <div>
             {/* <h1>{JSON.stringify(data.message, null, 2)}</h1> */}
-            <h1>{data?.message}</h1>
-            <h2>This data is from protected route</h2>
+            {/* <h1>{data?.message}</h1>
+            <h2>This data is from protected route</h2> */}
             <AuthenticatedNav />
           </div>
         ) : (

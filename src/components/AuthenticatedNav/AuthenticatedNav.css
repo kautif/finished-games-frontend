@@ -3,6 +3,33 @@
     src: url("../../assets/fonts/VT323-Regular.ttf");
 }
 
+.auth-nav__profile-img-container {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+}
+
+#auth-nav__profile__name {
+    margin-right: 1.5%    
+}
+
+#auth-nav__profile-img {
+    width: 100px;
+}
+
+.dropdown {
+    margin-right: 1.5%;
+    margin-bottom: 0.25%;
+}
+
+.dropdown a {
+    text-decoration: none;
+}
+
+.dropdown-link {
+    color: black;
+}
+
 .auth-nav {
     display: flex;
     justify-content: space-around;
