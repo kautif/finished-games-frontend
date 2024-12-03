@@ -6,7 +6,7 @@ tr:nth-child(odd) {
     background-color: #d1cfc9; /* Light color */
 }
 
-.game-data__simplfied-flex {
+#game-data__simplfied-flex {
     display: flex;
     width: 29%;
     flex-direction: row;
@@ -18,6 +18,17 @@ tr:nth-child(odd) {
     display: flex;
     width: 50%;
     justify-content: space-evenly;
+}
+
+#game-data__more-details, #game-data__less-details {
+    text-align: right;
+    margin-right: 5%;
+    text-decoration: underline;
+    color: blue;
+}
+
+#game-data__more-details:hover, #game-data__less-details {
+    cursor: pointer;
 }
 
 @media (min-width: 300px) and (max-width: 767px) {
