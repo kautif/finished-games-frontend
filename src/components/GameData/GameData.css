@@ -31,6 +31,13 @@ tr:nth-child(odd) {
     cursor: pointer;
 }
 
+@media (min-width: 768px) {
+    #game-data__detailed {
+        width: 50%;
+        margin-left: auto;
+    }
+}
+
 @media (min-width: 300px) and (max-width: 767px) {
     td, th {
         font-size: 0.75em;
