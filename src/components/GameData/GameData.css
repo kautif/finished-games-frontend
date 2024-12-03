@@ -6,6 +6,20 @@ tr:nth-child(odd) {
     background-color: #d1cfc9; /* Light color */
 }
 
+.game-data__simplfied-flex {
+    display: flex;
+    width: 29%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+.game-data__simplfied-flex-item {
+    display: flex;
+    width: 50%;
+    justify-content: space-evenly;
+}
+
 @media (min-width: 300px) and (max-width: 767px) {
     td, th {
         font-size: 0.75em;
