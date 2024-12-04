@@ -27,7 +27,7 @@ tr:nth-child(odd) {
     color: blue;
 }
 
-#game-data__more-details:hover, #game-data__less-details {
+#game-data__more-details:hover, #game-data__less-details:hover {
     cursor: pointer;
 }
 
@@ -41,5 +41,9 @@ tr:nth-child(odd) {
 @media (min-width: 300px) and (max-width: 767px) {
     td, th {
         font-size: 0.75em;
+    }
+
+    #game-data__simplfied-flex {
+        width: 100%;
     }
 }
