@@ -574,7 +574,7 @@ export default function Gameslist (){
                 gamesObj={gamesObj}
             />}
             <Container>
-                <Button onClick={() => setShowDiscover(true)}>Discover</Button>
+                <Button onClick={() => setShowDiscover(true)}>Add Game</Button>
                 <Row>
                     <Col lg={3} sm={6} xs={12}>
                         <h2>Filter Games</h2>
