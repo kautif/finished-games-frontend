@@ -47,7 +47,7 @@ export default function Gameslist (){
     const [gameSummary, setGameSummary] = useState("");
     const [gameRating, setGameRating] = useState(0);
     const [gameDate, setGameDate] = useState("");
-    const [gameRank, setGameRank] = useState("");
+    const [gameRank, setGameRank] = useState("playing");
     const [gameIndex, setGameIndex] = useState(0);
 
     const [regCount, setRegCount] = useState(0);
@@ -291,7 +291,9 @@ export default function Gameslist (){
     }
 
     function notifyUpdate (gameTitle) {
-        if (userGames[gameIndex].name === gameName && userGames[gameIndex].summary === gameSummary && new Date(userGames[gameIndex].date_added).toDateString() === gameDate.toDateString()) {
+        if (userGames[gameIndex].name === gameName && userGames[gameIndex].summary === gameSummary && new Date(userGames[gameIndex].date_added).toDateString() === gameDate.toDateString() && userGames[gameIndex].rank === gameRank) {
+            console.log("usergame rank: ", userGames[gameIndex].rank);
+            console.log("gameRank: ", gameRank);
             toast(`${gameTitle} details did not change`, {
                 autoClose: 1000,
                 position: "top-center",
@@ -660,6 +662,14 @@ export default function Gameslist (){
                                 <option selected={gameRating === 1 ? true : false} value="1">1</option>
                                 <option selected={gameRating === 0 ? true : false} value="0">-</option>
                             </Form.Select>
+                            <Form.Select className="search-game__status" onChange={(e) => {
+                                setGameRank(e.target.value);
+                            }}>
+                            <option selected={gameRank === "playing" ? true : false} value="playing">Playing</option>
+                            <option  selected={gameRank === "upcoming" ? true : false} value="upcoming">Upcoming</option>
+                            <option  selected={gameRank === "completed" ? true : false}value="completed">Completed</option>
+                            <option selected={gameRank === "dropped" ? true : false} value="dropped">Dropped</option>
+                            </Form.Select>
                             <textarea className="gameslist-game-summary" onChange={(e) => {
                                 setGameSummary(e.target.value);
                             }}>{gameSummary}</textarea>
@@ -670,7 +680,7 @@ export default function Gameslist (){
                                         notifyDelete(gameName);
                                     }}>Delete</p>
                             <Button className="modal-btn" onClick={() => {
-                                if (userGames[gameIndex].name !== gameName || userGames[gameIndex].summary !== gameSummary || new Date(userGames[gameIndex].date_added).toDateString() !== gameDate.toDateString()) {
+                                if (userGames[gameIndex].name !== gameName || userGames[gameIndex].summary !== gameSummary || new Date(userGames[gameIndex].date_added).toDateString() !== gameDate.toDateString() || userGames[gameIndex].rank !== gameRank) {
                                     updateGame(gameName, gameSummary, gameDate, gameRank, gameRating);
                                 }
                                 setShowModal(false);
