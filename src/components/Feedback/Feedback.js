@@ -10,6 +10,7 @@ export default function Feedback () {
     const [formData, setFormData] = useState({});
     const [topic, setTopic] = useState("games");
     const [message, setMessage] = useState("");
+    const [validated, setValidated] = useState(false);
     const [hasSubmittedRecently, setHasSubmittedRecently] = useState(false);
     const [feedbackSent, setFeedbackSent] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -64,7 +65,19 @@ export default function Feedback () {
     }
 
     async function handleSubmit (e) {
-        if (!hasSubmittedRecently) {
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        if (username.length > 0 && message.length > 0) {
+            setValidated(true);
+        } else {
+            setValidated(false);
+        }
+
+        if (!hasSubmittedRecently && validated === true) {
             await axios.post(`${backendURL}/send-email`, formData)
             .then(response => {
             }).catch(err => {
@@ -74,13 +87,19 @@ export default function Feedback () {
     }
 
     useEffect(() => {
-        getFeedback();
-        if (hasSubmittedRecently) {
-            notifyFeedbackDenied();
-        }
+        // getFeedback();
+        // if (hasSubmittedRecently) {
+        //     notifyFeedbackDenied();
+        // }
     }, [hasSubmittedRecently])
 
     useEffect(() => {
+        if (username.length === 0 || message.length === 0) {
+            setValidated(false);
+        } else {
+            setValidated(true);
+        }
+
         const date = new Date();
         setFormData({
             username: username,
@@ -93,33 +112,44 @@ export default function Feedback () {
     }, [username, message, topic])
 
     useEffect(() => {
-        setTimeout(function () {
-            setUsername("");
-            setMessage("")
-            setTopic("games");
-        }, 1000)
+        if (validated === true) {
+            setTimeout(function () {
+                setUsername("");
+                setMessage("")
+                setTopic("games");
+            }, 1000)
+        }
     }, [feedbackSent])
     
     return (
         <div>
-            <Form className="feedback-form" 
+            <Form noValidate validated={true} className="feedback-form needs-validation" 
                 onSubmit={(e) => {
                     e.preventDefault();
                     if (hasSubmittedRecently) {
                         return false;
                     }
                 }}>
-                <input 
+                    <Form.Group>
+                    <Form.Control 
                     id="feedback-username"
                     className="feedback-field"
                     type="text"
                     name="username"
                     placeholder="Enter username"
                     value={username}
+                    required
                     onChange={(e) => {
                         setUsername(e.target.value);
+                        if (e.target.value.length < 1) {
+                            setValidated(false);
+                        }
                     }}
                 />
+                <Form.Control.Feedback type="invalid">
+                    Please enter your username
+                </Form.Control.Feedback>
+                    </Form.Group>
                 <div className="topic-flex">
                     <label>Topic:</label>
                     <select onChange={(e) => {
@@ -136,15 +166,24 @@ export default function Feedback () {
                         <option value="other">Other</option>
                     </select>
                 </div>
-                <textarea
+                <Form.Group>
+                <Form.Control as="textarea"
                     className="feedback-field"
+                    required
                     name="message"
                     value={message}
                     placeholder="Enter message"
                     onChange={(e) => {
                         setMessage(e.target.value);
-                    }}>
-                </textarea>
+                        if (e.target.value.length < 1) {
+                            setValidated(false);
+                        }
+                    }}/>
+
+            <Form.Control.Feedback type="invalid">
+                Please enter feedback
+            </Form.Control.Feedback>
+                </Form.Group>
                 <input
                     id="feedback-btn" 
                     className="feedback-field"
@@ -153,9 +192,11 @@ export default function Feedback () {
                     disabled={hasSubmittedRecently}
                     onClick={(e) => {
                         e.preventDefault();
-                        handleSubmit(e);
                         setFeedbackSent(true);
-                        notify();
+                        handleSubmit(e);
+                        if (validated) {
+                            notify();
+                        }
                     }}
                 />
             </Form>

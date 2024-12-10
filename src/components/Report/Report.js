@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Form from 'react-bootstrap/Form';
 import "./Report.css"
 import { ToastContainer, toast } from "react-toastify";
 
@@ -14,6 +15,7 @@ export default function Report () {
     const [issue, setIssue] = useState("game");
     const [details, setDetails] = useState("");
     const [submitted, setSubmitted] = useState(false);
+    const [validated, setValidated] = useState(false);
     const [hasSubmittedRecently, setHasSubmittedRecently] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
 
@@ -66,7 +68,13 @@ export default function Report () {
     }
 
     async function handleSubmit (e) {
-        if (!hasSubmittedRecently) {
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        setValidated(true);
+        if (!hasSubmittedRecently && validated === true) {
             const date = new Date();
             await axios.post(`${backendURL}/send-report`, {
                 twitchId: twitchId,
@@ -89,31 +97,49 @@ export default function Report () {
     }, [hasSubmittedRecently])
 
     useEffect(() => {
-        setSubmitted(false);
+        // setSubmitted(false);
+        if (report.length > 0 && details.length > 0) {
+            setValidated(true);
+        } else {
+            setValidated(false);
+        }
     }, [report, issue, details])
 
     useEffect(() => {
         setTimeout(function () {
-            if (submitted === true) {
+            if (submitted === true && validated === true) {
                 setReport("");
                 setIssue("game");
                 setDetails("");
             }
         }, 1000)
-    }, [submitted])
+    }, [submitted, validated])
+
+
 
     return (
         <div className="report-container">
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                if (hasSubmittedRecently) {
-                    notifyReportDenied();
-                    return false; 
-                }
+            <Form noValidate validated={validated} 
+                className="feedback-form needs-validation" 
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    if (hasSubmittedRecently) {
+                        notifyReportDenied();
+                        return false; 
+                    }
             }}>
-                <input className="report__field" required value={report} placeholder="Enter username" onChange={(e) => {
-                    setReport(e.target.value);
-                }}/>
+                <Form.Group>
+                    <Form.Control 
+                    className="report__field" 
+                    required value={report} 
+                    placeholder="Enter username" 
+                    onChange={(e) => {
+                        setReport(e.target.value);
+                    }}/>
+                    <Form.Control.Feedback type="invalid">
+                        Please enter your username
+                    </Form.Control.Feedback>
+                </Form.Group>
                 <div className="report__issue">
                     <label>Issue</label>
                     <select required onChange={(e) => {
@@ -126,18 +152,31 @@ export default function Report () {
                     </select>
                 </div>
                 <div className="report__details">
-                    <label>Details</label>
-                    <textarea className="report__field" required placeholder="Tell us what the issue is. Step by step, tell us what actions/events take place to lead to it" value={details} onChange={(e) => {
-                        setDetails(e.target.value);
-                    }}></textarea>
+                    <Form.Group>
+                        <label>Details</label>
+                        <Form.Control 
+                            as={"textarea"} 
+                            className="report__field" 
+                            required 
+                            placeholder="Tell us what the issue is. Step by step, tell us what actions/events take place to lead to it" 
+                            value={details} 
+                            onChange={(e) => {
+                            setDetails(e.target.value);
+                        }} />
+                        <Form.Control.Feedback type="invalid">
+                            Please enter your username
+                        </Form.Control.Feedback>
+                    </Form.Group>
                 </div>
                 <input className={`report__submit-btn ${!hasSubmittedRecently ? "report__submit__enabled" : "report__submit__disabled"}`} disabled={hasSubmittedRecently} type="submit" value="Submit" onClick={(e) => {
                     e.preventDefault();
-                    handleSubmit();
-                    notify(report);
-                    setSubmitted(true);
+                    handleSubmit(e);
+                    if (validated) {
+                        notify(report);
+                        setSubmitted(true);
+                    }
                 }}/>
-            </form>
+            </Form>
             <ToastContainer />
         </div>
     )
