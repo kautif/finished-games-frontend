@@ -111,7 +111,7 @@ export default function FindUser () {
                             <Col className="mr-3">
                                 <h1 className="mt-4">{foundUser.twitch_default}</h1>
                                 <Image src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>
-                                <p className="found-user__btn mt-3"><a href={`/${foundUser.twitchName}`}>See Profile</a></p>
+                                <a class="found-user__link" href={`/${foundUser.twitchName}`}><p className="found-user__btn mt-3">See Profile</p></a>
                             </Col>
                         </Row>
                     )
