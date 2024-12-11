@@ -74,7 +74,7 @@ export default function Report () {
           e.stopPropagation();
         }
         setValidated(true);
-        if (!hasSubmittedRecently && validated === true) {
+        if (validated === true) {
             const date = new Date();
             await axios.post(`${backendURL}/send-report`, {
                 twitchId: twitchId,
@@ -90,7 +90,7 @@ export default function Report () {
     }
 
     useEffect(() => {
-        getReports();
+        // getReports();
         if (hasSubmittedRecently) {
             notifyReportDenied();
         }
@@ -164,7 +164,7 @@ export default function Report () {
                             setDetails(e.target.value);
                         }} />
                         <Form.Control.Feedback type="invalid">
-                            Please enter your username
+                            Please enter your feedback
                         </Form.Control.Feedback>
                     </Form.Group>
                 </div>
