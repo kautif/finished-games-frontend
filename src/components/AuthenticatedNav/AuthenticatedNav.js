@@ -176,15 +176,15 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
           <Modal.Body>
                   <p>If you click on delete, you will lose all your games and users will not be able to find you. Click the Delete button if you want to continue or the Cancel button if you've changed your mind.</p>
                   <div className="delete-btns-container">
-                      <Button onClick={() => {
-                          deleteUser(twitchName);
-                          notifyDeleteUser();
+                      <Button variant="danger" 
+                          onClick={() => {
+                            deleteUser(twitchName);
+                            notifyDeleteUser();
                       }}>Delete</Button>
                       <Button
                           onClick={() => {
                               setShowDelete(false);
-                          }} 
-                          variant="danger">
+                          }}>
                           Cancel
                       </Button>
                   </div>
