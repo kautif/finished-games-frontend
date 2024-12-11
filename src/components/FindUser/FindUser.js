@@ -77,14 +77,14 @@ export default function FindUser () {
                                 id="free-solo-2-demo"
                                 disableClearable
                                 inputValue={inputValue}
-                                open={inputValue.length > 0}
+                                open={inputValue.length > 1}
                                 onInputChange={(e, value) => setInputValue(value)}
                                 noOptionsText="No results found"
                                 options={userList.map((option) => option.twitch_default)}
                                 filterOptions={(options, state) =>
                                     options.filter((option) =>
                                       option.toLowerCase().includes(state.inputValue.toLowerCase())
-                                    ).slice(0, 10) // Limit to 5 results
+                                    ).slice(0, 10)
                                   }
                                 onChange={(e) => {
                                     getUsers(e.target.textContent.toLowerCase())
