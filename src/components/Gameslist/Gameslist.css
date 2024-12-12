@@ -35,7 +35,11 @@
     margin-right: 2%; */
 }
 
-.gameslist-game img,
+.gameslist-game__img:hover {
+    cursor: pointer;
+}
+
+.gameslist-game__img,
 .gameslist__search-game img {
     width: 390px;
     height: 220px;

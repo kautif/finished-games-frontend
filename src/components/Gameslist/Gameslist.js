@@ -492,17 +492,17 @@ export default function Gameslist (){
                 return <Col xl={3} lg={4} sm={6} xs={12}><Row className="gameslist-game d-flex flex-column me-2">
                                 <h2 className="gameslist-game__title">{game.name}</h2>
                                 <Image className="gameslist-game__img align-self-center" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
-                                    onClick={() => {
-                                        setShowModal(true);
-                                        setGameName(game.name); 
-                                        setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
-                                        setGameSummary(game.summary);
-                                        setGameRating(game.rating);
-                                        setGameDate(new Date(game.date_added));
-                                        setGameRank(game.rank);
-                                        setGameIndex(i);
-                                    }}
-                                />
+                                        onClick={() => {
+                                            setShowModal(true);
+                                            setGameName(game.name); 
+                                            setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
+                                            setGameSummary(game.summary);
+                                            setGameRating(game.rating);
+                                            setGameDate(new Date(game.date_added));
+                                            setGameRank(game.rank);
+                                            setGameIndex(i);
+                                        }}
+                                    />
                                 <div className="gameslist__game-info-flex">
                                     <div className="gameslist-game__date-container flex-column justify-content-around">
                                         <label>Date:</label>
