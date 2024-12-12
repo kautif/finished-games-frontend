@@ -281,6 +281,17 @@ export default function Gameslist (){
         }
     }, [gameDate])
 
+    useEffect(() => {
+        if (showModal) {
+            document.addEventListener("click", function (e) {
+                console.log("click", e.target.classList);
+                if (e.target.classList) {
+                    // setShowModal(false);
+                }
+            })
+        } 
+    }, [showModal])
+
     function organizeGameData (gameTypeArr, gameStatus, counter, setCount) {
         gameTypeArr.map(game => {
             if (game.rank === gameStatus) {
@@ -288,6 +299,10 @@ export default function Gameslist (){
             }
             setCount(counter);
         })
+    }
+
+    function handleClose () {
+        setShowModal(false);
     }
 
     function notifyUpdate (gameTitle) {
@@ -644,7 +659,11 @@ export default function Gameslist (){
                         }}/>
                         </Form>
                     </Col>
-                    <Modal show={showModal}>
+                    <Modal show={showModal}
+                            backdrop={true}
+                            onHide={() => {
+                                handleClose();
+                            }}>
                         <Modal.Header>
                             <Modal.Title>
                                  {gameName}
@@ -719,7 +738,7 @@ export default function Gameslist (){
                         </Modal.Footer>
                     </Modal>
                     <ToastContainer />
-                </Row>
+                </Row> 
             </Container>
             {/* <div className="gameslist-games">
                 {gamesList}
