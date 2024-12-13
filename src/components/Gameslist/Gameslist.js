@@ -303,6 +303,7 @@ export default function Gameslist (){
 
     function handleClose () {
         setShowModal(false);
+        setShowDiscover(false);
     }
 
     function notifyUpdate (gameTitle) {
@@ -719,7 +720,9 @@ export default function Gameslist (){
                             <Button className="modal-btn" onClick={() => setShowModal(false)}>Cancel</Button>
                         </Modal.Footer>
                     </Modal>
-                    <Modal id="discover" show={showDiscover}>
+                    <Modal id="discover" onHide={() => {
+                        handleClose();
+                    }}show={showDiscover}>
                         <Modal.Header>
                             <Modal.Title id="discover__title-flex">
                                 <h1>Discover</h1>

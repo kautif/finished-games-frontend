@@ -78,6 +78,10 @@ function notifyDeleteUser () {
   });
 }
 
+function handleClose () {
+  setShowDelete(false);
+}
+
 useEffect(() => {
   getUser(twitchName);
 }, [])
@@ -167,7 +171,9 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
             Donate
           </Link>
         </ul>
-        <Modal show={showDelete} id="delete-modal">
+        <Modal show={showDelete} onHide={() => {
+          handleClose();
+        }}id="delete-modal">
           <Modal.Header>
               <Modal.Title id="delete-modal__title">
                   <h2>Delete Account</h2>    
