@@ -706,7 +706,7 @@ export default function Gameslist (){
                             }}>{gameSummary}</textarea>
                         </Modal.Body>
                         <Modal.Footer id="gameslist-game-flex-container">
-                            <p className="gameslist-game__add-btn modal-btn text-center" onClick={() => {
+                            <p className="modal-btn text-center btn btn-danger" onClick={() => {
                                         deleteGame(gameName);
                                         notifyDelete(gameName);
                                     }}>Delete</p>
