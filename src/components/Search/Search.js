@@ -219,13 +219,12 @@ export default function Search () {
                     {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn text-center" onClick={(e) => 
                             addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
                                 document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>} */}
-
-            <p className="search-result__add-btn text-center" onClick={() => {
+{userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
                 dispatch(setShowGame(true));
                 dispatch(setShowSearch(false));
                 dispatch(setSearchGameName(game.name));
                 dispatch(setSearchGameImg(game.background_image));
-            }}>Add Game</p>
+            }}>Add Game</p>}
             </Row>
         </Col>
     })

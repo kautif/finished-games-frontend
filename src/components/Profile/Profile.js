@@ -463,6 +463,12 @@ export default function Profile (match) {
                                     <div>
                                         <h1 className="user-game__modal__title">{title}</h1>
                                         <img className="user-game__modal__img" src={gameImg} alt={`${title} cover`} />
+                                        <div>
+                                            <p className="btn btn-primary mt-4" onClick={() => {
+                                                localStorage.setItem("reportUser", user.twitch_default);
+                                                window.location.pathname = "/report";
+                                            }}>Report Game</p>
+                                        </div>
                                     </div>
                                     <div className="user-game__modal__text-container">
                                         <div className="user-game__modal__text-flex">

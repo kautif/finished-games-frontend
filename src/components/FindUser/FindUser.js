@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 export default function FindUser () {
     const [user, setUser] = useState("");
     const [foundUsers, setFoundUsers] = useState([]);
+    const [showFill, setShowFill] = useState(false);
     const [userList, setUserList] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -56,6 +57,11 @@ export default function FindUser () {
             })
     }
 
+    function handleChange (newValue) {
+        getUsers(newValue.target.textContent.toLowerCase());
+        setShowFill(false);
+    }
+
     useEffect(() => {
         getUserList("");
     }, [])
@@ -65,19 +71,36 @@ export default function FindUser () {
     })
 
     useEffect(() => {
+        if (inputValue.length > 1) {
+            setShowFill(true);
+        } else {
+            setShowFill(false);
+        }
+    }, [inputValue])
+
+    useEffect(() => {
+        if (!showFill) {
+            setInputValue("");
+        }
+    }, [showFill])
+
+    useEffect(() => {
         console.log(foundUsers);
     }, [foundUsers])
 
     return (
         <Container>
-            <Form>
+            <Form                 
+                onSubmit={(e) => {
+                    e.preventDefault();
+                }}>
                 <Stack>
                 <Autocomplete
                                 // freeSolo
                                 id="free-solo-2-demo"
                                 disableClearable
                                 inputValue={inputValue}
-                                open={inputValue.length > 1}
+                                open={inputValue.length > 1 && showFill === true}
                                 onInputChange={(e, value) => setInputValue(value)}
                                 noOptionsText="No results found"
                                 options={userList.map((option) => option.twitch_default)}
@@ -87,7 +110,11 @@ export default function FindUser () {
                                     ).slice(0, 10)
                                   }
                                 onChange={(e) => {
-                                    getUsers(e.target.textContent.toLowerCase())
+                                    handleChange(e);
+                                }}
+                                onClose={() => {
+                                    setShowFill(false);
+                                    setInputValue("");
                                 }}
                                 renderInput={(params) => (
                                 <TextField
