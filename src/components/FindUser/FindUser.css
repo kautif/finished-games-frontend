@@ -14,3 +14,7 @@
 .found-user__link {
     text-decoration: none;
 }
+
+.find-user__head {
+    font-size: 1.5em;
+}

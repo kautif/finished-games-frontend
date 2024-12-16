@@ -83,7 +83,9 @@ export default function FindUser () {
     }, [inputValue])
 
     useEffect(() => {
-        console.log(foundUsers);
+        if (foundUsers.length >= 1) {
+            setShowFill(false);
+        }
     }, [foundUsers])
 
     return (
@@ -92,6 +94,8 @@ export default function FindUser () {
             <Form                 
                 onSubmit={(e) => {
                     e.preventDefault();
+                    console.log(e.target[0].value);
+                    getUsers(e.target[0].value);
                 }}>
                 <Stack>
                 <Autocomplete
@@ -136,9 +140,9 @@ export default function FindUser () {
             <div className="find-user__results d-flex flex-wrap">
                 {foundUsers.map(foundUser => {
                     return (
-                        <Row>
-                            <Col className="mr-3">
-                                <h1 className="mt-4">{foundUser.twitch_default}</h1>
+                        <Row className="mx-5">
+                            <Col>
+                                <h1 className="mt-4 find-user__head">{foundUser.twitch_default}</h1>
                                 <Image src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>
                                 <a class="found-user__link" href={`/${foundUser.twitchName}`}><p className="found-user__btn mt-3">See Profile</p></a>
                             </Col>
