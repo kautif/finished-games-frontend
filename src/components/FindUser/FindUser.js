@@ -59,11 +59,15 @@ export default function FindUser () {
 
     function handleChange (newValue) {
         getUsers(newValue.target.textContent.toLowerCase());
-        setShowFill(false);
     }
 
     useEffect(() => {
         getUserList("");
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.MuiAutocomplete-root')) {
+              setShowFill(false); // Close dropdown if click is outside
+            }
+          });
     }, [])
 
     useEffect(() => {
@@ -79,17 +83,12 @@ export default function FindUser () {
     }, [inputValue])
 
     useEffect(() => {
-        if (!showFill) {
-            setInputValue("");
-        }
-    }, [showFill])
-
-    useEffect(() => {
         console.log(foundUsers);
     }, [foundUsers])
 
     return (
-        <Container>
+        <Container onClick={() => {
+        }}>
             <Form                 
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -114,20 +113,23 @@ export default function FindUser () {
                                 }}
                                 onClose={() => {
                                     setShowFill(false);
-                                    setInputValue("");
                                 }}
-                                renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Enter a username"
-                                    slotProps={{
-                                    input: {
-                                        ...params.InputProps,
-                                        type: 'search',
-                                    },
-                                    }}
-                                />
+                                onBlur={() => setShowFill(false)}
+                            renderInput={(params) => {
+                                return (
+                                    <TextField
+                                        {...params}
+                                        label="Enter a username"
+                                        onBlur={() => setShowFill(false)}
+                                        slotProps={{
+                                        input: {
+                                            ...params.InputProps,
+                                            type: 'search',
+                                        },
+                                        }}
+                                    />
                                 )}
+                            }
                             />
                 </Stack>
             </Form>
