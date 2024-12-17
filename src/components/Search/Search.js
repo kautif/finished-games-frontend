@@ -311,8 +311,8 @@ export default function Search () {
 
                     console.log(customDate);
                     let titleField = document.getElementsByClassName('custom-game__field__text')[0];
-                    const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
-                    if (!hasInvalidCharacters && customGameTitle !== "") {
+                    // const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
+                    if (customGameTitle !== "") {
                         console.log("customGameTitle: ", customGameTitle);
                             addGame(title, "", summary, gameStatus, customDate, 0, rating, customGame);
                             // document.getElementById("custom-game__title").value = "";
