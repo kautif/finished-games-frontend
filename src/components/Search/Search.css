@@ -17,6 +17,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     height: 90px;
+    font-size: 1.5em;
 }
 
 .search-game, .profile-game {
@@ -76,6 +77,29 @@
     display: flex;
     justify-content: space-around;
     margin-top: 15px;
+}
+
+.search-results__pages {
+    display: flex;
+    flex-direction: row;
+    width: 25%;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-results__pages input {
+    width: 50px;
+    text-align: center;
+}
+
+.search-results__pages__nav {
+    width: 12%;
+}
+
+.search-results__pages__nav:hover {
+    cursor: pointer;
 }
 
 .search-result__added {

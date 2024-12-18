@@ -13,6 +13,8 @@ import smwCart from "../../assets/vh_smw_cart.webp";
 import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
+import leftArrow from "../../assets/arrow.png";
+import rightArrow from "../../assets/right-arrow.png";
 import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
@@ -25,11 +27,12 @@ export default function Search () {
     let searchGameName = useSelector((state) => state.gamesReducer.searchGameName);
     let searchGameImg = useSelector((state) => state.gamesReducer.searchGameImg);
 
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState("street fighter");
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
     const today = new Date();
     const [date, setDate] = useState("");
+    const [page, setPage] = useState(1);
     const [games, setGames] = useState([]);
     const [rank, setRank] = useState("");
     const [rating, setRating] = useState(0);
@@ -56,9 +59,16 @@ export default function Search () {
         });
     }
 
+    function notifyLoading () {
+        toast(`Page ${page} is loading`, {
+            position: "top-center",
+            autoClose: 1000
+        });
+    }
+
     function reqGames () {   
         axios({
-        url: `https://api.rawg.io/api/games?search=${search}&key=${process.env.REACT_APP_RAWG_API}`,
+        url: `https://api.rawg.io/api/games?search=${search}&page=${page}&key=${process.env.REACT_APP_RAWG_API}`,
         method: "GET",
         headers: {
             'Accept': 'application/json'
@@ -172,6 +182,14 @@ export default function Search () {
         }
 
     }, [gameType])
+
+    useEffect(() => {
+        reqGames();
+        document.querySelector('#discover__title-flex').scrollIntoView({
+            behavior: 'smooth'
+        });
+        notifyLoading();
+    }, [page])
 
     let userGameNames = [];
     let gameNames = [];
@@ -341,6 +359,17 @@ export default function Search () {
             <div className="search-results">
                 <Container className="d-flex flex-wrap">
                     {gameType === "regular" ? retrievedGames : ""}
+                    <div className="search-results__pages">
+                        <img className="search-results__pages__nav" src={leftArrow} alt="previous search page" onClick={() => {
+                            if (page > 1) {
+                                setPage(prevPage => prevPage - 1);
+                            }
+                        }} />
+                        <input type="text" value={page} />
+                        <img className="search-results__pages__nav" src={rightArrow} alt="next search page" onClick={() => {
+                            setPage(prevPage => prevPage + 1);
+                        }}/>
+                    </div>
                 </Container>
             </div>
         </div>
