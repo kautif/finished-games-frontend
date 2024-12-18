@@ -56,20 +56,25 @@ export default function Search () {
         });
     }
 
-    function getGames (e) {
-        e.preventDefault();
+    function reqGames () {   
         axios({
-            url: `https://api.rawg.io/api/games?search=${search}&key=${process.env.REACT_APP_RAWG_API}`,
-            method: "GET",
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => {
+        url: `https://api.rawg.io/api/games?search=${search}&key=${process.env.REACT_APP_RAWG_API}`,
+        method: "GET",
+        headers: {
+            'Accept': 'application/json'
+        }
+        }).then(response => {
+            console.log("response: ", response);
             setGames(response.data.results);
         }).catch((error) => {
             console.error("error: ", error);
         })
+
+    }
+
+    function getGames (e) {
+        e.preventDefault();
+        reqGames();
     }
 
     async function getUserGames() {
@@ -160,6 +165,7 @@ export default function Search () {
         if (gameType === "custom") {
             setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0))
         } else {
+            reqGames();
             retrievedGames.map((game, i) => {
                 // defaultDate(document.getElementsByClassName("search-game__date"), i);
             })
