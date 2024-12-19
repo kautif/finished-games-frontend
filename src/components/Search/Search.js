@@ -27,13 +27,14 @@ export default function Search () {
     let searchGameName = useSelector((state) => state.gamesReducer.searchGameName);
     let searchGameImg = useSelector((state) => state.gamesReducer.searchGameImg);
 
-    const [search, setSearch] = useState("street fighter");
+    const [search, setSearch] = useState("");
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
     const today = new Date();
     const [date, setDate] = useState("");
     const [page, setPage] = useState(1);
     const [games, setGames] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [rank, setRank] = useState("");
     const [rating, setRating] = useState(0);
     const [title, setTitle] = useState("");
@@ -60,7 +61,7 @@ export default function Search () {
     }
 
     function notifyLoading () {
-        toast(`Page ${page} is loading`, {
+        toast(`Page loading`, {
             position: "top-center",
             autoClose: 1000
         });
@@ -72,6 +73,7 @@ export default function Search () {
         method: "GET",
         headers: {
             'Accept': 'application/json'
+
         }
         }).then(response => {
             console.log("response: ", response);
@@ -184,11 +186,11 @@ export default function Search () {
     }, [gameType])
 
     useEffect(() => {
+        // notifyLoading();
         reqGames();
         document.querySelector('#discover__title-flex').scrollIntoView({
             behavior: 'smooth'
         });
-        notifyLoading();
     }, [page])
 
     let userGameNames = [];
@@ -206,7 +208,9 @@ export default function Search () {
         return <Col xl={3} 
         lg={4} 
         sm={6} 
-        xs={12}>
+        xs={12}
+        key={i}
+        >
             <Row className="search-game">
                 <h2 className="search-game__name text-center">{game.name}</h2>
                 <img src={game.background_image} alt={game.name + " image"} />
@@ -359,6 +363,7 @@ export default function Search () {
             <div className="search-results">
                 <Container className="d-flex flex-wrap">
                     {gameType === "regular" ? retrievedGames : ""}
+                    {games.length === 0 ? "LOADING" : ""}
                     <div className="search-results__pages">
                         <img className="search-results__pages__nav" src={leftArrow} alt="previous search page" onClick={() => {
                             if (page > 1) {
@@ -367,6 +372,7 @@ export default function Search () {
                         }} />
                         <input type="text" value={page} />
                         <img className="search-results__pages__nav" src={rightArrow} alt="next search page" onClick={() => {
+                            notifyLoading();
                             setPage(prevPage => prevPage + 1);
                         }}/>
                     </div>
