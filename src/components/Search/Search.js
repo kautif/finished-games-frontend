@@ -33,6 +33,7 @@ export default function Search () {
     const today = new Date();
     const [date, setDate] = useState("");
     const [page, setPage] = useState(1);
+    const [newSearch, setNewSearch] = useState(true);
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(false);
     const [rank, setRank] = useState("");
@@ -67,7 +68,8 @@ export default function Search () {
         });
     }
 
-    function reqGames () {   
+    function reqGames () {
+
         axios({
         url: `https://api.rawg.io/api/games?search=${search}&page=${page}&key=${process.env.REACT_APP_RAWG_API}`,
         method: "GET",
@@ -166,6 +168,9 @@ export default function Search () {
 
     useEffect(() => {
         twitchId = window.localStorage.getItem("twitchId");
+        if (newSearch) {
+            setPage(1);
+        }
         getUserGames();
         retrievedGames.map((game, i) => {
             // defaultDate(document.getElementsByClassName("search-game__date"), i);
@@ -270,7 +275,10 @@ export default function Search () {
                 <div>
                     <input className="search" placeholder="Search games" 
                         onChange={(e) => {setSearch(prevSearch => e.target.value)}} value={search}/>
-                    <button onClick={(e) => {getGames(e)}}>Submit</button>
+                    <button onClick={(e) => {
+                        getGames(e);
+                        setNewSearch(true);
+                        }}>Submit</button>
                 </div> : ""}
             </form>
             {gameType === "custom" ? 
@@ -367,12 +375,15 @@ export default function Search () {
                     <div className="search-results__pages">
                         <img className="search-results__pages__nav" src={leftArrow} alt="previous search page" onClick={() => {
                             if (page > 1) {
+                                notifyLoading();
+                                setNewSearch(false);
                                 setPage(prevPage => prevPage - 1);
                             }
                         }} />
-                        <input type="text" value={page} />
+                        <input type="text" onChange={(e) => setPage(e.target.value)} value={page} />
                         <img className="search-results__pages__nav" src={rightArrow} alt="next search page" onClick={() => {
                             notifyLoading();
+                            setNewSearch(false);
                             setPage(prevPage => prevPage + 1);
                         }}/>
                     </div>
