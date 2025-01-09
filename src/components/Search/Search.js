@@ -296,7 +296,7 @@ export default function Search () {
                         </select>
                     </div>
                     <img src={customGame === "mario" ? smwCart : customGame === "pokemon" ? pokemonCart : customGame === "minecraft" ? mcCart : otherCart} />
-                    <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" value={title} placeholder="Title - Only permitted special characters are & and !" onChange={(e) => {
+                    <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" value={title} placeholder="Title can't be empty" onChange={(e) => {
                         setTitle(e.target.value);
                     }}/>
                     <div className="custom-game__field">
@@ -358,7 +358,7 @@ export default function Search () {
                             notifyCustom(customGameTitle);
                             // document.getElementById("custom-game__rating__num").value = "10";
                     } else {
-                        setCustomGameMsg("No special characters (except '&') and game title can't be empty");
+                        setCustomGameMsg("Game title can't be empty");
                     }
                 }}>Add Game</p>
                 <div id="custom-game__notif-container">
