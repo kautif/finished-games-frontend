@@ -31,7 +31,7 @@ export default function Search () {
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
     const today = new Date();
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(new Date());
     const [page, setPage] = useState(1);
     const [newSearch, setNewSearch] = useState(true);
     const [games, setGames] = useState([]);
@@ -138,7 +138,7 @@ export default function Search () {
                 setRating(0);
                 setGameStatus("playing");
                 setSummary("");
-                setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0));
+                defaultDate(document.getElementsByClassName("custom-game__date"), 0);
             })
             .catch((error) => {
                 console.log("addGame error: ", error);
@@ -146,7 +146,7 @@ export default function Search () {
     }
 
     function defaultDate (gameDate, index) {
-        gameDate[index].valueAsDate = new Date;
+        gameDate[index].valueAsDate = new Date();
         const newDate = new Date(gameDate[index].value);
         setDate(prevDate => newDate);
     }
@@ -180,7 +180,9 @@ export default function Search () {
 
     useEffect(() => {
         if (gameType === "custom") {
-            setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0))
+            // defaultDate(document.getElementsByClassName("custom-game__date"), 0);
+            document.getElementsByClassName("custom-game__date")[0].valueAsDate = new Date();
+            // setDate(new Date());
         } else {
             reqGames();
             retrievedGames.map((game, i) => {
@@ -189,6 +191,10 @@ export default function Search () {
         }
 
     }, [gameType])
+
+    useEffect(() => {
+        console.log("date: ", date);
+    }, [date])
 
     useEffect(() => {
         // notifyLoading();
@@ -301,7 +307,6 @@ export default function Search () {
                     }}/>
                     <div className="custom-game__field">
                         <label>Date:</label><Form.Control className="custom-game__date" type="date" name="date-added" value={date} onChange={(e) => {
-                            console.log("date: ", e.target.value);
                             setDate(e.target.value);
                         }}/>
                     </div>
@@ -344,12 +349,9 @@ export default function Search () {
                     let customStatus = document.getElementById("custom-game__status").value;
                     let customDate = document.getElementsByClassName("custom-game__date")[0].value;
                     let customRating = document.getElementById("custom-game__rating__num").value;
-
-                    console.log(customDate);
                     let titleField = document.getElementsByClassName('custom-game__field__text')[0];
                     // const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
                     if (customGameTitle !== "") {
-                        console.log("customGameTitle: ", customGameTitle);
                             addGame(title, "", summary, gameStatus, customDate, 0, rating, customGame);
                             // document.getElementById("custom-game__title").value = "";
                             // document.getElementById("custom-game__summary").value = "";

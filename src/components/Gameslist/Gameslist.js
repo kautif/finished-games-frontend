@@ -502,7 +502,7 @@ export default function Gameslist (){
                     day = "1";
                     month++;
                 } else {
-                    day = formattedDate.getDate() + 1;
+                    day = formattedDate.getDate();
                 }
                 let year = formattedDate.getFullYear();
                 return <Col xl={3} lg={4} sm={6} xs={12}><Row className="gameslist-game d-flex flex-column me-2">
