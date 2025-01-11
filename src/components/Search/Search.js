@@ -31,7 +31,7 @@ export default function Search () {
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
     const today = new Date();
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(today);
     const [page, setPage] = useState(1);
     const [newSearch, setNewSearch] = useState(true);
     const [games, setGames] = useState([]);
@@ -151,13 +151,6 @@ export default function Search () {
         setDate(prevDate => newDate);
     }
 
-    // function getDate (dateField, index) {
-
-    //     const newDate = new Date(dateField[index].value);
-    //     setDate(prevDate => newDate);
-    //     setDate(newDate);
-    // }
-
     let retrievedGames;
 
     useEffect(() => {
@@ -182,7 +175,6 @@ export default function Search () {
         if (gameType === "custom") {
             // defaultDate(document.getElementsByClassName("custom-game__date"), 0);
             document.getElementsByClassName("custom-game__date")[0].valueAsDate = new Date();
-            // setDate(new Date());
         } else {
             reqGames();
             retrievedGames.map((game, i) => {
@@ -292,27 +284,27 @@ export default function Search () {
                 <form>
                     <div className="custom-game__field" id="custom-game__game-type">
                         <label>Game Type</label>
-                        <select onChange={(e) => {
+                        <Form.Select onChange={(e) => {
                             setCustomGame(prevGame => e.target.value);
                         }}>
                             <option value="other">Other</option>
                             <option value="mario">Super Mario</option>
                             <option value="pokemon">Pokemon</option>
                             <option value="minecraft">Minecraft Mod</option>
-                        </select>
+                        </Form.Select>
                     </div>
                     <img src={customGame === "mario" ? smwCart : customGame === "pokemon" ? pokemonCart : customGame === "minecraft" ? mcCart : otherCart} />
-                    <input className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" value={title} placeholder="Title can't be empty" onChange={(e) => {
+                    <Form.Control className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" value={title} placeholder="Title can't be empty" onChange={(e) => {
                         setTitle(e.target.value);
                     }}/>
                     <div className="custom-game__field">
-                        <label>Date:</label><Form.Control className="custom-game__date" type="date" name="date-added" value={date} onChange={(e) => {
-                            setDate(e.target.value);
+                        <label>Date:</label><Form.Control className="custom-game__date" type="date" name="date-added" selected={date} onChange={(e) => {
+                            setDate(prevDate => e.target.value);
                         }}/>
                     </div>
                 <div className="custom-game__field custom-game__rating">
                     <label>Rating: </label>
-                    <select id="custom-game__rating__num" value={rating} onChange={(e) => {
+                    <Form.Select id="custom-game__rating__num" value={rating} onChange={(e) => {
                         setRating(e.target.value);
                     }}>
                         <option value="10">10</option>
@@ -326,18 +318,18 @@ export default function Search () {
                         <option value="2">2</option>
                         <option value="1">1</option>
                         <option selected value="0">-</option> 
-                    </select>    
+                    </Form.Select>    
                 </div>
                 <div className="custom-game__field custom-game__status">
                     <label>Game Status</label>
-                    <select id="custom-game__status" value={gameStatus} onChange={(e) => {
+                    <Form.Select id="custom-game__status" value={gameStatus} onChange={(e) => {
                         setGameStatus(e.target.value);
                     }}>
                         <option selected="selected" value="playing">Playing</option>
                         <option value="upcoming">Upcoming</option>
                         <option value="completed">Completed</option>
                         <option value="dropped">Dropped</option>
-                    </select>
+                    </Form.Select>
                 </div>
                 <textarea id="custom-game__summary" className="custom-game__field" placeholder="Let your viewers know how you felt about this game" value={summary} onChange={(e) => {
                     setSummary(e.target.value);

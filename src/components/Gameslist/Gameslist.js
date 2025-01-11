@@ -491,7 +491,7 @@ export default function Gameslist (){
             gamesList = games.map((game, i) => {
                 let formattedDate = new Date(game.date_added);
                 let month = parseInt(formattedDate.getMonth() + 1);
-                let day = parseInt(formattedDate.getDate() + 1);
+                let day = parseInt(formattedDate.getDate());
 
                 if ((month === 4 || month === 5 || month === 9 || month === 11) && day > 30) {
                     day = "1";
@@ -524,7 +524,7 @@ export default function Gameslist (){
                                         <label>Date:</label>
                                         {/* <input className="gameslist-game__date" type="date" name="date-added" /> */}
                                         {/* <Form.Control type="date" className="gameslist-game__date" name="date-added"></Form.Control> */}
-                                        <p className="gameslist-game__detail">{`${month}/${day}/${year}`}</p>
+                                        <p className="gameslist-game__detail">{game.custom_game === "regular" ? `${month}/${day + 1}/${year}` : `${month}/${day}/${year}`}</p>
                                     </div>
                                     <div className="gameslist-game__rating flex-column justify-content-around">
                                         <label>Rating: </label>
