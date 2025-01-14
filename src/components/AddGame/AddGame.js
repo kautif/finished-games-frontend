@@ -6,6 +6,10 @@ import Image from "react-bootstrap/esm/Image";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowGame, setShowSearch } from "../../redux/gamesSlice";
 import { ToastContainer, toast } from 'react-toastify';
+
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 
@@ -22,7 +26,7 @@ export default function AddGame () {
 
     let searchGameName = useSelector((state) => state.gamesReducer.searchGameName);
     let searchGameImg = useSelector((state) => state.gamesReducer.searchGameImg);
-    const [date, setDate] = useState("");
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [rating, setRating] = useState(0);
     const [gameRank, setGameRank] = useState("playing");
     const [summary, setSummary] = useState("");
@@ -30,7 +34,23 @@ export default function AddGame () {
     function defaultDate (gameDate, index) {
         gameDate[index].valueAsDate = new Date;
         const newDate = new Date(gameDate[index].value);
-        setDate(prevDate => newDate);
+        setSelectedDate(prevDate => newDate);
+    }
+
+    const currentYear = new Date().getFullYear();
+
+    const handleDateChange = (date) => {
+        if (date) {
+            const selectedYear = date.getFullYear();
+
+            if (selectedYear < 1970 || selectedYear > currentYear + 10) {
+                alert("Invalid date");
+                const correctedDate = new Date(date);
+                correctedDate.setFullYear(correctedDate);
+            }
+        } else {
+            setSelectedDate(date);
+        }
     }
 
     function notifyUpdate (game) {
@@ -43,13 +63,20 @@ export default function AddGame () {
         });
     }
 
+    function notifyYears () {
+        toast(`Year must between 1970 and ${year + 10}`, {
+            position: "top-center",
+            autoClose: 3000
+        });
+    }
+
     function addGame (gameName, gameImg, gameSummary, gameStatus, gameRating, customGame) {
         let gameObj = {
             name: gameName,
             custom_game: customGame,
             img_url: customGame === "regular" ? gameImg : "",
             summary: gameSummary,
-            date_added: date,
+            date_added: selectedDate,
             rank: gameStatus,
             rating: gameRating
         }
@@ -72,7 +99,7 @@ export default function AddGame () {
             setRating(0);
             setGameRank("playing");
             setSummary("");
-            setDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0));
+            // setSelectedDate(defaultDate(document.getElementsByClassName("custom-game__date"), 0));
         })
         .catch((error) => {
         console.log("addGame error: ", error);
@@ -80,8 +107,24 @@ export default function AddGame () {
     }
 
     useEffect(() => {
-        defaultDate(document.getElementsByClassName("search-game__date"), 0);
+        // defaultDate(document.getElementsByClassName("search-game__date"), 0);
     }, [searchGameName])
+
+    let day;
+    let month;
+    let year;
+
+    useEffect(() => {
+        if (selectedDate) {
+            day = new Date().getDate();
+            month = new Date().getMonth();
+            year = new Date().getFullYear();
+            // console.log("day: ", day);
+            // console.log("month: ", month + 1);
+            // console.log("year: ", year);
+            
+        }
+    }, [selectedDate])
 
     return (
         <Col>
@@ -94,11 +137,37 @@ export default function AddGame () {
                     />
                 </div>
                 <div className="addgame-details">
-                    <label>Date:</label><input className="search-game__date" type="date" name="date-added" 
+                    <label>Date:</label>
+                    {/* <input  
+                        className="search-game__date" 
+                        type="date" 
+                        name="date-added"
+                        selected={selectedDate} 
                     onChange={(e) => {
-                        setDate(e.target.value);
-                        console.log(e.target.value);
+                        if (selectedDate.getFullYear() < 1970 || selectedDate.getFullYear() > year + 10) {
+
+                        } else {
+                            setSelectedDate(e.target.value);
+                        }
                     }}
+                    /> */}
+
+                    <DatePicker 
+                        selected={selectedDate}
+                        onChange={(e) => {
+                            console.log(e.getDate());
+                            console.log(e.getMonth());
+                            console.log(e.getFullYear());
+
+                            setSelectedDate(`${e.getFullYear()}-${e.getMonth() + 1}-${e.getDate()}`);
+
+                            if (e.getFullYear() < 1970 || e.getFullYear() > year + 10) {
+                                setSelectedDate(new Date());
+                                notifyYears();
+                            }
+                        }}
+                        dateFormat="yyyy-MM-dd"
+                        showYearDropdown
                     />
                     <div className="search-game__rating">
                         <label>Rating: </label>
@@ -133,12 +202,8 @@ export default function AddGame () {
                         setSummary(e.target.value);
                     }}placeholder="Let your viewers know how you felt about this game" ></textarea>
                     <p className="search-result__add-btn text-center" onClick={() => {
-                        // dispatch(setShowGame(false));
-                        // dispatch(setShowSearch(true));
                         notifyUpdate(searchGameName);
                         addGame(searchGameName, searchGameImg, summary, gameRank, rating, "regular")
-                        // dispatch(setSearchGameName(game.name));
-                        // dispatch(setSearchGameImg(game.background_image));
                     }}>Add Game</p>
                 </div>
                 <ToastContainer />

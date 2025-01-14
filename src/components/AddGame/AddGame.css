@@ -40,7 +40,7 @@
 
 @media (min-width: 768px) and (max-width: 1550px) {
     #discover {
-        max-width: 100% !important;
+        max-width: 95% !important;
     }
 
     .addgame-img {

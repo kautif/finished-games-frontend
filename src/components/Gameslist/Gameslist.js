@@ -524,7 +524,8 @@ export default function Gameslist (){
                                         <label>Date:</label>
                                         {/* <input className="gameslist-game__date" type="date" name="date-added" /> */}
                                         {/* <Form.Control type="date" className="gameslist-game__date" name="date-added"></Form.Control> */}
-                                        <p className="gameslist-game__detail">{game.custom_game === "regular" ? `${month}/${day + 1}/${year}` : `${month}/${day}/${year}`}</p>
+                                        {/* <p className="gameslist-game__detail">{game.custom_game === "regular" ? `${month}/${day + 1}/${year}` : `${month}/${day}/${year}`}</p> */}
+                                        <p className="gameslist-game__detail">{`${month}/${day}/${year}`}</p>
                                     </div>
                                     <div className="gameslist-game__rating flex-column justify-content-around">
                                         <label>Rating: </label>
