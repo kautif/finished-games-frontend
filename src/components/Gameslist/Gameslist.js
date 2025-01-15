@@ -42,6 +42,8 @@ export default function Gameslist (){
     const [showModal, setShowModal] = useState(false);
     const [showDiscover, setShowDiscover] = useState(false);
 
+    const [showDelete, setShowDelete] = useState(false);
+
     const [gameName, setGameName] = useState("");
     const [gameImg, setGameImg] = useState("");
     const [gameSummary, setGameSummary] = useState("");
@@ -707,10 +709,7 @@ export default function Gameslist (){
                             }}>{gameSummary}</textarea>
                         </Modal.Body>
                         <Modal.Footer id="gameslist-game-flex-container">
-                            <p className="modal-btn text-center btn btn-danger" onClick={() => {
-                                        deleteGame(gameName);
-                                        notifyDelete(gameName);
-                                    }}>Delete</p>
+                            <p className="modal-btn text-center btn btn-danger" onClick={() => setShowDelete(true)}>Delete</p>
                             <Button className="modal-btn" onClick={() => {
                                 if (userGames[gameIndex].name !== gameName || userGames[gameIndex].summary !== gameSummary || new Date(userGames[gameIndex].date_added).toDateString() !== gameDate.toDateString() || userGames[gameIndex].rank !== gameRank) {
                                     updateGame(gameName, gameSummary, gameDate, gameRank, gameRating);
@@ -739,6 +738,23 @@ export default function Gameslist (){
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={() => setShowDiscover(false)}>Close</Button>
+                        </Modal.Footer>
+                    </Modal>
+                    <Modal id="delete-game" show={showDelete}>
+                        <Modal.Header>
+                            <Modal.Title>
+                                <h1>Delete</h1>
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>Are you sure you want to delete {gameName}?</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button className='btn btn-danger' onClick={() => {
+                                notifyDelete(gameName);
+                                deleteGame(gameName);
+                            }}>Yes</Button>
+                            <Button onClick={() => setShowDelete(false)}>Close</Button>
                         </Modal.Footer>
                     </Modal>
                     <ToastContainer />
