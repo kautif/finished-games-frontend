@@ -152,9 +152,9 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
             <Dropdown.Item eventKey="1" onClick={() => {
                         setShowDelete(true);
                     }}>Delete Account</Dropdown.Item>
-                    
             <Dropdown.Item eventKey="2"><Link className="dropdown-link" to="/feedback">Feedback</Link></Dropdown.Item>
-            <Dropdown.Item eventKey="3" active><p className="auth-nav__link" onClick={() => logout()}>Logout</p></Dropdown.Item>
+            <Dropdown.Item eventKey="3"><Link className="dropdown-link" to="/faq">FAQ</Link></Dropdown.Item>
+            <Dropdown.Item eventKey="4" active><p className="auth-nav__link" onClick={() => logout()}>Logout</p></Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
 

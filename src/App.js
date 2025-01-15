@@ -24,6 +24,7 @@ import FindUser from "./components/FindUser/FindUser";
 import axiosInstance from "./service/interceptor";
 import { validateAuthToken } from "./service";
 import { handleUnauthorizedRedirect } from "./utils";
+import Faq from "./components/Faq/Faq";
 
 function App() {
   const dispatch = useDispatch();
@@ -200,6 +201,7 @@ function App() {
               <Route exact path="/browseusers" element={<FindUser />}></Route>
               <Route exact path="/:user" element={<Profile />}></Route>
               <Route exact path="/donate" element={<Donate />}></Route>
+              <Route exact path="/faq" element={<Faq />}></Route>
               <Route exact path="/feedback" element={<Feedback />}></Route>
               <Route exact path="/report" element={<Report />}></Route>
             </Routes>
