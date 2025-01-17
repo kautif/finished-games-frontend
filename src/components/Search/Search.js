@@ -18,6 +18,7 @@ import rightArrow from "../../assets/right-arrow.png";
 import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
+import DatePicker from "react-datepicker";
 
 export default function Search () {
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ export default function Search () {
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
     const today = new Date();
-    const [date, setDate] = useState(today);
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [page, setPage] = useState(1);
     const [newSearch, setNewSearch] = useState(true);
     const [games, setGames] = useState([]);
@@ -65,6 +66,13 @@ export default function Search () {
         toast(`Page loading`, {
             position: "top-center",
             autoClose: 1000
+        });
+    }
+
+    function notifyYears () {
+        toast(`Year must between 1970 and ${year + 10}`, {
+            position: "top-center",
+            autoClose: 3000
         });
     }
 
@@ -115,7 +123,7 @@ export default function Search () {
             custom_game: customGame,
             img_url: customGame.length === 0 ? gameImg : "",
             summary: gameSummary,
-            date_added: date,
+            date_added: selectedDate,
             rank: gameStatus,
             rating: gameRating
         }
@@ -138,7 +146,7 @@ export default function Search () {
                 setRating(0);
                 setGameStatus("playing");
                 setSummary("");
-                defaultDate(document.getElementsByClassName("custom-game__date"), 0);
+                // defaultDate(document.getElementsByClassName("custom-game__date"), 0);
             })
             .catch((error) => {
                 console.log("addGame error: ", error);
@@ -148,7 +156,7 @@ export default function Search () {
     function defaultDate (gameDate, index) {
         gameDate[index].valueAsDate = new Date();
         const newDate = new Date(gameDate[index].value);
-        setDate(prevDate => newDate);
+        setSelectedDate(prevDate => newDate);
     }
 
     let retrievedGames;
@@ -174,7 +182,7 @@ export default function Search () {
     useEffect(() => {
         if (gameType === "custom") {
             // defaultDate(document.getElementsByClassName("custom-game__date"), 0);
-            document.getElementsByClassName("custom-game__date")[0].valueAsDate = new Date();
+            // document.getElementsByClassName("custom-game__date")[0].valueAsDate = new Date();
         } else {
             reqGames();
             retrievedGames.map((game, i) => {
@@ -184,9 +192,21 @@ export default function Search () {
 
     }, [gameType])
 
+    let day;
+    let month;
+    let year;
+
     useEffect(() => {
-        console.log("date: ", date);
-    }, [date])
+        if (selectedDate) {
+            day = new Date().getDate();
+            month = new Date().getMonth();
+            year = new Date().getFullYear();
+            // console.log("day: ", day);
+            // console.log("month: ", month + 1);
+            // console.log("year: ", year);
+            
+        }
+    }, [selectedDate])
 
     useEffect(() => {
         // notifyLoading();
@@ -298,9 +318,32 @@ export default function Search () {
                         setTitle(e.target.value);
                     }}/>
                     <div className="custom-game__field">
-                        <label>Date:</label><Form.Control className="custom-game__date" type="date" name="date-added" selected={date} onChange={(e) => {
+                        <label>Date:</label>
+                        {/* <Form.Control className="custom-game__date" type="date" name="date-added" selected={date} onChange={(e) => {
                             setDate(prevDate => e.target.value);
-                        }}/>
+                            if (date.getFullYear() < 1970 || date.getFullYear() > year + 10) {
+                                // setSelectedDate(new Date());
+                                // notifyYears();
+                                console.log("custom date is out of scope");
+                            }
+                        }}/> */}
+                        <DatePicker 
+                            selected={selectedDate}
+                            onChange={(e) => {
+                                console.log(e.getDate());
+                                console.log(e.getMonth());
+                                console.log(e.getFullYear());
+
+                                setSelectedDate(`${e.getFullYear()}-${e.getMonth() + 1}-${e.getDate()}`);
+
+                                if (e.getFullYear() < 1970 || e.getFullYear() > year + 10) {
+                                    setSelectedDate(new Date());
+                                    notifyYears();
+                                }
+                            }}
+                            dateFormat="yyyy-MM-dd"
+                            showYearDropdown
+                        />
                     </div>
                 <div className="custom-game__field custom-game__rating">
                     <label>Rating: </label>
@@ -339,16 +382,16 @@ export default function Search () {
                     let customGameTitle = document.getElementById("custom-game__title").value;
                     let customSummary = document.getElementById("custom-game__summary").value;
                     let customStatus = document.getElementById("custom-game__status").value;
-                    let customDate = document.getElementsByClassName("custom-game__date")[0].value;
+                    // let customDate = document.getElementsByClassName("custom-game__date")[0].value;
                     let customRating = document.getElementById("custom-game__rating__num").value;
                     let titleField = document.getElementsByClassName('custom-game__field__text')[0];
                     // const hasInvalidCharacters = /[^a-zA-Z0-9 &!]/.test(titleField.value);
                     if (customGameTitle !== "") {
-                            addGame(title, "", summary, gameStatus, customDate, 0, rating, customGame);
+                            addGame(title, "", summary, gameStatus, selectedDate, 0, rating, customGame);
                             // document.getElementById("custom-game__title").value = "";
                             // document.getElementById("custom-game__summary").value = "";
                             // document.getElementById("custom-game__status").value = "playing";
-                            defaultDate(document.getElementsByClassName("custom-game__date"), 0);
+                            // defaultDate(document.getElementsByClassName("custom-game__date"), 0);
                             notifyCustom(customGameTitle);
                             // document.getElementById("custom-game__rating__num").value = "10";
                     } else {
