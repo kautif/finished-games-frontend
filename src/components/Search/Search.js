@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Custom from "../Custom/Custom";
 import AddGame from "../AddGame/AddGame";
 import "./Search.css";
-import { setUserGames, setShowGame, setShowSearch, setSearchGameName, setSearchGameImg } from "../../redux/gamesSlice";
+import { setUserGames, setSearchGameName, setSearchGameImg, setShowGame, setShowSearch } from "../../redux/gamesSlice";
 import smwCart from "../../assets/vh_smw_cart.webp";
 import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
@@ -23,12 +23,13 @@ import DatePicker from "react-datepicker";
 export default function Search () {
     const dispatch = useDispatch();
     let userGames = useSelector((state) => state.gamesReducer.userGames);
-    let showGame = useSelector((state) => state.gamesReducer.showGame);
-    let showSearch = useSelector((state) => state.gamesReducer.showSearch);
+    let lastSearch = useSelector((state) => state.gamesReducer.lastSearch);
+    let lastPage = useSelector((state) => state.gamesReducer.lastPage);
     let searchGameName = useSelector((state) => state.gamesReducer.searchGameName);
     let searchGameImg = useSelector((state) => state.gamesReducer.searchGameImg);
 
     const [search, setSearch] = useState("");
+  
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
     const today = new Date();
@@ -42,7 +43,6 @@ export default function Search () {
     const [title, setTitle] = useState("");
     const [gameStatus, setGameStatus] = useState("playing");
     const [summary, setSummary] = useState("");
-    const [searchGames, setSearchGames] = useState(userGames);
     const [customGameMsg, setCustomGameMsg] = useState("");
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";
@@ -77,7 +77,6 @@ export default function Search () {
     }
 
     function reqGames () {
-
         axios({
         url: `https://api.rawg.io/api/games?search=${search}&page=${page}&key=${process.env.REACT_APP_RAWG_API}`,
         method: "GET",
@@ -86,7 +85,6 @@ export default function Search () {
 
         }
         }).then(response => {
-            console.log("response: ", response);
             setGames(response.data.results);
         }).catch((error) => {
             console.error("error: ", error);
@@ -162,16 +160,7 @@ export default function Search () {
     let retrievedGames;
 
     useEffect(() => {
-        if (!showGame) {
-            // notifyUpdate(searchGameName);
-        }
-    }, [showGame])
-
-    useEffect(() => {
         twitchId = window.localStorage.getItem("twitchId");
-        if (newSearch) {
-            setPage(1);
-        }
         getUserGames();
         retrievedGames.map((game, i) => {
             // defaultDate(document.getElementsByClassName("search-game__date"), i);
@@ -201,10 +190,6 @@ export default function Search () {
             day = new Date().getDate();
             month = new Date().getMonth();
             year = new Date().getFullYear();
-            // console.log("day: ", day);
-            // console.log("month: ", month + 1);
-            // console.log("year: ", year);
-            
         }
     }, [selectedDate])
 
@@ -237,44 +222,11 @@ export default function Search () {
             <Row className="search-game">
                 <h2 className="search-game__name text-center">{game.name}</h2>
                 <img src={game.background_image} alt={game.name + " image"} />
-                {/* <label>Date:</label><input className="search-game__date" type="date" name="date-added" onChange={(e) => {
-                    console.log(e.target.value);
-                    getDate(document.getElementsByClassName("search-game__date"), i)
-                }}/> */}
-                {/* <div className="search-game__rating">
-                    <label>Rating: </label>
-                    <select className="search-game__rating__num">
-                        <option selected value="10">10</option>
-                        <option value="9">9</option>
-                        <option value="8">8</option>
-                        <option value="7">7</option>
-                        <option value="6">6</option>
-                        <option value="5">5</option>
-                        <option value="4">4</option>
-                        <option value="3">3</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
-                        <option selected value="0">-</option> 
-                    </select>    
-                </div> */}
-                {/* <div className="search-game__status">
-                    <label>Game Status</label>
-                    <select>
-                        <option selected="selected" value="playing">Playing</option>
-                        <option value="upcoming">Upcoming</option>
-                        <option value="completed">Completed</option>
-                        <option value="dropped">Dropped</option>
-                    </select>
-                </div> */}
-                {/* <textarea placeholder="Let your viewers know how you felt about this game" ></textarea> */}
-                    {/* {userGameNames.includes(game.name) ? <p className="search-result__added">Added</p> : <p className="search-result__add-btn text-center" onClick={(e) => 
-                            addGame(game.name, game.background_image, e.target.previousElementSibling.value, e.target.previousElementSibling.previousElementSibling.children[1].value,
-                                document.getElementsByClassName("search-game__date"), i, document.getElementsByClassName("search-game__rating__num")[i].value, "")}>Add Game</p>} */}
 {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
-                dispatch(setShowGame(true));
-                dispatch(setShowSearch(false));
                 dispatch(setSearchGameName(game.name));
                 dispatch(setSearchGameImg(game.background_image));
+                dispatch(setShowSearch(false));
+                dispatch(setShowGame(true));
             }}>Add Game</p>}
             </Row>
         </Col>
@@ -282,7 +234,7 @@ export default function Search () {
 
     return (
         <div>
-            <form>
+            <form id="search-form">
                 <select id="search-game__type" onChange={(e) => {
                     setGameType(prevGameType => e.target.value);
                 }}>
@@ -292,10 +244,12 @@ export default function Search () {
                 {gameType === "regular" ? 
                 <div>
                     <input className="search" placeholder="Search games" 
-                        onChange={(e) => {setSearch(prevSearch => e.target.value)}} value={search}/>
+                        onChange={(e) => {
+                                setSearch(prevSearch => e.target.value);
+                            }}
+                            value={search}/>
                     <button onClick={(e) => {
                         getGames(e);
-                        setNewSearch(true);
                         }}>Submit</button>
                 </div> : ""}
             </form>
@@ -413,14 +367,12 @@ export default function Search () {
                         <img className="search-results__pages__nav" src={leftArrow} alt="previous search page" onClick={() => {
                             if (page > 1) {
                                 notifyLoading();
-                                setNewSearch(false);
                                 setPage(prevPage => prevPage - 1);
                             }
                         }} />
                         <input type="text" onChange={(e) => setPage(e.target.value)} value={page} />
                         <img className="search-results__pages__nav" src={rightArrow} alt="next search page" onClick={() => {
                             notifyLoading();
-                            setNewSearch(false);
                             setPage(prevPage => prevPage + 1);
                         }}/>
                     </div>
