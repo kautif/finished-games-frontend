@@ -16,10 +16,12 @@ export default function FindUser () {
     const [foundUsers, setFoundUsers] = useState([]);
     const [showFill, setShowFill] = useState(false);
     const [userList, setUserList] = useState([]);
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState("ste");
+    const [noResults, setNoResults] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
 
     function getUserList () {
+        console.log("getUserList");
         axios(
             {
                 url: `${backendURL}/getusers`,
@@ -28,7 +30,7 @@ export default function FindUser () {
                     'Accept': 'application/json'
                 },
                 params: {
-                    user: ""
+                    user: inputValue.toLowerCase()
                 }
             }).then(response => {
                 console.log("backend response: ", response);
@@ -39,6 +41,7 @@ export default function FindUser () {
     }
 
     function getUsers (user) {
+        console.log("getUsers");
         axios(
             {
                 url: `${backendURL}/getusers`,
@@ -47,7 +50,7 @@ export default function FindUser () {
                     'Accept': 'application/json'
                 },
                 params: {
-                    user: user
+                    user: document.getElementById("free-solo-2-demo").value.toLowerCase()
                 }
             }).then(response => {
                 console.log("backend response: ", response);
@@ -58,11 +61,14 @@ export default function FindUser () {
     }
 
     function handleChange (newValue) {
+        console.log("handleChange");
         getUsers(newValue.target.textContent.toLowerCase());
     }
 
     useEffect(() => {
-        getUserList("");
+        getUsers();
+        getUserList();
+        setNoResults(false);
         document.addEventListener('click', (event) => {
             if (!event.target.closest('.MuiAutocomplete-root')) {
               setShowFill(false); // Close dropdown if click is outside
@@ -71,12 +77,9 @@ export default function FindUser () {
     }, [])
 
     useEffect(() => {
-        console.log("user list: ", userList);
-    })
-
-    useEffect(() => {
-        if (inputValue.length > 1) {
+        if (inputValue.length >= 1) {
             setShowFill(true);
+            getUserList(inputValue);
         } else {
             setShowFill(false);
         }
@@ -85,6 +88,9 @@ export default function FindUser () {
     useEffect(() => {
         if (foundUsers.length >= 1) {
             setShowFill(false);
+            setNoResults(false);
+        } else {
+            setNoResults(true);
         }
     }, [foundUsers])
 
@@ -94,17 +100,21 @@ export default function FindUser () {
             <Form                 
                 onSubmit={(e) => {
                     e.preventDefault();
-                    console.log(e.target[0].value);
-                    getUsers(e.target[0].value);
+                    console.log("submitted: ", e.target[0].value);
+                    getUsers(inputValue);
                 }}>
                 <Stack>
                 <Autocomplete
                                 // freeSolo
                                 id="free-solo-2-demo"
+                                freeSolo
                                 disableClearable
                                 inputValue={inputValue}
                                 open={inputValue.length > 1 && showFill === true}
-                                onInputChange={(e, value) => setInputValue(value)}
+                                onInputChange={(e, value) => {
+                                    setInputValue(value);
+                                    console.log("value: ", value);
+                                }}
                                 noOptionsText="No results found"
                                 options={userList.map((option) => option.twitch_default)}
                                 filterOptions={(options, state) =>
@@ -114,6 +124,7 @@ export default function FindUser () {
                                   }
                                 onChange={(e) => {
                                     handleChange(e);
+                                    console.log("input changing");
                                 }}
                                 onClose={() => {
                                     setShowFill(false);
@@ -136,7 +147,7 @@ export default function FindUser () {
                             }
                             />
                 </Stack>
-            </Form>
+            </Form >
             <div className="find-user__results d-flex flex-wrap">
                 {foundUsers.map(foundUser => {
                     return (
@@ -149,6 +160,7 @@ export default function FindUser () {
                         </Row>
                     )
                 })}
+                {noResults && "no results found"}
             </div>
         </Container>
     ) 
