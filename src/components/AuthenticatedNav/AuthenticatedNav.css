@@ -22,6 +22,10 @@
     margin-bottom: 0.25%;
 }
 
+.dropdown-menu {
+    z-index: 9999;
+}
+
 .dropdown a {
     text-decoration: none;
 }

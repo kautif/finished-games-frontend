@@ -18,3 +18,7 @@
 .find-user__head {
     font-size: 1.5em;
 }
+
+#free-solo-2-demo {
+    z-index: 1;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getItem } from "../../utils/localStorage";
 import { setIsAuthenticated } from "../../redux/gamesSlice";
@@ -15,10 +15,13 @@ import Button from "react-bootstrap/esm/Button";
 export default function AuthenticatedNav() {
   const dispatch = useDispatch();
   let twitchName = window.localStorage.getItem("twitchName");
+  let twitchId = window.localStorage.getItem("twitchId");
   const [profileImg, setProfileImg] = useState("");
   const [defaultName, setDefaultName] = useState("");
   const [showDelete, setShowDelete] = useState(false);
   const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+  const navigate = useNavigate();
+
   function logout() {
     axios({
       url: `${backendURL}/logout`,
@@ -55,7 +58,8 @@ export default function AuthenticatedNav() {
 function deleteUser (user) {
   let config = {
       data: {
-          twitchName: twitchName,
+          twitchName: defaultName,
+          twitchId: twitchId
       }
   }
 
@@ -152,8 +156,12 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
             <Dropdown.Item eventKey="1" onClick={() => {
                         setShowDelete(true);
                     }}>Delete Account</Dropdown.Item>
-            <Dropdown.Item eventKey="2"><Link className="dropdown-link" to="/feedback">Feedback</Link></Dropdown.Item>
-            <Dropdown.Item eventKey="3"><Link className="dropdown-link" to="/faq">FAQ</Link></Dropdown.Item>
+            <Dropdown.Item className="dropdown-link" eventKey="2" onClick={() => {
+              navigate("/feedback");
+            }}>Feedback</Dropdown.Item>
+            <Dropdown.Item className="dropdown-link" eventKey="3" onClick={() => {
+              navigate("/faq");
+            }}>FAQ</Dropdown.Item>
             <Dropdown.Item eventKey="4" active><p className="auth-nav__link" onClick={() => logout()}>Logout</p></Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

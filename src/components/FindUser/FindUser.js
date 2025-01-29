@@ -109,9 +109,11 @@ export default function FindUser () {
                                 id="free-solo-2-demo"
                                 freeSolo
                                 disableClearable
+                                disablePortal
                                 inputValue={inputValue}
                                 open={inputValue.length > 1 && showFill === true}
                                 onInputChange={(e, value) => {
+                                    e.stopPropagation();
                                     setInputValue(value);
                                     console.log("value: ", value);
                                 }}
@@ -123,13 +125,18 @@ export default function FindUser () {
                                     ).slice(0, 10)
                                   }
                                 onChange={(e) => {
+                                    e.stopPropagation();
                                     handleChange(e);
                                     console.log("input changing");
                                 }}
-                                onClose={() => {
+                                onClose={(e) => {
+                                    e.stopPropagation();
                                     setShowFill(false);
                                 }}
-                                onBlur={() => setShowFill(false)}
+                                onBlur={(e) => {
+                                    e.stopPropagation();
+                                    setShowFill(false);
+                                }}
                             renderInput={(params) => {
                                 return (
                                     <TextField
