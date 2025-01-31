@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import Form from 'react-bootstrap/Form';
+import ReCAPTCHA from "react-google-recaptcha";
 import "./Report.css"
 import { ToastContainer, toast } from "react-toastify";
 
@@ -16,6 +17,7 @@ export default function Report () {
     const [details, setDetails] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [validated, setValidated] = useState(false);
+    const [captcha, setCaptcha] = useState(null);
     const [hasSubmittedRecently, setHasSubmittedRecently] = useState(false);
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
 
@@ -168,7 +170,14 @@ export default function Report () {
                         </Form.Control.Feedback>
                     </Form.Group>
                 </div>
-                <input className={`report__submit-btn ${!hasSubmittedRecently ? "report__submit__enabled" : "report__submit__disabled"}`} disabled={hasSubmittedRecently} type="submit" value="Submit" onClick={(e) => {
+                {(report.length > 0 && details.length > 0) && <ReCAPTCHA
+                sitekey={process.env.REACT_APP_CAPTCHA_SITE_KEY}
+                onChange={(e) => {
+                    console.log("captcha: ", e);
+                    setCaptcha(e);
+                }}
+                ></ReCAPTCHA>}
+                <input className={`report__submit-btn ${!hasSubmittedRecently ? "report__submit__enabled" : "report__submit__disabled"}`} disabled={captcha !== null ? "" : true} type="submit" value="Submit" onClick={(e) => {
                     e.preventDefault();
                     handleSubmit(e);
                     if (validated) {
