@@ -88,7 +88,7 @@ export default function Feedback () {
     }
 
     useEffect(() => {
-        console.log("captcha: ", process.env.REACT_APP_CAPTCHA_SITE_KEY);
+        // console.log("captcha: ", process.env.REACT_APP_CAPTCHA_SITE_KEY);
     }, [])
 
     useEffect(() => {
