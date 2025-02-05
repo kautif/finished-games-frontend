@@ -7,7 +7,8 @@ import "./Feedback.css"
 import { current } from "@reduxjs/toolkit";
 
 export default function Feedback () {
-    const [username, setUsername] = useState("");
+    let twitchName = window.localStorage.getItem("twitchName");
+    const [username, setUsername] = useState(twitchName);
     const [formData, setFormData] = useState({});
     const [topic, setTopic] = useState("games");
     const [message, setMessage] = useState("");
@@ -65,7 +66,7 @@ export default function Feedback () {
         })
     }
 
-    async function handleSubmit (e) {
+    function handleSubmit (e) {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
           e.preventDefault();
@@ -77,14 +78,24 @@ export default function Feedback () {
         } else {
             setValidated(false);
         }
+    }
 
-        if (!hasSubmittedRecently && validated === true) {
-            await axios.post(`${backendURL}/send-email`, formData)
-            .then(response => {
-            }).catch(err => {
-                console.error("Error: ", err.message);
-            })
+    async function sendEmail () {
+        console.log("hi");
+        try {
+            console.log("hi");
+            const response = await axios.post(`${backendURL}/send-email`, formData);
+            console.log("response: ", response);
+        } catch (err) {
+            console.error("Error: ", err.message);
         }
+
+        // await axios.post(`${backendURL}/send-email`, formData)
+        //     .then(response => {
+        //         console.log("response: ", response);
+        //     }).catch(err => {
+        //         console.error("Error: ", err.message);
+        //     })
     }
 
     useEffect(() => {
@@ -206,6 +217,11 @@ export default function Feedback () {
                             e.preventDefault();
                             setFeedbackSent(true);
                             handleSubmit(e);
+                            if (captcha) {
+                                console.log(process.env.REACT_APP_BACKEND_API_URL);
+                                console.log("formdata: ", formData);
+                                sendEmail();
+                            }
                             if (validated) {
                                 notify();
                             }

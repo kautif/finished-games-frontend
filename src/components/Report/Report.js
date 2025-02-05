@@ -11,6 +11,7 @@ export default function Report () {
     console.log("reportUser", localStorage.getItem("reportUser"));
     console.log("reporting user", localStorage.getItem("twitchName"));
     let twitchId = localStorage.getItem("twitchId");
+    let twitchName = window.localStorage.getItem("twitchName");
 
     const [report, setReport] = useState(localStorage.getItem("reportUser"));
     const [issue, setIssue] = useState("game");
@@ -77,7 +78,12 @@ export default function Report () {
         }
         setValidated(true);
         if (validated === true) {
-            const date = new Date();
+
+        }
+    }
+
+    async function sendReport () {
+        const date = new Date();
             await axios.post(`${backendURL}/send-report`, {
                 twitchId: twitchId,
                 date: date,
@@ -88,7 +94,6 @@ export default function Report () {
             }).catch (error => {
                 console.error('There was an error sending the email!', error);
             })
-        }
     }
 
     useEffect(() => {
@@ -180,6 +185,10 @@ export default function Report () {
                 <input className={`report__submit-btn ${!hasSubmittedRecently ? "report__submit__enabled" : "report__submit__disabled"}`} disabled={captcha !== null ? "" : true} type="submit" value="Submit" onClick={(e) => {
                     e.preventDefault();
                     handleSubmit(e);
+                    if (captcha) {
+                        sendReport();
+                    }
+
                     if (validated) {
                         notify(report);
                         setSubmitted(true);
