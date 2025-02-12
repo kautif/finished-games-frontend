@@ -249,6 +249,7 @@ export default function Search () {
                             }}
                             value={search}/>
                     <button onClick={(e) => {
+                        setPage(1);
                         getGames(e);
                         }}>Submit</button>
                 </div> : ""}
