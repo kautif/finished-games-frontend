@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Column from "react-bootstrap/Col";
 import Stack from "react-bootstrap/Stack";
 import Image from "react-bootstrap/Image";
+import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import "./Profile.css";
 import smwCart from "../../assets/vh_smw_cart.webp";
@@ -15,6 +16,7 @@ import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
 import Col from "react-bootstrap/Col";
 import GameData from "../GameData/GameData";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Profile (match) {
     const dispatch = useDispatch();
@@ -154,6 +156,18 @@ export default function Profile (match) {
         }).catch(err => {
             console.log("error");
         })
+    }
+
+    function shareProfile () {
+        navigator.clipboard.writeText(window.location.href);
+    }
+
+    function notifyShareProfile () {
+        shareProfile();
+        toast(`${window.location.href} has been copied to your clipboard`, {
+            position: "top-center",
+            autoClose: 2000
+        });
     }
 
     useEffect(() => {
@@ -420,6 +434,7 @@ export default function Profile (match) {
                     localStorage.setItem("reportUser", user.twitch_default);
                     window.location.pathname = "/report";
                 }}>Report User</p>
+                <Button onClick={() => notifyShareProfile()}>Share Profile</Button>
                 <div>
                     <div>
                         <select onChange={(e) => {
@@ -525,6 +540,9 @@ export default function Profile (match) {
                     gamesList
                     }
                 </Stack>
+                <ToastContainer 
+                    style={{ width: "2000px" }}
+                />
             </div>
         )
     }
