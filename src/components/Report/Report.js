@@ -136,7 +136,7 @@ export default function Report () {
                     }
             }}>
                 <Form.Group>
-                    <Form.Control 
+                    {/* <Form.Control 
                     className="report__field" 
                     required value={report} 
                     placeholder="Enter username" 
@@ -145,7 +145,11 @@ export default function Report () {
                     }}/>
                     <Form.Control.Feedback type="invalid">
                         Please enter your username
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
+                    <div>
+                        <p>Reporting: </p>
+                        <p>{report}</p>
+                    </div>
                 </Form.Group>
                 <div className="report__issue">
                     <label>Issue</label>

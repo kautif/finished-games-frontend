@@ -147,7 +147,7 @@ export default function Feedback () {
                         }
                     }}>
                         <Form.Group>
-                        <Form.Control 
+                        {/* <Form.Control 
                         id="feedback-username"
                         className="feedback-field"
                         type="text"
@@ -164,7 +164,7 @@ export default function Feedback () {
                     />
                     <Form.Control.Feedback type="invalid">
                         Please enter your username
-                    </Form.Control.Feedback>
+                    </Form.Control.Feedback> */}
                         </Form.Group>
                     <div className="topic-flex">
                         <label>Topic:</label>
