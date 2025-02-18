@@ -482,7 +482,7 @@ export default function Profile (match) {
                                             <p className="btn btn-primary mt-4" onClick={() => {
                                                 localStorage.setItem("reportUser", user.twitch_default);
                                                 window.location.pathname = "/report";
-                                            }}>Report Game</p>
+                                            }}>Report Inappropriate Content</p>
                                         </div>
                                     </div>
                                     <div className="user-game__modal__text-container">
