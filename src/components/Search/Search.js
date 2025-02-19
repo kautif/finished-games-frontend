@@ -213,6 +213,7 @@ export default function Search () {
     })
 
     retrievedGames = games.map((game, i) => {
+        console.log("game.background_image: ", game.background_image);
         return <Col xl={3} 
         lg={4} 
         sm={6} 
@@ -221,10 +222,10 @@ export default function Search () {
         >
             <Row className="search-game">
                 <h2 className="search-game__name text-center">{game.name}</h2>
-                <img src={game.background_image} alt={game.name + " image"} />
+                <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} />
 {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
                 dispatch(setSearchGameName(game.name));
-                dispatch(setSearchGameImg(game.background_image));
+                dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
                 dispatch(setShowSearch(false));
                 dispatch(setShowGame(true));
             }}>Add Game</p>}
