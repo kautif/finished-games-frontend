@@ -82,10 +82,26 @@ export default function Search () {
         method: "GET",
         headers: {
             'Accept': 'application/json'
-
         }
         }).then(response => {
-            setGames(response.data.results);
+            let filteredGames = [];
+            let tagsList = [];
+            for (let i = 0; i < response.data.results.length; i++) {
+                for (let k = 0; k < response.data.results[i].tags.length; k++) {
+                    // con't *** 2/20/25
+                    console.log("slugs: ", response.data.results[i].tags[k].slug);
+                    tagsList.push(response.data.results[i].tags[k].slug);
+                }
+                console.log("next game");
+                if (tagsList.includes("nudity") || tagsList.includes("sex") || tagsList.includes("hentai") || tagsList.includes("sexual-content")) {
+                    console.log("nudity found");
+                } else {
+                    filteredGames.push(response.data.results[i]);
+                }
+                tagsList = [];
+            }
+            setGames(filteredGames);
+            // setGames(response.data.results);
         }).catch((error) => {
             console.error("error: ", error);
         })
@@ -212,26 +228,55 @@ export default function Search () {
         gameNames.push(game.name);
     })
 
+    // con't *** 2/20/25
+
+
+
     retrievedGames = games.map((game, i) => {
-        console.log("game.background_image: ", game.background_image);
-        return <Col xl={3} 
-        lg={4} 
-        sm={6} 
-        xs={12}
-        key={i}
-        >
-            <Row className="search-game">
-                <h2 className="search-game__name text-center">{game.name}</h2>
-                <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} />
-{userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
-                dispatch(setSearchGameName(game.name));
-                dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
-                dispatch(setShowSearch(false));
-                dispatch(setShowGame(true));
-            }}>Add Game</p>}
-            </Row>
-        </Col>
-    })
+        console.log("game: ", game);
+        // let noNudity = game.tags.filter(tag => tag.slug !== "nudity");
+        // console.log("no nudity: ", noNudity);
+            return <Col xl={3} 
+            lg={4} 
+            sm={6} 
+            xs={12}
+            key={i}>
+                <Row className="search-game">
+                    <h2 className="search-game__name text-center">{game.name}</h2>
+                    <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} />
+    {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
+                    dispatch(setSearchGameName(game.name));
+                    dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
+                    dispatch(setShowSearch(false));
+                    dispatch(setShowGame(true));
+                }}>Add Game</p>}
+                </Row>
+            </Col>    
+})
+
+    // retrievedGames = games.map((game, i) => {        
+    //         if (!game.tags[k].slug !== "nudity") {
+    //             console.log("nudity: ", game.tags[k]);
+    //             return <Col xl={3} 
+    //             lg={4} 
+    //             sm={6} 
+    //             xs={12}
+    //             key={i}
+    //             >
+    //                 <Row className="search-game">
+    //                     <h2 className="search-game__name text-center">{game.name}</h2>
+    //                     <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} />
+    //     {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
+    //                     dispatch(setSearchGameName(game.name));
+    //                     dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
+    //                     dispatch(setShowSearch(false));
+    //                     dispatch(setShowGame(true));
+    //                 }}>Add Game</p>}
+    //                 </Row>
+    //             </Col>
+    //         }
+        
+    // })
 
     return (
         <div>
