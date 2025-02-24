@@ -38,6 +38,7 @@ export default function Search () {
     const [newSearch, setNewSearch] = useState(true);
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [gamesFound, setGamesFound] = useState(false);
     const [rank, setRank] = useState("");
     const [rating, setRating] = useState(0);
     const [title, setTitle] = useState("");
@@ -84,26 +85,35 @@ export default function Search () {
             'Accept': 'application/json'
         }
         }).then(response => {
+            console.log("responde code: ", response.status);
             let filteredGames = [];
             let tagsList = [];
-            for (let i = 0; i < response.data.results.length; i++) {
-                for (let k = 0; k < response.data.results[i].tags.length; k++) {
-                    // con't *** 2/20/25
-                    console.log("slugs: ", response.data.results[i].tags[k].slug);
-                    tagsList.push(response.data.results[i].tags[k].slug);
+            if (response.status === 200) {
+                setGamesFound(true);
+                for (let i = 0; i < response.data.results.length; i++) {
+                    for (let k = 0; k < response.data.results[i].tags.length; k++) {
+                        console.log("slugs: ", response.data.results[i].tags[k].slug);
+                        tagsList.push(response.data.results[i].tags[k].slug);
+                    }
+                    console.log("next game");
+                    if (tagsList.includes("nudity") || tagsList.includes("sex") || tagsList.includes("hentai") || tagsList.includes("sexual-content")) {
+                        console.log("nudity found");
+                    } else {
+                        filteredGames.push(response.data.results[i]);
+                    }
+                    tagsList = [];
                 }
-                console.log("next game");
-                if (tagsList.includes("nudity") || tagsList.includes("sex") || tagsList.includes("hentai") || tagsList.includes("sexual-content")) {
-                    console.log("nudity found");
-                } else {
-                    filteredGames.push(response.data.results[i]);
-                }
-                tagsList = [];
+                console.log("filteredGames: ", filteredGames);
+                setGames(filteredGames);
             }
-            setGames(filteredGames);
             // setGames(response.data.results);
         }).catch((error) => {
-            console.error("error: ", error);
+            console.log("no games found");
+            console.error("error: ", error.response);
+            console.log("no games found");
+            setGamesFound(false);
+            setGames([]);
+
         })
 
     }
@@ -178,11 +188,17 @@ export default function Search () {
     useEffect(() => {
         twitchId = window.localStorage.getItem("twitchId");
         getUserGames();
-        retrievedGames.map((game, i) => {
+        // retrievedGames.map((game, i) => {
             // defaultDate(document.getElementsByClassName("search-game__date"), i);
             // getRating(i);
-        })
+        // })
     }, [games])
+
+    useEffect(() => {
+        if (!gamesFound) {
+            setGames([])
+        }
+    }, [gamesFound])
 
     useEffect(() => {
         if (gameType === "custom") {
@@ -190,9 +206,9 @@ export default function Search () {
             // document.getElementsByClassName("custom-game__date")[0].valueAsDate = new Date();
         } else {
             reqGames();
-            retrievedGames.map((game, i) => {
+            // retrievedGames.map((game, i) => {
                 // defaultDate(document.getElementsByClassName("search-game__date"), i);
-            })
+            // })
         }
 
     }, [gameType])
@@ -228,31 +244,29 @@ export default function Search () {
         gameNames.push(game.name);
     })
 
-    // con't *** 2/20/25
-
-
-
-    retrievedGames = games.map((game, i) => {
-        console.log("game: ", game);
-        // let noNudity = game.tags.filter(tag => tag.slug !== "nudity");
-        // console.log("no nudity: ", noNudity);
-            return <Col xl={3} 
-            lg={4} 
-            sm={6} 
-            xs={12}
-            key={i}>
-                <Row className="search-game">
-                    <h2 className="search-game__name text-center">{game.name}</h2>
-                    <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} />
-    {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
-                    dispatch(setSearchGameName(game.name));
-                    dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
-                    dispatch(setShowSearch(false));
-                    dispatch(setShowGame(true));
-                }}>Add Game</p>}
-                </Row>
-            </Col>    
-})
+    if (gamesFound) {
+        retrievedGames = games.map((game, i) => {
+            console.log("game: ", game);
+            // let noNudity = game.tags.filter(tag => tag.slug !== "nudity");
+            // console.log("no nudity: ", noNudity);
+                return <Col xl={3} 
+                lg={4} 
+                sm={6} 
+                xs={12}
+                key={i}>
+                    <Row className="search-game">
+                        <h2 className="search-game__name text-center">{game.name}</h2>
+                        <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} />
+        {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
+                        dispatch(setSearchGameName(game.name));
+                        dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
+                        dispatch(setShowSearch(false));
+                        dispatch(setShowGame(true));
+                    }}>Add Game</p>}
+                    </Row>
+                </Col>    
+        })
+    }
 
     // retrievedGames = games.map((game, i) => {        
     //         if (!game.tags[k].slug !== "nudity") {
@@ -408,19 +422,20 @@ export default function Search () {
             : ""}
             <div className="search-results">
                 <Container className="d-flex flex-wrap">
-                    {gameType === "regular" ? retrievedGames : ""}
-                    {games.length === 0 ? "LOADING" : ""}
+                    {gameType === "regular" && games.length > 0 ? retrievedGames : ""}
+                    {games.length === 0 && page === 1 ? "LOADING" : ""}
+                    {games.length === 0 && page > 1 ? "NO GAMES" : ""}
                     <div className="search-results__pages">
                         <img className="search-results__pages__nav" src={leftArrow} alt="previous search page" onClick={() => {
                             if (page > 1) {
                                 notifyLoading();
-                                setPage(prevPage => prevPage - 1);
+                                setPage(prevPage => parseInt(prevPage - 1));
                             }
                         }} />
-                        <input type="text" onChange={(e) => setPage(e.target.value)} value={page} />
+                        <input type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
                         <img className="search-results__pages__nav" src={rightArrow} alt="next search page" onClick={() => {
                             notifyLoading();
-                            setPage(prevPage => prevPage + 1);
+                            setPage(prevPage => parseInt(prevPage + 1));
                         }}/>
                     </div>
                 </Container>
