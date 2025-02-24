@@ -96,7 +96,7 @@ export default function Search () {
                         tagsList.push(response.data.results[i].tags[k].slug);
                     }
                     console.log("next game");
-                    if (tagsList.includes("nudity") || tagsList.includes("sex") || tagsList.includes("hentai") || tagsList.includes("sexual-content")) {
+                    if (tagsList.includes("nudity") || tagsList.includes("sex") || tagsList.includes("hentai") || tagsList.includes("sexual-content") || tagsList.includes("toon-sex")) {
                         console.log("nudity found");
                     } else {
                         filteredGames.push(response.data.results[i]);
