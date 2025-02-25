@@ -424,7 +424,7 @@ export default function Search () {
                 <Container className="d-flex flex-wrap">
                     {gameType === "regular" && games.length > 0 ? retrievedGames : ""}
                     {games.length === 0 && page === 1 ? "LOADING" : ""}
-                    {games.length === 0 && page > 1 ? "NO GAMES" : ""}
+                    {games.length === 0 && page > 1 ? "NO MORE GAMES" : ""}
                     <div className="search-results__pages">
                         <img className="search-results__pages__nav" src={leftArrow} alt="previous search page" onClick={() => {
                             if (page > 1) {
@@ -435,7 +435,9 @@ export default function Search () {
                         <input type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
                         <img className="search-results__pages__nav" src={rightArrow} alt="next search page" onClick={() => {
                             notifyLoading();
-                            setPage(prevPage => parseInt(prevPage + 1));
+                            if (gamesFound) {
+                                setPage(prevPage => parseInt(prevPage + 1));
+                            }
                         }}/>
                     </div>
                 </Container>
