@@ -19,6 +19,7 @@ import smwCart from '../../assets/vh_smw_cart.webp';
 import mcCart from '../../assets/vh_minecraft_cart.webp';
 import pokemonCart from '../../assets/vh_pokemon_cart.webp';
 import otherCart from '../../assets/vh_other_cart.webp';
+import loadingAnim from '../../assets/loading.gif';
 import { useDispatch, useSelector } from 'react-redux';
 import AddGame from '../AddGame/AddGame';
 import GameData from '../GameData/GameData';
@@ -27,6 +28,7 @@ export default function Gameslist (){
     const dispatch = useDispatch();
     let showGame = useSelector((state) => state.gamesReducer.showGame);
     let showSearch = useSelector((state) => state.gamesReducer.showSearch);
+    let imagesRendered = useSelector((state) => state.gamesReducer.imagesRendered);
 
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
     // const backendURL = "http://localhost:4000";

@@ -6,6 +6,7 @@ const initialState = {
     isAuthenticated: false,
     showGame: false,
     showSearch: true,
+    imagesRendered: false,
     searchGameName: "",
     searchGameImg: "",
     loginTime: 0
@@ -48,9 +49,13 @@ export const gamesSlice = createSlice({
         setSearchGameImg: (state, action) => {
             state.searchGameImg = action.payload;
             console.log("gamesSlice searchGameImg?: ", action.payload);
+        },
+        setImagesRendered: (state, action) => {
+            state.imagesRendered = action.payload;
+            console.log("gamesSlice imagesRendered: ", action.payload);
         }
     }
 })
 
-export const {setUserGames, setIsAuthenticated, setReportUser, setLoginTime, setShowGame, setShowSearch, setSearchGameName, setSearchGameImg} = gamesSlice.actions;
+export const {setUserGames, setIsAuthenticated, setReportUser, setLoginTime, setShowGame, setShowSearch, setSearchGameName, setSearchGameImg, setImagesRendered} = gamesSlice.actions;
 export default gamesSlice.reducer;

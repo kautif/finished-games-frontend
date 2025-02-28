@@ -8,13 +8,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import Custom from "../Custom/Custom";
 import AddGame from "../AddGame/AddGame";
 import "./Search.css";
-import { setUserGames, setSearchGameName, setSearchGameImg, setShowGame, setShowSearch } from "../../redux/gamesSlice";
+import { setUserGames, setSearchGameName, setSearchGameImg, setShowGame, setShowSearch, 
+    // setImagesRendered 
+} from "../../redux/gamesSlice";
 import smwCart from "../../assets/vh_smw_cart.webp";
 import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
 import leftArrow from "../../assets/arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
+import loadingAnim from '../../assets/loading.gif';
 import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
@@ -27,6 +30,7 @@ export default function Search () {
     let lastPage = useSelector((state) => state.gamesReducer.lastPage);
     let searchGameName = useSelector((state) => state.gamesReducer.searchGameName);
     let searchGameImg = useSelector((state) => state.gamesReducer.searchGameImg);
+    // let imagesRendered = useSelector((state) => state.gamesReducer.imagesRendered);
 
     const [search, setSearch] = useState("");
   
@@ -37,6 +41,11 @@ export default function Search () {
     const [page, setPage] = useState(1);
     const [newSearch, setNewSearch] = useState(true);
     const [games, setGames] = useState([]);
+
+    const [imagesLoaded, setImagesLoaded] = useState(0);
+    const [imagesRendered, setImagesRendered] = useState(false);
+    let totalImages = 0;
+
     const [loading, setLoading] = useState(false);
     const [gamesFound, setGamesFound] = useState(false);
     const [rank, setRank] = useState("");
@@ -89,7 +98,6 @@ export default function Search () {
             let filteredGames = [];
             let tagsList = [];
             if (response.status === 200) {
-                setGamesFound(true);
                 for (let i = 0; i < response.data.results.length; i++) {
                     for (let k = 0; k < response.data.results[i].tags.length; k++) {
                         console.log("slugs: ", response.data.results[i].tags[k].slug);
@@ -105,6 +113,7 @@ export default function Search () {
                 }
                 console.log("filteredGames: ", filteredGames);
                 setGames(filteredGames);
+                setGamesFound(true);
             }
             // setGames(response.data.results);
         }).catch((error) => {
@@ -113,7 +122,6 @@ export default function Search () {
             console.log("no games found");
             setGamesFound(false);
             setGames([]);
-
         })
 
     }
@@ -188,12 +196,16 @@ export default function Search () {
     useEffect(() => {
         twitchId = window.localStorage.getItem("twitchId");
         getUserGames();
-        // retrievedGames.map((game, i) => {
-            // defaultDate(document.getElementsByClassName("search-game__date"), i);
-            // getRating(i);
-        // })
     }, [games])
 
+    useEffect(() => {
+        console.log("imagesLoaded: ", imagesLoaded);
+        if (imagesLoaded === games.length) {
+            // dispatch(setImagesRendered(true))
+            setImagesRendered(true);
+        }
+    }, [imagesLoaded]);
+    
     useEffect(() => {
         if (!gamesFound) {
             setGames([])
@@ -244,29 +256,26 @@ export default function Search () {
         gameNames.push(game.name);
     })
 
-    if (gamesFound) {
-        retrievedGames = games.map((game, i) => {
-            console.log("game: ", game);
-            // let noNudity = game.tags.filter(tag => tag.slug !== "nudity");
-            // console.log("no nudity: ", noNudity);
-                return <Col xl={3} 
-                lg={4} 
-                sm={6} 
-                xs={12}
-                key={i}>
-                    <Row className="search-game">
-                        <h2 className="search-game__name text-center">{game.name}</h2>
-                        <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} />
-        {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
-                        dispatch(setSearchGameName(game.name));
-                        dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
-                        dispatch(setShowSearch(false));
-                        dispatch(setShowGame(true));
-                    }}>Add Game</p>}
-                    </Row>
-                </Col>    
-        })
-    }
+    retrievedGames = games.map((game, i) => {
+        // let noNudity = game.tags.filter(tag => tag.slug !== "nudity");
+        // console.log("no nudity: ", noNudity);
+            return <Col xl={3} 
+            lg={4} 
+            sm={6} 
+            xs={12}
+            key={i}>
+                <Row className="search-game">
+                    <h2 className="search-game__name text-center">{game.name}</h2>
+                    <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} onLoad={() => setImagesLoaded((prevImages) => prevImages + 1)}/>
+    {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
+                    dispatch(setSearchGameName(game.name));
+                    dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
+                    dispatch(setShowSearch(false));
+                    dispatch(setShowGame(true));
+                }}>Add Game</p>}
+                </Row>
+            </Col>    
+    })
 
     // retrievedGames = games.map((game, i) => {        
     //         if (!game.tags[k].slug !== "nudity") {
@@ -420,9 +429,20 @@ export default function Search () {
                 <ToastContainer />
             </div> 
             : ""}
-            <div className="search-results">
+            {!imagesRendered && <div style={{
+                textAlign: "center"
+            }}>
+                                    <img src={loadingAnim} alt="loading animation" style={{
+                                            width: "1000px"
+                                        }}/>
+                                </div>}
+            <div className="search-results" style={
+                {
+                display: imagesRendered ? "initial" : "none"
+            }}>
                 <Container className="d-flex flex-wrap">
-                    {gameType === "regular" && games.length > 0 ? retrievedGames : ""}
+                    {/* {gameType === "regular" && games.length > 0 && gamesFound ? retrievedGames : ""} */}
+                    {gameType === "regular" ? retrievedGames : ""}
                     {games.length === 0 && page === 1 ? "LOADING" : ""}
                     {games.length === 0 && page > 1 ? "NO MORE GAMES" : ""}
                     <div className="search-results__pages">
@@ -435,6 +455,9 @@ export default function Search () {
                         <input type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
                         <img className="search-results__pages__nav" src={rightArrow} alt="next search page" onClick={() => {
                             notifyLoading();
+                            // dispatch(setImagesRendered(false));
+                            setImagesRendered(false);
+                            setImagesLoaded(0);
                             if (gamesFound) {
                                 setPage(prevPage => parseInt(prevPage + 1));
                             }
