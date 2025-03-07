@@ -12,14 +12,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-import { setShowGame, setShowSearch } from "../../redux/gamesSlice";
+import { setShowGame, setShowSearch, setShowDiscover } from "../../redux/gamesSlice";
 
 import './Gameslist.css';
 import smwCart from '../../assets/vh_smw_cart.webp';
 import mcCart from '../../assets/vh_minecraft_cart.webp';
 import pokemonCart from '../../assets/vh_pokemon_cart.webp';
 import otherCart from '../../assets/vh_other_cart.webp';
-import loadingAnim from '../../assets/loading.gif';
+
 import { useDispatch, useSelector } from 'react-redux';
 import AddGame from '../AddGame/AddGame';
 import GameData from '../GameData/GameData';
@@ -28,6 +28,7 @@ export default function Gameslist (){
     const dispatch = useDispatch();
     let showGame = useSelector((state) => state.gamesReducer.showGame);
     let showSearch = useSelector((state) => state.gamesReducer.showSearch);
+    let showDiscover = useSelector((state) => state.gamesReducer.showDiscover);
     let imagesRendered = useSelector((state) => state.gamesReducer.imagesRendered);
 
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -42,7 +43,7 @@ export default function Gameslist (){
     const [gameState, setGameState] = useState("all");
     
     const [showModal, setShowModal] = useState(false);
-    const [showDiscover, setShowDiscover] = useState(false);
+    // const [showDiscover, setShowDiscover] = useState(false);
 
     const [showDelete, setShowDelete] = useState(false);
 
@@ -288,13 +289,18 @@ export default function Gameslist (){
     useEffect(() => {
         if (showModal) {
             document.addEventListener("click", function (e) {
-                console.log("click", e.target.classList);
                 if (e.target.classList) {
                     // setShowModal(false);
                 }
             })
-        } 
+        }
     }, [showModal])
+
+    useEffect(() => {
+        if (!showDiscover) {
+            getUserGames();
+        }
+    }, [showDiscover])
 
     function organizeGameData (gameTypeArr, gameStatus, counter, setCount) {
         gameTypeArr.map(game => {
@@ -307,7 +313,7 @@ export default function Gameslist (){
 
     function handleClose () {
         setShowModal(false);
-        setShowDiscover(false);
+        dispatch(setShowDiscover(false));
     }
 
     function notifyUpdate (gameTitle) {
@@ -337,7 +343,10 @@ export default function Gameslist (){
             position: "top-center",
             autoClose: 1000,
             onClose: () => {
-                window.location.reload();
+                setShowDelete(false);
+                setShowModal(false);
+                setShowGame(false);
+                // window.location.reload();
             }
         });
     }
@@ -438,6 +447,13 @@ export default function Gameslist (){
     }
 
     function deleteGame (gameName) {
+        console.log("deleting game");
+        findGame(gameName);
+        const deleteTarget = findGame(gameName);
+        setUserGames(userGames.filter(prevGame => prevGame.name !== gameName));
+        setShowDelete(false);
+        console.log("deleteTarget: ", deleteTarget);
+        console.log("delete userGames: ", userGames);
         let config = {
             data: {
                 twitchName: twitchName,
@@ -448,11 +464,15 @@ export default function Gameslist (){
         }
             axios.delete(`${backendURL}/deletegame`, config)
                 .then(response => {
-
+                    console.log("delete response: ", response);
                 }).catch(err => {
                     console.error("Failed to delete: ", err.message);
 
                 })
+    }
+
+    function findGame (gameName) {
+        return userGames.find(obj => obj.name === gameName);
     }
 
     async function getUserGames() {
@@ -608,7 +628,7 @@ export default function Gameslist (){
                 gamesObj={gamesObj}
             />}
             <Container>
-                <Button onClick={() => setShowDiscover(true)}>Add Game</Button>
+                <Button onClick={() => dispatch(setShowDiscover(true))}>Add Game</Button>
                 <Row>
                     <Col lg={3} sm={6} xs={12}>
                         <h2>Filter Games</h2>
@@ -739,7 +759,7 @@ export default function Gameslist (){
                             {showGame && <AddGame />}
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={() => setShowDiscover(false)}>Close</Button>
+                            <Button onClick={() => dispatch(setShowDiscover(false))}>Close</Button>
                         </Modal.Footer>
                     </Modal>
                     <Modal id="delete-game" show={showDelete}>
@@ -754,6 +774,8 @@ export default function Gameslist (){
                         <Modal.Footer>
                             <Button className='btn btn-danger' onClick={() => {
                                 notifyDelete(gameName);
+                                setShowDelete(false);
+                                setShowModal(false);
                                 deleteGame(gameName);
                             }}>Yes</Button>
                             <Button onClick={() => setShowDelete(false)}>Close</Button>

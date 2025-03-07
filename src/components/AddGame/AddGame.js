@@ -4,7 +4,7 @@ import "./AddGame.css";
 
 import Image from "react-bootstrap/esm/Image";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowGame, setShowSearch } from "../../redux/gamesSlice";
+import { setShowGame, setShowSearch, setUserGames, setShowDiscover } from "../../redux/gamesSlice";
 import { ToastContainer, toast } from 'react-toastify';
 
 import DatePicker from 'react-datepicker';
@@ -23,6 +23,7 @@ export default function AddGame () {
     const dispatch = useDispatch();
     let showGame = useSelector((state) => state.gamesReducer.showGame);
     let showSearch = useSelector((state) => state.gamesReducer.showSearch);
+    let userGames = useSelector((state) => state.gamesReducer.userGames);
 
     let searchGameName = useSelector((state) => state.gamesReducer.searchGameName);
     let searchGameImg = useSelector((state) => state.gamesReducer.searchGameImg);
@@ -58,7 +59,8 @@ export default function AddGame () {
             position: "top-center",
             autoClose: 1000,
             onClose: () => {
-                window.location.reload();
+                // window.location.reload();
+                dispatch(setShowDiscover(false));
             }
         });
     }
@@ -113,6 +115,15 @@ export default function AddGame () {
     let day;
     let month;
     let year;
+
+    useEffect(() => {
+        console.log("addGame img: ", searchGameImg);
+        console.log("addGame name: ", searchGameName);
+    }, [searchGameImg, searchGameName])
+
+    useEffect(() => {
+        console.log("addGame userGames: ", userGames)
+    }, [userGames])
 
     useEffect(() => {
         if (selectedDate) {
@@ -203,7 +214,17 @@ export default function AddGame () {
                     }}placeholder="Let your viewers know how you felt about this game" ></textarea>
                     <p className="search-result__add-btn text-center" onClick={() => {
                         notifyUpdate(searchGameName);
-                        addGame(searchGameName, searchGameImg, summary, gameRank, rating, "regular")
+                        addGame(searchGameName, searchGameImg, summary, gameRank, rating, "regular");
+                        dispatch(setUserGames([...userGames, {
+                            name: searchGameName,
+                            custom_game: "regular",
+                            img_url: searchGameImg,
+                            summary: summary,
+                            date_added: selectedDate.toISOString(),
+                            rank: gameRank,
+                            rating: rating
+                        }]))
+
                     }}>Add Game</p>
                 </div>
                 <ToastContainer />
