@@ -18,6 +18,7 @@ import otherCart from "../../assets/vh_other_cart.webp";
 import leftArrow from "../../assets/arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
 import loadingAnim from '../../assets/loading.gif';
+import lightning from "../../assets/lightning_yellow.png";
 import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
@@ -37,7 +38,7 @@ export default function Search () {
     const [gameType, setGameType] = useState("regular");
     const [customGame, setCustomGame] = useState("other");
     const today = new Date();
-    const [selectedDate, setSelectedDate] = useState(new Date(null));
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [page, setPage] = useState(1);
     const [newSearch, setNewSearch] = useState(true);
     const [games, setGames] = useState([]);
@@ -69,6 +70,13 @@ export default function Search () {
             onClose: () => {
                 window.location.reload();
             }
+        });
+    }
+
+    function notifyGame (gameTitle) {
+        toast(`${gameTitle} has been added`, {
+            position: "top-center",
+            autoClose: 1000,
         });
     }
 
@@ -153,7 +161,7 @@ export default function Search () {
         let gameObj = {
             name: gameName,
             custom_game: customGame,
-            img_url: customGame.length === 0 ? gameImg : "",
+            img_url: customGame === "regular" ? gameImg : "",
             summary: gameSummary,
             date_added: selectedDate,
             rank: gameStatus,
@@ -266,13 +274,32 @@ export default function Search () {
             key={i}>
                 <Row className="search-game">
                     <h2 className="search-game__name text-center">{game.name}</h2>
-                    <img src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} onLoad={() => setImagesLoaded((prevImages) => prevImages + 1)}/>
-    {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : <p className="search-result__add-btn text-center" onClick={() => {
+                    <img className="search-game__img" src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} onLoad={() => setImagesLoaded((prevImages) => prevImages + 1)}/>
+    {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : 
+        <div className="search-result__add-game-flex">
+            <div>
+                <img 
+                    className="search-result__lightning" 
+                    src={lightning} 
+                    alt="quick add lightning button"
+                    onClick={
+                        () => {
+                            dispatch(setSearchGameName(game.name));
+                            dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
+                            addGame(game.name, game.background_image, "", "completed", selectedDate, 0, 0, "regular");
+                            notifyGame(`${game.name} has been added`);
+                        }
+                    } />
+            </div>
+            <div>
+                <p className="search-result__add-btn text-center search__btn" onClick={() => {
                     dispatch(setSearchGameName(game.name));
                     dispatch(setSearchGameImg(game.background_image !== null ? game.background_image : otherCart));
                     dispatch(setShowSearch(false));
                     dispatch(setShowGame(true));
-                }}>Add Game</p>}
+                    }}>Add Game</p>
+            </div>
+        </div>}
                 </Row>
             </Col>    
     })

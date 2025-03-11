@@ -343,9 +343,9 @@ export default function Gameslist (){
             position: "top-center",
             autoClose: 1000,
             onClose: () => {
-                setShowDelete(false);
-                setShowModal(false);
-                setShowGame(false);
+                // setShowDelete(false);
+                // setShowModal(false);
+                // setShowGame(false);
                 // window.location.reload();
             }
         });
@@ -467,7 +467,6 @@ export default function Gameslist (){
                     console.log("delete response: ", response);
                 }).catch(err => {
                     console.error("Failed to delete: ", err.message);
-
                 })
     }
 
@@ -624,6 +623,7 @@ export default function Gameslist (){
 
     return (
         <div className="gameslist-games-container">
+            <ToastContainer />
             {<GameData 
                 gamesObj={gamesObj}
             />}
@@ -773,15 +773,14 @@ export default function Gameslist (){
                         </Modal.Body>
                         <Modal.Footer>
                             <Button className='btn btn-danger' onClick={() => {
-                                notifyDelete(gameName);
                                 setShowDelete(false);
                                 setShowModal(false);
                                 deleteGame(gameName);
+                                notifyDelete(gameName);
                             }}>Yes</Button>
                             <Button onClick={() => setShowDelete(false)}>Close</Button>
                         </Modal.Footer>
                     </Modal>
-                    <ToastContainer />
                 </Row> 
             </Container>
             {/* <div className="gameslist-games">
