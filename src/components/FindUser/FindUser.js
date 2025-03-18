@@ -7,18 +7,35 @@ import Col from 'react-bootstrap/Col';
 import Image from "react-bootstrap/Image";
 import Form from 'react-bootstrap/Form';
 
+import leftArrow from "../../assets/arrow.png";
+import rightArrow from "../../assets/right-arrow.png";
+
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { toast } from "react-toastify";
 
 export default function FindUser () {
     const [user, setUser] = useState("");
     const [foundUsers, setFoundUsers] = useState([]);
     const [showFill, setShowFill] = useState(false);
     const [userList, setUserList] = useState([]);
-    const [inputValue, setInputValue] = useState("ste");
+    const [inputValue, setInputValue] = useState("");
     const [noResults, setNoResults] = useState(false);
+    const [page, setPage] = useState(1);
+
+    const [imagesLoaded, setImagesLoaded] = useState(0);
+    const [imagesRendered, setImagesRendered] = useState(false);
+    let totalImages = 0;
+
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+
+    function notifyLoading () {
+        toast(`Page loading`, {
+            position: "top-center",
+            autoClose: 1000
+        });
+    }
 
     function getUserList () {
         console.log("getUserList");
@@ -40,7 +57,7 @@ export default function FindUser () {
             })
     }
 
-    function getUsers (user) {
+    function getUsers (user, userPage) {
         console.log("getUsers");
         axios(
             {
@@ -50,11 +67,16 @@ export default function FindUser () {
                     'Accept': 'application/json'
                 },
                 params: {
-                    user: document.getElementById("free-solo-2-demo").value.toLowerCase()
+                    // user: document.getElementById("free-solo-2-demo").value.toLowerCase()
+                    user: user.length > 0 ? user : "",
+                    page: userPage
                 }
             }).then(response => {
                 console.log("backend response: ", response);
                 setFoundUsers(response.data.users);
+                // paginatedUsers = response.data.users;
+                // console.log("paginatedUsers: ", paginatedUsers);
+                // console.log("pages: ", Math.ceil(paginatedUsers.length / 10))
             }).catch(err => {
                 console.error("Find User Error: ", err.message);
             })
@@ -66,28 +88,29 @@ export default function FindUser () {
     }
 
     useEffect(() => {
-        getUsers();
-        getUserList();
+        // getUsers();
+        // getUserList();
         setNoResults(false);
-        document.addEventListener('click', (event) => {
-            if (!event.target.closest('.MuiAutocomplete-root')) {
-              setShowFill(false); // Close dropdown if click is outside
-            }
-          });
+        // document.addEventListener('click', (event) => {
+        //     if (!event.target.closest('.MuiAutocomplete-root')) {
+        //       setShowFill(false); // Close dropdown if click is outside
+        //     }
+        //   });
     }, [])
 
     useEffect(() => {
+        console.log("inputValue: ", inputValue);
         if (inputValue.length >= 1) {
-            setShowFill(true);
-            getUserList(inputValue);
+            // setShowFill(true);
+            // getUserList(inputValue);
         } else {
-            setShowFill(false);
+            // setShowFill(false);
         }
     }, [inputValue])
 
     useEffect(() => {
         if (foundUsers.length >= 1) {
-            setShowFill(false);
+            // setShowFill(false);
             setNoResults(false);
         } else {
             setNoResults(true);
@@ -101,10 +124,18 @@ export default function FindUser () {
                 onSubmit={(e) => {
                     e.preventDefault();
                     console.log("submitted: ", e.target[0].value);
-                    getUsers(inputValue);
+                    getUsers(inputValue.toLowerCase(), page);
                 }}>
                 <Stack>
-                <Autocomplete
+                <Form.Control 
+                    type="text"
+                    onChange={(e) => {
+                        setInputValue(e.target.value);
+                    }}
+                    >
+
+                </Form.Control>
+                {/* <Autocomplete
                                 // freeSolo
                                 id="free-solo-2-demo"
                                 freeSolo
@@ -152,10 +183,25 @@ export default function FindUser () {
                                     />
                                 )}
                             }
-                            />
+                            /> */}
                 </Stack>
             </Form >
             <div className="find-user__results d-flex flex-wrap">
+                <div className="find-results__pages">
+                    <img className="find-results__pages__nav" src={leftArrow} alt="previous find user page" onClick={() => {
+                        if (page > 1) {
+                            notifyLoading();
+                            setPage(prevPage => parseInt(prevPage - 1));
+                        }
+                    }} />
+                    <input className="find-user__pages" type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
+                    <img className="find-results__pages__nav" src={rightArrow} alt="next find user page" onClick={() => {
+                        notifyLoading();
+                        // dispatch(setImagesRendered(false));
+                        setImagesRendered(false);
+                        setImagesLoaded(0);
+                    }}/>
+                </div>
                 {foundUsers.map(foundUser => {
                     return (
                         <Row className="mx-5">

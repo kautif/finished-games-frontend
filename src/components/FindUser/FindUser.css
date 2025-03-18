@@ -3,6 +3,20 @@
     justify-content: space-around;
 }
 
+.find-results__pages {
+    position: fixed;
+    bottom: 0;
+}
+
+.find-results__pages__nav {
+    width: 15%;
+}
+
+.find-user__pages {
+    margin-left: 9%;
+    margin-right: 9%;
+}
+
 .found-user__btn {
     color: white;
     background-color: #8E43FC;
