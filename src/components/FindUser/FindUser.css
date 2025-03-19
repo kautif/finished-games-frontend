@@ -12,9 +12,15 @@
     width: 15%;
 }
 
+.find-results__pages__nav:hover {
+    cursor: pointer;
+}
+
 .find-user__pages {
     margin-left: 9%;
     margin-right: 9%;
+    width: 15%;
+    text-align: center;
 }
 
 .found-user__btn {

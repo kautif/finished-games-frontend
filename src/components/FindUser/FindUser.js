@@ -99,6 +99,12 @@ export default function FindUser () {
     }, [])
 
     useEffect(() => {
+        if (page < 1) {
+            setPage(1);
+        }
+    }, [page])
+
+    useEffect(() => {
         console.log("inputValue: ", inputValue);
         if (inputValue.length >= 1) {
             // setShowFill(true);
@@ -194,12 +200,13 @@ export default function FindUser () {
                             setPage(prevPage => parseInt(prevPage - 1));
                         }
                     }} />
-                    <input className="find-user__pages" type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
+                    <input className="find-user__pages" type="number" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
                     <img className="find-results__pages__nav" src={rightArrow} alt="next find user page" onClick={() => {
                         notifyLoading();
                         // dispatch(setImagesRendered(false));
                         setImagesRendered(false);
                         setImagesLoaded(0);
+                        setPage(prevPage => parseInt(prevPage + 1));
                     }}/>
                 </div>
                 {foundUsers.map(foundUser => {
