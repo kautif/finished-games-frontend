@@ -15,6 +15,10 @@ import axios from 'axios';
 import { setShowGame, setShowSearch, setShowDiscover } from "../../redux/gamesSlice";
 
 import './Gameslist.css';
+
+import leftArrow from "../../assets/arrow.png";
+import rightArrow from "../../assets/right-arrow.png";
+
 import smwCart from '../../assets/vh_smw_cart.webp';
 import mcCart from '../../assets/vh_minecraft_cart.webp';
 import pokemonCart from '../../assets/vh_pokemon_cart.webp';
@@ -52,8 +56,10 @@ export default function Gameslist (){
     const [gameSummary, setGameSummary] = useState("");
     const [gameRating, setGameRating] = useState(0);
     const [gameDate, setGameDate] = useState("");
-    const [gameRank, setGameRank] = useState("playing");
+    const [gameRank, setGameRank] = useState("all");
     const [gameIndex, setGameIndex] = useState(0);
+
+    const [page, setPage] = useState(1);
 
     const [regCount, setRegCount] = useState(0);
     const [regUpCount, setRegUpCount] = useState(0);
@@ -430,7 +436,7 @@ export default function Gameslist (){
                     name: name,
                     summary: summary,
                     date_added: gameDate,
-                    rank: rank,
+                    rank: gameState,
                     rating: rating
                 }
             }
@@ -492,6 +498,34 @@ export default function Gameslist (){
             console.error("Failed to get Games: ", err.message);
         }).finally(end => {
             setLoading(false);
+        })
+    }
+
+    async function getFilteredGames () {
+        twitchId = window.localStorage.getItem("twitchId");
+        // setLoading(true);
+        await axios(`${backendURL}/filter`, {
+            method: "get",
+            params: {
+                twitchName: twitchName,
+                search: search,
+                rank: gameState,
+                gameType: gameType,
+                sortFocus: sortFocus,
+                sortDirection: sortDirection,
+                page: page
+            }
+        }).then(result => {
+            if (result.data.response === null) {
+                console.log("no games: ", result);
+            } else {
+                // setUserGames(result.data.response.games);
+                console.log("filteredGames: ", result.data.games);
+            }
+        }).catch(err => {
+            console.error("Failed to get Games: ", err.message);
+        }).finally(end => {
+            // setLoading(false);
         })
     }
 
@@ -685,6 +719,17 @@ export default function Gameslist (){
                         }}/>
                         </Form>
                     </Col>
+                    <Col>
+                        <Button 
+                            className='btn btn-primary mt-4'
+                            onClick={(e) => {
+                                console.log("search: ", search);
+                                e.preventDefault();
+                                getFilteredGames();
+                            }}>
+                            Submit
+                        </Button>
+                    </Col>
                     <Modal show={showModal}
                             backdrop={true}
                             onHide={() => {
@@ -788,6 +833,25 @@ export default function Gameslist (){
             </div> */}
             <Container className="gameslist-games">
                 {gamesList}
+                <div className="gameslist-results__pages">
+                    <img className="gameslist-results__pages__nav" src={leftArrow} alt="previous gameslist page" onClick={() => {
+                        if (page > 1) {
+                            // notifyLoading();
+                            setPage(prevPage => parseInt(prevPage - 1));
+                        }
+                    }} />
+                    <input className="gameslist-results__pages__num" type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
+                    <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
+                        // notifyLoading();
+                        // dispatch(setImagesRendered(false));
+                        // setImagesRendered(false);
+                        // setImagesLoaded(0);
+                        // if (gamesFound) {
+                        //     setPage(prevPage => parseInt(prevPage + 1));
+                        // }
+                        setPage(prevPage => parseInt(prevPage + 1));
+                    }}/>
+                </div>
             </Container>
         </div>
     )

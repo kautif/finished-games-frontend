@@ -14,6 +14,7 @@ import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { toast } from "react-toastify";
+import Button from 'react-bootstrap/Button';
 
 export default function FindUser () {
     const [user, setUser] = useState("");
@@ -191,6 +192,12 @@ export default function FindUser () {
                             }
                             /> */}
                 </Stack>
+                <Button 
+                    className="btn btn-primary"
+                    onClick={() => {
+                        getUsers(inputValue.toLowerCase(), page);
+                    }}
+                    >Submit</Button>
             </Form >
             <div className="find-user__results d-flex flex-wrap">
                 <div className="find-results__pages">

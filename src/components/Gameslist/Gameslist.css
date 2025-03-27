@@ -30,6 +30,26 @@
     justify-content: space-around;
 }
 
+.gameslist-results__pages {
+    position: fixed;
+    bottom: 0;
+}
+
+.gameslist-results__pages__nav {
+    width: 15%;
+}
+
+.gameslist-results__pages__nav:hover {
+    cursor: pointer;
+}
+
+.gameslist-results__pages__num {
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 10%;
+    text-align: center;
+}
+
 .gameslist-game {
     /* margin-left: 2%;
     margin-right: 2%; */
