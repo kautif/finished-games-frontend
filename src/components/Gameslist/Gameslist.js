@@ -40,6 +40,7 @@ export default function Gameslist (){
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
     const [userGames, setUserGames] = useState([]);
+    const [filteredGames, setFilteredGames] = useState([]);
     const [loading, setLoading] = useState();
     let selectedGameTypeArr = [];
     const [gameType, setGameType] = useState("all");
@@ -162,6 +163,10 @@ export default function Gameslist (){
     let matchArr;
 
     useEffect(() => {
+        // getFilteredGames()
+    }, [])
+
+    useEffect(() => {
         getUserGames();
     }, [loading])
 
@@ -228,6 +233,8 @@ export default function Gameslist (){
         organizeGameData(otherArr, "upcoming", otherUp, setOtherUpCount);
         organizeGameData(otherArr, "completed", otherComp, setOtherCompCount);
         organizeGameData(otherArr, "dropped", otherDropped, setOtherDroppedCount);
+
+        getFilteredGames()
     }, [userGames])
 
     useEffect(() => {
@@ -272,19 +279,23 @@ export default function Gameslist (){
     }, [regCount])
 
     useEffect(() => {
-        if (matchArr !== undefined) {
-            getGameSummary(matchArr);
-            getGameDate(matchArr);
-        } else {
-            getGameSummary(phase3Arr);
-            getGameDate(phase3Arr);
-        }
-    }, [search])
+        getFilteredGames();
+    }, [page])
 
-    useEffect(() => {
-        getGameSummary(phase3Arr);
-        getGameDate(phase3Arr);
-    }, [gameType, gameState, sortDirection, sortFocus])
+    // useEffect(() => {
+    //     if (matchArr !== undefined) {
+    //         getGameSummary(matchArr);
+    //         getGameDate(matchArr);
+    //     } else {
+    //         getGameSummary(phase3Arr);
+    //         getGameDate(phase3Arr);
+    //     }
+    // }, [search])
+
+    // useEffect(() => {
+    //     getGameSummary(phase3Arr);
+    //     getGameDate(phase3Arr);
+    // }, [gameType, gameState, sortDirection, sortFocus])
     
     useEffect(() => {
         if (showModal && gameDate) {
@@ -305,6 +316,8 @@ export default function Gameslist (){
     useEffect(() => {
         if (!showDiscover) {
             getUserGames();
+            setPage(page + 1);
+            setPage(1);
         }
     }, [showDiscover])
 
@@ -349,6 +362,8 @@ export default function Gameslist (){
             position: "top-center",
             autoClose: 1000,
             onClose: () => {
+                setPage(page + 1);
+                setPage(page - 1);
                 // setShowDelete(false);
                 // setShowModal(false);
                 // setShowGame(false);
@@ -423,7 +438,7 @@ export default function Gameslist (){
                 phase3Arr = [...phase2Arr.sort((a,b) => (a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0))];
         }
 
-        renderGames(phase3Arr);
+        // renderGames(phase3Arr);
     }
 
     async function updateGame (name, summary, gameDate, rank, rating) {
@@ -520,8 +535,12 @@ export default function Gameslist (){
                 console.log("no games: ", result);
             } else {
                 // setUserGames(result.data.response.games);
-                console.log("filteredGames: ", result.data.games);
+                console.log("filteredGames: ", result.data.paginatedGames);
+                setFilteredGames(result.data.paginatedGames);
             }
+        }).then(games => {
+            console.log("games: ", filteredGames);
+            renderGames(filteredGames);
         }).catch(err => {
             console.error("Failed to get Games: ", err.message);
         }).finally(end => {
@@ -543,8 +562,10 @@ export default function Gameslist (){
 
     function renderGames (games) {
         if (games.length <= 0) {
+            console.log("no renderGames");
             gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
         } else {
+            console.log("renderGames found: ", games);
             gamesList = games.map((game, i) => {
                 let formattedDate = new Date(game.date_added);
                 let month = parseInt(formattedDate.getMonth() + 1);
@@ -652,207 +673,212 @@ export default function Gameslist (){
                 matchArr.push(game);
             }
         })
-        renderGames(matchArr);
+        // renderGames(matchArr);
     }
 
+    if (filteredGames.length > 0) {
+        renderGames(filteredGames);
+    } 
+
     return (
-        <div className="gameslist-games-container">
+        <div>
             <ToastContainer />
-            {<GameData 
-                gamesObj={gamesObj}
-            />}
-            <Container>
-                <Button onClick={() => dispatch(setShowDiscover(true))}>Add Game</Button>
-                <Row>
-                    <Col lg={3} sm={6} xs={12}>
-                        <h2>Filter Games</h2>
-                        <Form.Select onChange={(e) => {
-                            setGameState(e.target.value);
-                        }} className="gameslist-games__filter w-33 mx-auto">
-                            <option disabled selected>Select Game State</option>
-                            <option value="all">Show All Games</option>
-                            <option value="playing">Playing</option>
-                            <option value="upcoming">Upcoming</option>
-                            <option value="completed">Completed</option>
-                            <option value="dropped">Dropped</option>
-                        </Form.Select>
-                    </Col>
-                    <Col lg={3} sm={6} xs={12}>
-                        <h2>Game Type</h2>
-                        <Form className="w-33 mx-auto">
-                            <Form.Select onChange={(e) => {
-                                setGameType(e.target.value);
-                            }}>
-                                <option value="all">All</option>
-                                <option value="regular">Regular</option>
-                                <option value="custom">All Custom</option>
-                                <option value="other">Other</option>
-                                <option value="mario">Super Mario</option>
-                                <option value="pokemon">Pokemon</option>
-                                <option value="minecraft">Minecraft Mod</option>
-                            </Form.Select>
-                        </Form>
-                    </Col>
-                    <Col lg={3} sm={6} xs={12}>
-                        <h2>Sorting</h2>
-                        <Form>
-                            <Form.Select id="sort-direction" onChange={(e) => {
-                                setSortDirection(e.target.value);
-                            }}>
-                                <option value="ascending">Ascending</option>
-                                <option value="descending">Descending</option>
-                            </Form.Select>
-                            <Form.Select id="sort-focus" onChange={(e) => {
-                                setSortFocus(e.target.value);
-                            }}>
-                                <option value="alpha">Alphabetical</option>
-                                <option value="date">Date</option>
-                                <option value="rating">Rating</option>
-                            </Form.Select>
-                        </Form>
-                    </Col>
-                    <Col lg={3} sm={6} xs={12}>
-                        <Form className="w-33 mx-auto">
-                        <h2>Search</h2>
-                        <Form.Control id="gameslist-games__search" type="text" onChange={(e) => {
-                            setSearch(e.target.value);
-                        }}/>
-                        </Form>
-                    </Col>
-                    <Col>
-                        <Button 
-                            className='btn btn-primary mt-4'
-                            onClick={(e) => {
-                                console.log("search: ", search);
-                                e.preventDefault();
-                                getFilteredGames();
-                            }}>
-                            Submit
-                        </Button>
-                    </Col>
-                    <Modal show={showModal}
-                            backdrop={true}
-                            onHide={() => {
-                                handleClose();
-                            }}>
-                        <Modal.Header>
-                            <Modal.Title>
-                                 {gameName}
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Image 
-                                className="gameslist__game-img"
-                                src={gameImg}
-                            />
-                            <Form.Control type="date" id="gameslist-game__date" name="date-added" onChange={(e) => {
-                                setGameDate(new Date(e.target.value));
-                            }}></Form.Control>
-                            <Form.Select className="gameslist-game__rating__num" onChange={(e) => {
-                                setGameRating(e.target.value);
-                            }}>
-                                <option selected={gameRating === 10 ? true : false} value="10">10</option>
-                                <option selected={gameRating === 9 ? true : false} value="9">9</option>
-                                <option selected={gameRating === 8 ? true : false} value="8">8</option>
-                                <option selected={gameRating === 7 ? true : false} value="7">7</option>
-                                <option selected={gameRating === 6 ? true : false} value="6">6</option>
-                                <option selected={gameRating === 5 ? true : false} value="5">5</option>
-                                <option selected={gameRating === 4 ? true : false} value="4">4</option>
-                                <option selected={gameRating === 3 ? true : false} value="3">3</option>
-                                <option selected={gameRating === 2 ? true : false} value="2">2</option>
-                                <option selected={gameRating === 1 ? true : false} value="1">1</option>
-                                <option selected={gameRating === 0 ? true : false} value="0">-</option>
-                            </Form.Select>
-                            <Form.Select className="search-game__status" onChange={(e) => {
-                                setGameRank(e.target.value);
-                            }}>
-                            <option selected={gameRank === "playing" ? true : false} value="playing">Playing</option>
-                            <option  selected={gameRank === "upcoming" ? true : false} value="upcoming">Upcoming</option>
-                            <option  selected={gameRank === "completed" ? true : false}value="completed">Completed</option>
-                            <option selected={gameRank === "dropped" ? true : false} value="dropped">Dropped</option>
-                            </Form.Select>
-                            <textarea className="gameslist-game-summary" onChange={(e) => {
-                                setGameSummary(e.target.value);
-                            }}>{gameSummary}</textarea>
-                        </Modal.Body>
-                        <Modal.Footer id="gameslist-game-flex-container">
-                            <p className="modal-btn text-center btn btn-danger" onClick={() => setShowDelete(true)}>Delete</p>
-                            <Button className="modal-btn" onClick={() => {
-                                if (userGames[gameIndex].name !== gameName || userGames[gameIndex].summary !== gameSummary || new Date(userGames[gameIndex].date_added).toDateString() !== gameDate.toDateString() || userGames[gameIndex].rank !== gameRank) {
-                                    updateGame(gameName, gameSummary, gameDate, gameRank, gameRating);
-                                }
-                                setShowModal(false);
-                                notifyUpdate(gameName);
-                            }}>Save</Button>
-                            <Button className="modal-btn" onClick={() => setShowModal(false)}>Cancel</Button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Modal id="discover" onHide={() => {
-                        handleClose();
-                    }}show={showDiscover}>
-                        <Modal.Header>
-                            <Modal.Title id="discover__title-flex">
-                                <h1>Discover</h1>
-                                {showGame && <Button onClick={() => {
-                                    dispatch(setShowGame(false));
-                                    dispatch(setShowSearch(true));
-                                }}>Back</Button>}
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            {showSearch && <Search />}
-                            {showGame && <AddGame />}
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button onClick={() => dispatch(setShowDiscover(false))}>Close</Button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Modal id="delete-game" show={showDelete}>
-                        <Modal.Header>
-                            <Modal.Title>
-                                <h1>Delete</h1>
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <p>Are you sure you want to delete {gameName}?</p>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button className='btn btn-danger' onClick={() => {
-                                setShowDelete(false);
-                                setShowModal(false);
-                                deleteGame(gameName);
-                                notifyDelete(gameName);
-                            }}>Yes</Button>
-                            <Button onClick={() => setShowDelete(false)}>Close</Button>
-                        </Modal.Footer>
-                    </Modal>
-                </Row> 
-            </Container>
-            {/* <div className="gameslist-games">
-                {gamesList}
-            </div> */}
-            <Container className="gameslist-games">
-                {gamesList}
-                <div className="gameslist-results__pages">
-                    <img className="gameslist-results__pages__nav" src={leftArrow} alt="previous gameslist page" onClick={() => {
-                        if (page > 1) {
-                            // notifyLoading();
-                            setPage(prevPage => parseInt(prevPage - 1));
-                        }
-                    }} />
-                    <input className="gameslist-results__pages__num" type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
-                    <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
-                        // notifyLoading();
-                        // dispatch(setImagesRendered(false));
-                        // setImagesRendered(false);
-                        // setImagesLoaded(0);
-                        // if (gamesFound) {
-                        //     setPage(prevPage => parseInt(prevPage + 1));
-                        // }
-                        setPage(prevPage => parseInt(prevPage + 1));
-                    }}/>
-                </div>
-            </Container>
+            <div className="gameslist-games-container">
+                        {<GameData 
+                            gamesObj={gamesObj}
+                        />}
+                        <Container>
+                            <Button onClick={() => dispatch(setShowDiscover(true))}>Add Game</Button>
+                            <Row>
+                                <Col lg={3} sm={6} xs={12}>
+                                    <h2>Filter Games</h2>
+                                    <Form.Select onChange={(e) => {
+                                        setGameState(e.target.value);
+                                    }} className="gameslist-games__filter w-33 mx-auto">
+                                        <option disabled selected>Select Game State</option>
+                                        <option value="all">Show All Games</option>
+                                        <option value="playing">Playing</option>
+                                        <option value="upcoming">Upcoming</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="dropped">Dropped</option>
+                                    </Form.Select>
+                                </Col>
+                                <Col lg={3} sm={6} xs={12}>
+                                    <h2>Game Type</h2>
+                                    <Form className="w-33 mx-auto">
+                                        <Form.Select onChange={(e) => {
+                                            setGameType(e.target.value);
+                                        }}>
+                                            <option value="all">All</option>
+                                            <option value="regular">Regular</option>
+                                            <option value="custom">All Custom</option>
+                                            <option value="other">Other</option>
+                                            <option value="mario">Super Mario</option>
+                                            <option value="pokemon">Pokemon</option>
+                                            <option value="minecraft">Minecraft Mod</option>
+                                        </Form.Select>
+                                    </Form>
+                                </Col>
+                                <Col lg={3} sm={6} xs={12}>
+                                    <h2>Sorting</h2>
+                                    <Form>
+                                        <Form.Select id="sort-direction" onChange={(e) => {
+                                            setSortDirection(e.target.value);
+                                        }}>
+                                            <option value="ascending">Ascending</option>
+                                            <option value="descending">Descending</option>
+                                        </Form.Select>
+                                        <Form.Select id="sort-focus" onChange={(e) => {
+                                            setSortFocus(e.target.value);
+                                        }}>
+                                            <option value="alpha">Alphabetical</option>
+                                            <option value="date">Date</option>
+                                            <option value="rating">Rating</option>
+                                        </Form.Select>
+                                    </Form>
+                                </Col>
+                                <Col lg={3} sm={6} xs={12}>
+                                    <Form className="w-33 mx-auto">
+                                    <h2>Search</h2>
+                                    <Form.Control id="gameslist-games__search" type="text" onChange={(e) => {
+                                        setSearch(e.target.value);
+                                    }}/>
+                                    </Form>
+                                </Col>
+                                <Col>
+                                    <Button 
+                                        className='btn btn-primary mt-4'
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            getFilteredGames();
+                                        }}>
+                                        Submit
+                                    </Button>
+                                </Col>
+                                <Modal show={showModal}
+                                        backdrop={true}
+                                        onHide={() => {
+                                            handleClose();
+                                        }}>
+                                    <Modal.Header>
+                                        <Modal.Title>
+                                            {gameName}
+                                        </Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <Image 
+                                            className="gameslist__game-img"
+                                            src={gameImg}
+                                        />
+                                        <Form.Control type="date" id="gameslist-game__date" name="date-added" onChange={(e) => {
+                                            setGameDate(new Date(e.target.value));
+                                        }}></Form.Control>
+                                        <Form.Select className="gameslist-game__rating__num" onChange={(e) => {
+                                            setGameRating(e.target.value);
+                                        }}>
+                                            <option selected={gameRating === 10 ? true : false} value="10">10</option>
+                                            <option selected={gameRating === 9 ? true : false} value="9">9</option>
+                                            <option selected={gameRating === 8 ? true : false} value="8">8</option>
+                                            <option selected={gameRating === 7 ? true : false} value="7">7</option>
+                                            <option selected={gameRating === 6 ? true : false} value="6">6</option>
+                                            <option selected={gameRating === 5 ? true : false} value="5">5</option>
+                                            <option selected={gameRating === 4 ? true : false} value="4">4</option>
+                                            <option selected={gameRating === 3 ? true : false} value="3">3</option>
+                                            <option selected={gameRating === 2 ? true : false} value="2">2</option>
+                                            <option selected={gameRating === 1 ? true : false} value="1">1</option>
+                                            <option selected={gameRating === 0 ? true : false} value="0">-</option>
+                                        </Form.Select>
+                                        <Form.Select className="search-game__status" onChange={(e) => {
+                                            setGameRank(e.target.value);
+                                        }}>
+                                        <option selected={gameRank === "playing" ? true : false} value="playing">Playing</option>
+                                        <option  selected={gameRank === "upcoming" ? true : false} value="upcoming">Upcoming</option>
+                                        <option  selected={gameRank === "completed" ? true : false}value="completed">Completed</option>
+                                        <option selected={gameRank === "dropped" ? true : false} value="dropped">Dropped</option>
+                                        </Form.Select>
+                                        <textarea className="gameslist-game-summary" onChange={(e) => {
+                                            setGameSummary(e.target.value);
+                                        }}>{gameSummary}</textarea>
+                                    </Modal.Body>
+                                    <Modal.Footer id="gameslist-game-flex-container">
+                                        <p className="modal-btn text-center btn btn-danger" onClick={() => setShowDelete(true)}>Delete</p>
+                                        <Button className="modal-btn" onClick={() => {
+                                            if (userGames[gameIndex].name !== gameName || userGames[gameIndex].summary !== gameSummary || new Date(userGames[gameIndex].date_added).toDateString() !== gameDate.toDateString() || userGames[gameIndex].rank !== gameRank) {
+                                                updateGame(gameName, gameSummary, gameDate, gameRank, gameRating);
+                                            }
+                                            setShowModal(false);
+                                            notifyUpdate(gameName);
+                                        }}>Save</Button>
+                                        <Button className="modal-btn" onClick={() => setShowModal(false)}>Cancel</Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                <Modal id="discover" onHide={() => {
+                                    handleClose();
+                                }}show={showDiscover}>
+                                    <Modal.Header>
+                                        <Modal.Title id="discover__title-flex">
+                                            <h1>Discover</h1>
+                                            {showGame && <Button onClick={() => {
+                                                dispatch(setShowGame(false));
+                                                dispatch(setShowSearch(true));
+                                            }}>Back</Button>}
+                                        </Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        {showSearch && <Search />}
+                                        {showGame && <AddGame />}
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button onClick={() => dispatch(setShowDiscover(false))}>Close</Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                <Modal id="delete-game" show={showDelete}>
+                                    <Modal.Header>
+                                        <Modal.Title>
+                                            <h1>Delete</h1>
+                                        </Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <p>Are you sure you want to delete {gameName}?</p>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button className='btn btn-danger' onClick={() => {
+                                            setShowDelete(false);
+                                            setShowModal(false);
+                                            deleteGame(gameName);
+                                            notifyDelete(gameName);
+                                        }}>Yes</Button>
+                                        <Button onClick={() => setShowDelete(false)}>Close</Button>
+                                    </Modal.Footer>
+                                </Modal>
+                            </Row> 
+                        </Container>
+                        {/* <div className="gameslist-games">
+                            {gamesList}
+                        </div> */}
+                        <Container className="gameslist-games">
+                            {gamesList}
+                            <div className="gameslist-results__pages">
+                                <img className="gameslist-results__pages__nav" src={leftArrow} alt="previous gameslist page" onClick={() => {
+                                    if (page > 1) {
+                                        // notifyLoading();
+                                        setPage(prevPage => parseInt(prevPage - 1));
+                                    }
+                                }} />
+                                <input className="gameslist-results__pages__num" type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
+                                <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
+                                    // notifyLoading();
+                                    // dispatch(setImagesRendered(false));
+                                    // setImagesRendered(false);
+                                    // setImagesLoaded(0);
+                                    // if (gamesFound) {
+                                    //     setPage(prevPage => parseInt(prevPage + 1));
+                                    // }
+                                    setPage(prevPage => parseInt(prevPage + 1));
+                                }}/>
+                            </div>
+                        </Container>
+                    </div>
         </div>
     )
 }
