@@ -18,6 +18,8 @@ import './Gameslist.css';
 
 import leftArrow from "../../assets/arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
+import firstPage from "../../assets/first.png";
+import lastPageImg from "../../assets/last.png";
 
 import smwCart from '../../assets/vh_smw_cart.webp';
 import mcCart from '../../assets/vh_minecraft_cart.webp';
@@ -39,9 +41,13 @@ export default function Gameslist (){
     // const backendURL = "http://localhost:4000";
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
+
+
+
     const [userGames, setUserGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
     const [loading, setLoading] = useState();
+    const [lastPage, setLastPage] = useState(0);
     let selectedGameTypeArr = [];
     const [gameType, setGameType] = useState("all");
 
@@ -537,6 +543,7 @@ export default function Gameslist (){
                 // setUserGames(result.data.response.games);
                 console.log("filteredGames: ", result.data.paginatedGames);
                 setFilteredGames(result.data.paginatedGames);
+                setLastPage(result.data.lastPage);
             }
         }).then(games => {
             console.log("games: ", filteredGames);
@@ -751,6 +758,7 @@ export default function Gameslist (){
                                         onClick={(e) => {
                                             e.preventDefault();
                                             getFilteredGames();
+                                            setPage(1);
                                         }}>
                                         Submit
                                     </Button>
@@ -859,6 +867,12 @@ export default function Gameslist (){
                         <Container className="gameslist-games">
                             {gamesList}
                             <div className="gameslist-results__pages">
+                                <img className="gameslist-results__pages__nav" src={firstPage} alt="first gameslist page" onClick={() => {
+                                    if (page > 1) {
+                                        // notifyLoading();
+                                        setPage(prevPage => parseInt(1));
+                                    }
+                                }} />
                                 <img className="gameslist-results__pages__nav" src={leftArrow} alt="previous gameslist page" onClick={() => {
                                     if (page > 1) {
                                         // notifyLoading();
@@ -874,8 +888,15 @@ export default function Gameslist (){
                                     // if (gamesFound) {
                                     //     setPage(prevPage => parseInt(prevPage + 1));
                                     // }
-                                    setPage(prevPage => parseInt(prevPage + 1));
+                                    if (page < lastPage) {
+                                        setPage(prevPage => parseInt(prevPage + 1));
+                                    }
+
                                 }}/>
+                                    <img className="gameslist-results__pages__nav" src={lastPageImg} alt="last gameslist page" onClick={() => {
+                                        // notifyLoading();
+                                        setPage(prevPage => parseInt(lastPage));
+                                }} />
                             </div>
                         </Container>
                     </div>
