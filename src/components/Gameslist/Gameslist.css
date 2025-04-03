@@ -33,6 +33,9 @@
 .gameslist-results__pages {
     position: fixed;
     bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .gameslist-results__pages__nav {
@@ -48,6 +51,7 @@
     margin-right: 10%;
     width: 10%;
     text-align: center;
+    font-size: 2em;
 }
 
 .gameslist-game {

@@ -879,7 +879,7 @@ export default function Gameslist (){
                                         setPage(prevPage => parseInt(prevPage - 1));
                                     }
                                 }} />
-                                <input className="gameslist-results__pages__num" type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
+                                <p className="gameslist-results__pages__num">{page}</p>
                                 <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
                                     // notifyLoading();
                                     // dispatch(setImagesRendered(false));
