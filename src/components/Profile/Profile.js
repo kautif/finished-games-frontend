@@ -360,8 +360,10 @@ export default function Profile (match) {
             gamesList = games.map(game => {
                 return <Col xl={3} lg={4} sm={6} xs={12}>
                     <Row className="user-game d-flex flex-column me-2">
-                        <div className="user-game__title"><h2>{game.name}</h2></div>
-                        <div className="user-game__img" onClick={() => {
+                        <h2 className="user-game__title">{game.name}</h2>
+                        <Image className="user-game__img align-self-center"
+                            src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
+                            onClick={() => {
                             setShowModal(true);
                             setTitle(game.name);
                             setGameSummary(game.summary);
@@ -369,7 +371,8 @@ export default function Profile (match) {
                             setGameRank(game.rank);
                             setGameRating(game.rating);
                             setGameDate(new Date(game.date_added).toDateString().substring(4));
-                        }}><Image src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded /></div>
+                        }} />
+                            {/* <Image src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded /> */}
                         <div className="user-game__date-container">
                             <p>Date:</p>
                             <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
@@ -437,7 +440,7 @@ export default function Profile (match) {
                     window.location.pathname = "/report";
                 }}>Report User</p>
                 <Button onClick={() => notifyShareProfile()}>Share Profile</Button>
-                <div>
+                <div className="user-game__filter-sorting mb-4 mt-4">
                     <div>
                         <select onChange={(e) => {
                             setGameState(e.target.value);
