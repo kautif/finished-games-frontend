@@ -583,6 +583,7 @@ export default function Profile (match) {
                         <input type="submit" value="Submit" onClick={(e) => { 
                             e.preventDefault();
                             getFilteredGames()
+                            setPage(1)
                         }}/>
                     </form>
                 </div>
