@@ -9,6 +9,8 @@ import Form from 'react-bootstrap/Form';
 
 import leftArrow from "../../assets/arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
+import firstPage from "../../assets/first.png";
+import lastPageImg from "../../assets/last.png";
 
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -24,6 +26,7 @@ export default function FindUser () {
     const [inputValue, setInputValue] = useState("");
     const [noResults, setNoResults] = useState(false);
     const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(0);
 
     const [imagesLoaded, setImagesLoaded] = useState(0);
     const [imagesRendered, setImagesRendered] = useState(false);
@@ -53,6 +56,7 @@ export default function FindUser () {
             }).then(response => {
                 console.log("backend response: ", response);
                 setUserList(response.data.users);
+                setLastPage(response.data.lastPage);
             }).catch(err => {
                 console.error("Get all users Error: ", err.message);
             })
@@ -200,14 +204,14 @@ export default function FindUser () {
                     >Submit</Button>
             </Form >
             <div className="find-user__results d-flex flex-wrap">
-                <div className="find-results__pages">
+                {/* <div className="find-results__pages">
                     <img className="find-results__pages__nav" src={leftArrow} alt="previous find user page" onClick={() => {
                         if (page > 1) {
                             notifyLoading();
                             setPage(prevPage => parseInt(prevPage - 1));
                         }
                     }} />
-                    <input className="find-user__pages" type="number" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
+                    <p className="find-user__pages">{page}</p>
                     <img className="find-results__pages__nav" src={rightArrow} alt="next find user page" onClick={() => {
                         notifyLoading();
                         // dispatch(setImagesRendered(false));
@@ -215,6 +219,29 @@ export default function FindUser () {
                         setImagesLoaded(0);
                         setPage(prevPage => parseInt(prevPage + 1));
                     }}/>
+                </div> */}
+
+                <div className="gameslist-results__pages">
+                    <img className="gameslist-results__pages__nav" src={firstPage} alt="first gameslist page" onClick={() => {
+                        if (page > 1) {
+                            setPage(prevPage => parseInt(1));
+                        }
+                    }} />
+                    <img className="gameslist-results__pages__nav" src={leftArrow} alt="previous gameslist page" onClick={() => {
+                        if (page > 1) {
+                            setPage(prevPage => parseInt(prevPage - 1));
+                        }
+                    }} />
+                    <p className="gameslist-results__pages__num">{page}</p>
+                    <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
+                        if (page < lastPage) {
+                            setPage(prevPage => parseInt(prevPage + 1));
+                        }
+
+                    }}/>
+                        <img className="gameslist-results__pages__nav" src={lastPageImg} alt="last gameslist page" onClick={() => {
+                            setPage(prevPage => parseInt(lastPage));
+                    }} />
                 </div>
                 {foundUsers.map(foundUser => {
                     return (
