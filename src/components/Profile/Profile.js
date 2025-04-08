@@ -7,6 +7,12 @@ import Row from "react-bootstrap/Row";
 import Column from "react-bootstrap/Col";
 import Stack from "react-bootstrap/Stack";
 import Image from "react-bootstrap/Image";
+
+import leftArrow from "../../assets/arrow.png";
+import rightArrow from "../../assets/right-arrow.png";
+import firstPage from "../../assets/first.png";
+import lastPageImg from "../../assets/last.png";
+
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import "./Profile.css";
@@ -27,6 +33,10 @@ export default function Profile (match) {
     // const backendURL = "http://localhost:4000";
     const [user, setUser] = useState({});
     const [userGames, setUserGames] = useState([]);
+    const [filteredGames, setFilteredGames] = useState([]);
+
+    const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(0);
 
     const [title, setTitle] = useState("");
     const [gameSummary, setGameSummary] = useState("");
@@ -158,6 +168,39 @@ export default function Profile (match) {
         })
     }
 
+       async function getFilteredGames () {
+            let twitchName = document.baseURI.split("/")[3]
+            // setLoading(true);
+            await axios(`${backendURL}/filter`, {
+                method: "get",
+                params: {
+                    twitchName: twitchName,
+                    search: search,
+                    rank: gameState,
+                    gameType: gameType,
+                    sortFocus: sortFocus,
+                    sortDirection: sortDirection,
+                    page: page
+                }
+            }).then(result => {
+                if (result.data.response === null) {
+                    console.log("no games: ", result);
+                } else {
+                    // setUserGames(result.data.response.games);
+                    console.log("profile filteredGames: ", result.data.paginatedGames);
+                    setFilteredGames(result.data.paginatedGames);
+                    setLastPage(result.data.lastPage);
+                }
+            }).then(games => {
+                console.log("profile games: ", filteredGames);
+                renderGames(filteredGames);
+            }).catch(err => {
+                console.error("Failed to get Games: ", err.message);
+            }).finally(end => {
+                // setLoading(false);
+            })
+        }
+
     function shareProfile () {
         navigator.clipboard.writeText(window.location.href);
     }
@@ -228,6 +271,8 @@ export default function Profile (match) {
         organizeGameData(otherArr, "upcoming", otherUp, setOtherUpCount);
         organizeGameData(otherArr, "completed", otherComp, setOtherCompCount);
         organizeGameData(otherArr, "dropped", otherDropped, setOtherDroppedCount);
+
+        getFilteredGames();
     }, [userGames])
 
     useEffect(() => {
@@ -272,8 +317,8 @@ export default function Profile (match) {
     }, [regCount, regUpCount, regCompCount, regDroppedCount])
 
     useEffect(() => {
-        console.log("gameType: ", gameType);
-    }, [gameType, gameState, sortDirection, sortFocus])
+        getFilteredGames();
+    }, [page])
 
     function organizeGameData (gameTypeArr, gameStatus, counter, setCount) {
         gameTypeArr.map(game => {
@@ -410,17 +455,21 @@ export default function Profile (match) {
         }
     }
 
-    filterOrSort();
+    // filterOrSort();
 
-    if (search.length > 0 && phase3Arr.length > 0) {
-        matchArr = [];
-        phase3Arr.map(game => {
-            if (game.name.toLowerCase().includes(search.toLowerCase())) {
-                matchArr.push(game);
-            }
-        })
-        renderGames(matchArr);
-    }
+    // if (search.length > 0 && phase3Arr.length > 0) {
+    //     matchArr = [];
+    //     phase3Arr.map(game => {
+    //         if (game.name.toLowerCase().includes(search.toLowerCase())) {
+    //             matchArr.push(game);
+    //         }
+    //     })
+    //     renderGames(matchArr);
+    // }
+
+    if (filteredGames.length > 0) {
+        renderGames(filteredGames);
+    } 
 
     if (user === null) {
         return <div>
@@ -533,6 +582,7 @@ export default function Profile (match) {
                         }}/>
                         <input type="submit" value="Submit" onClick={(e) => { 
                             e.preventDefault();
+                            getFilteredGames()
                         }}/>
                     </form>
                 </div>
@@ -544,6 +594,38 @@ export default function Profile (match) {
                     {user.games !== undefined && 
                     gamesList
                     }
+                    <div className="gameslist-results__pages">
+                        <img className="gameslist-results__pages__nav" src={firstPage} alt="first gameslist page" onClick={() => {
+                            if (page > 1) {
+                                // notifyLoading();
+                                setPage(prevPage => parseInt(1));
+                            }
+                        }} />
+                        <img className="gameslist-results__pages__nav" src={leftArrow} alt="previous gameslist page" onClick={() => {
+                            if (page > 1) {
+                                // notifyLoading();
+                                setPage(prevPage => parseInt(prevPage - 1));
+                            }
+                        }} />
+                        <p className="gameslist-results__pages__num">{page}</p>
+                        <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
+                            // notifyLoading();
+                            // dispatch(setImagesRendered(false));
+                            // setImagesRendered(false);
+                            // setImagesLoaded(0);
+                            // if (gamesFound) {
+                            //     setPage(prevPage => parseInt(prevPage + 1));
+                            // }
+                            if (page < lastPage) {
+                                setPage(prevPage => parseInt(prevPage + 1));
+                            }
+
+                        }}/>
+                            <img className="gameslist-results__pages__nav" src={lastPageImg} alt="last gameslist page" onClick={() => {
+                                // notifyLoading();
+                                setPage(prevPage => parseInt(lastPage));
+                        }} />
+                    </div>
                 </Stack>
                 <ToastContainer 
                     style={{ width: "2000px" }}
