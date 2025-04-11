@@ -12,6 +12,7 @@ tr:nth-child(odd) {
     flex-direction: row;
     flex-wrap: wrap;
     margin-left: auto;
+    color: white;
 }
 
 .game-data__simplfied-flex-item {

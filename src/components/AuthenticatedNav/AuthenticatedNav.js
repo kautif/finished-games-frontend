@@ -8,6 +8,7 @@ import { handleUnauthorizedRedirect } from "../../utils";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import VHLogo from '../../assets/VH_Title_v3.png'
 import "./AuthenticatedNav.css";
 import { toast, ToastContainer } from "react-toastify";
 import Button from "react-bootstrap/esm/Button";
@@ -136,7 +137,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   return (
     <div>
         <div className="auth-nav__profile-img-container">
-          <img id="auth-nav__profile-img" src={profileImg} />
+
           {/* <Dropdown size="sm" id="user-settings">
                 <Dropdown.Toggle id="dropdown-basic">
                         <span id="user-settings__gear">&#9881;</span>
@@ -147,26 +148,29 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
                     }}>Delete Account</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown> */}
-            <Dropdown>
-          <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-            <span id="user-settings__gear">&#9881;</span>
-          </Dropdown.Toggle>
+            <div className="auth-nav__profile-flex">
+              <img id="auth-nav__profile-img" src={profileImg} />
+              <Dropdown>
+                <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                  <span id="user-settings__gear">&#9881;</span>
+                </Dropdown.Toggle>
 
-          <Dropdown.Menu>
-            <Dropdown.Item eventKey="1" onClick={() => {
-                        setShowDelete(true);
-                    }}>Delete Account</Dropdown.Item>
-            <Dropdown.Item className="dropdown-link" eventKey="2" onClick={() => {
-              navigate("/feedback");
-            }}>Feedback</Dropdown.Item>
-            <Dropdown.Item className="dropdown-link" eventKey="3" onClick={() => {
-              navigate("/faq");
-            }}>FAQ</Dropdown.Item>
-            <Dropdown.Item eventKey="4" active><p className="auth-nav__link" onClick={() => logout()}>Logout</p></Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-
+                <Dropdown.Menu>
+                  <Dropdown.Item eventKey="1" onClick={() => {
+                              setShowDelete(true);
+                          }}>Delete Account</Dropdown.Item>
+                  <Dropdown.Item className="dropdown-link" eventKey="2" onClick={() => {
+                    navigate("/feedback");
+                  }}>Feedback</Dropdown.Item>
+                  <Dropdown.Item className="dropdown-link" eventKey="3" onClick={() => {
+                    navigate("/faq");
+                  }}>FAQ</Dropdown.Item>
+                  <Dropdown.Item eventKey="4" active><p className="auth-nav__link" onClick={() => logout()}>Logout</p></Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
           <p id="auth-nav__profile__name">{defaultName}</p>
+            </div>
+          <img className="auth-nav__logo" src={VHLogo} />
         </div>
         <ul className="auth-nav">
           <Link className="auth-nav__link" to="/games">

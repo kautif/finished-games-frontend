@@ -1,3 +1,13 @@
+
+body {
+    background-image: url('../../assets/static_bg_v1.jpg');
+    background-size: cover;
+}
+
+.gameslist-parent {
+    overflow-y: hidden;
+}
+
 #dropdown-basic {
     padding: 0 10px;
 }
@@ -19,6 +29,26 @@
 
 .gameslist-games-container {
     position: relative;
+}
+
+.col-xl-3,
+.col-lg-4, 
+.col-lg-4, 
+.col-12 {
+    position: relative;    
+}
+
+.gameslist-game__bg-blur {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.65);
+    width: 356px;
+    height: 516px;
+    z-index: -1;
+    left: -3%;
+    filter: blur(29px);
+    /* -webkit-filter: blur(25px); */
+    top: -9%;
+    opacity: 0.65;
 }
 
 .gameslist-games {
@@ -57,6 +87,7 @@
 .gameslist-game {
     /* margin-left: 2%;
     margin-right: 2%; */
+    margin-bottom: 33%;
 }
 
 .gameslist-game__img:hover {
@@ -72,18 +103,19 @@
 .gameslist__game-info-flex {
     display: flex;
     justify-content: space-around;
+    color: white;
 }
 
-.gameslist-game__date-container {
+.gameslist-game__rating label {
+    color: white;
+}
+
+/* .gameslist-game__date-container {
     margin-top: 8%;
-}
+} */
 
-.gameslist-game__rating {
-    margin-top: 8%;
-}
-
-.gameslist-game__detail {
-    margin-bottom: 0;
+.user-game__rating__num {
+    font-size: 2em;
 }
 
 #gameslist-game-flex-container {
@@ -108,14 +140,17 @@
 }
 
 .gameslist-game__title {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; */
     width: 378px;
     white-space: wrap;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 90px;
+    font-size: 1.5em;
+    color: white;
+    margin-top: 2%;
 }
 
 .gameslist-game__add-btn {
