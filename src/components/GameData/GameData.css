@@ -8,7 +8,7 @@ tr:nth-child(odd) {
 
 #game-data__simplfied-flex {
     display: flex;
-    width: 29%;
+    width: 75%;
     flex-direction: row;
     flex-wrap: wrap;
     margin-left: auto;

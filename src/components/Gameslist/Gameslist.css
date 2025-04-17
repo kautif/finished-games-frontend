@@ -38,6 +38,24 @@ body {
     position: relative;    
 }
 
+.gameslist-games__filters {
+    display: flex;
+}
+
+.gameslist-games__search-container {
+    align-self: baseline;
+    margin-bottom: 3px;
+}
+
+#gameslist-games__search {
+    width: 100%;
+    align-self: flex-end;
+}
+
+.gameslist-game__submit {
+    margin-left: 2%;
+}
+
 .gameslist-game__bg-blur {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.65);
@@ -154,12 +172,15 @@ body {
 }
 
 .gameslist-game__add-btn {
-    background-color: #8E43FC;
-    color: white;
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: 2px 3px 5px 2px #313030;
-    width: 46%;
+    align-self: baseline;
+    width: 10%;
+    margin-right: 2%;
+    margin-left: 2%;
+    margin-bottom: 2px;
+}
+
+.gameslist-game__filter-btn {
+    align-self: baseline;
 }
 
 .gameslist-game p:hover {
