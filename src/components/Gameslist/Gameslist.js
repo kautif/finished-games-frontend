@@ -675,78 +675,87 @@ export default function Gameslist (){
         <div className='gameslist-parent'>
             <ToastContainer />
             <div className="gameslist-games-container">
-                    <div className="gameslist-games__filters">
+                <div className="gameslist-games__filters">
                     <Button
                         className="gameslist-game__add-btn" 
                         onClick={() => dispatch(setShowDiscover(true))}>Add Game</Button>
-                    <Dropdown 
-                        className="gameslist-game__filter-btn"
-                        as={ButtonGroup}>
-                        <Button variant="success">{gameState.toUpperCase() === "" ? "State" : gameState.toUpperCase()}</Button>
+                        <div className="gameslist-game__filter-container">
+                            <p className="gameslist-game__filter-label">State</p>
+                            <Dropdown 
+                                className="gameslist-game__filter-btn"
+                                as={ButtonGroup}>
+                                <Button variant="success">{gameState.toUpperCase() === "" ? "State" : gameState.toUpperCase()}</Button>
 
-                        <Dropdown.Toggle 
-                            split variant="success" 
-                            id="dropdown-split-basic" />
+                                <Dropdown.Toggle 
+                                    split variant="success" 
+                                    id="dropdown-split-basic" />
 
-                        <Dropdown.Menu >
-                            <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameState("all");
-                            }}><option value="all">Show All Games</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameState("playing");
-                            }}><option value="playing">Playing</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameState("upcoming");
-                            }}><option value="upcoming">Upcoming</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameState("completed");
-                            }}><option value="completed">Completed</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameState("dropped");
-                            }} 
-                            ><option value="dropped">Dropped</option></Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown 
-                        className="gameslist-game__filter-btn"
-                        as={ButtonGroup}>
-                        <Button variant="success">{gameType.toUpperCase() === "" ? "State" : gameType.toUpperCase()}</Button>
+                                <Dropdown.Menu >
+                                    <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameState("all");
+                                    }}><option value="all">Show All Games</option></Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameState("playing");
+                                    }}><option value="playing">Playing</option></Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameState("upcoming");
+                                    }}><option value="upcoming">Upcoming</option></Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameState("completed");
+                                    }}><option value="completed">Completed</option></Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameState("dropped");
+                                    }} 
+                                    ><option value="dropped">Dropped</option></Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>
 
-                        <Dropdown.Toggle 
-                            split variant="success" 
-                            id="dropdown-split-basic-gametype" />
+                        <div className="gameslist-game__filter-container">
+                        <p className="gameslist-game__filter-label">Type</p>
+                        <Dropdown 
+                            className="gameslist-game__filter-btn"
+                            as={ButtonGroup}>
+                            <Button variant="success">{gameType.toUpperCase() === "" ? "All" : gameType.toUpperCase()}</Button>
 
-                        <Dropdown.Menu >
-                            <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameType("all");
-                            }}><option value="all">All</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameType("regular");
-                            }}><option value="regular">Regular</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameType("custom");
-                            }}><option value="custom">Custom</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameType("other");
-                            }}><option value="other">Other</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameType("mario");
-                            }} 
-                            ><option value="mario">Mario</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameType("pokemon");
-                            }} 
-                            ><option value="pokemon">Pokemon</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setGameType("minecraft");
-                            }} 
-                            ><option value="minecraft">Minecraft</option></Dropdown.Item>
-                        </Dropdown.Menu>
-                        
-                    </Dropdown>
+                            <Dropdown.Toggle 
+                                split variant="success" 
+                                id="dropdown-split-basic-gametype" />
 
+                            <Dropdown.Menu >
+                                <Dropdown.Item><option disabled selected>Select Game Type</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("all");
+                                }}><option value="all">All</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("regular");
+                                }}><option value="regular">Regular</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("custom");
+                                }}><option value="custom">Custom</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("other");
+                                }}><option value="other">Other</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("mario");
+                                }} 
+                                ><option value="mario">Mario</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("pokemon");
+                                }} 
+                                ><option value="pokemon">Pokemon</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("minecraft");
+                                }} 
+                                ><option value="minecraft">Minecraft</option></Dropdown.Item>
+                            </Dropdown.Menu>
+                            
+                        </Dropdown>
+                        </div>
+
+                    <div className="gameslist-game__filter-container">
+                    <p className="gameslist-game__filter-label">Sort By</p>
                     <Dropdown 
                         className="gameslist-game__filter-btn"
                         as={ButtonGroup}>
@@ -770,7 +779,10 @@ export default function Gameslist (){
                         </Dropdown.Menu>
                         
                     </Dropdown>
-
+                    </div>
+                    
+                    <div className="gameslist-game__filter-container">
+                    <p className="gameslist-game__filter-label">Direction</p>
                     <Dropdown 
                         className="gameslist-game__filter-btn"
                         as={ButtonGroup}>
@@ -791,16 +803,19 @@ export default function Gameslist (){
                         </Dropdown.Menu>
                         
                     </Dropdown>
-                    <Form className="gameslist-games__search-container">
-                        <Form.Control 
-                            id="gameslist-games__search" 
-                            type="text"
-                            placeholder='Search' 
-                            onChange={(e) => {
-                            setSearch(e.target.value);
-                        }}/>
-                        
-                    </Form>
+                    </div>
+                    <div className="gameslist-game__filter-container">
+                        <p className="gameslist-game__filter-label">Search</p>
+                        <Form className="gameslist-games__search-container">
+                            <Form.Control 
+                                id="gameslist-games__search" 
+                                type="text" 
+                                onChange={(e) => {
+                                setSearch(e.target.value);
+                            }}/>
+                            
+                        </Form>
+                    </div>
                     <Button 
                         className='btn btn-primary mt-4 gameslist-game__filter-btn gameslist-game__submit'
                         onClick={(e) => {
@@ -813,7 +828,7 @@ export default function Gameslist (){
                     {<GameData 
                             gamesObj={gamesObj}
                         />}
-                        </div>
+                </div>
                             <Container>
                                 <Row>
                                 <Col>

@@ -40,6 +40,15 @@ body {
 
 .gameslist-games__filters {
     display: flex;
+    justify-content: space-around;
+}
+
+.gameslist-games__filters .btn-primary {
+    margin-top: 40px;
+}
+
+.gameslist-game__filter-label {
+    color: white;
 }
 
 .gameslist-games__search-container {
@@ -55,6 +64,8 @@ body {
 .gameslist-game__submit {
     margin-left: 2%;
 }
+
+
 
 .gameslist-game__bg-blur {
     position: absolute;
