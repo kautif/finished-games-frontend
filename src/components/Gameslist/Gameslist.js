@@ -684,10 +684,11 @@ export default function Gameslist (){
                             <Dropdown 
                                 className="gameslist-game__filter-btn"
                                 as={ButtonGroup}>
-                                <Button variant="success">{gameState.toUpperCase() === "" ? "State" : gameState.toUpperCase()}</Button>
+                                <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameState.toUpperCase() === "" ? "State" : gameState.toUpperCase()}</Button>
 
                                 <Dropdown.Toggle 
                                     split variant="success" 
+                                    className="dropdown-split"
                                     id="dropdown-split-basic" />
 
                                 <Dropdown.Menu >
@@ -717,10 +718,11 @@ export default function Gameslist (){
                         <Dropdown 
                             className="gameslist-game__filter-btn"
                             as={ButtonGroup}>
-                            <Button variant="success">{gameType.toUpperCase() === "" ? "All" : gameType.toUpperCase()}</Button>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameType.toUpperCase() === "" ? "All" : gameType.toUpperCase()}</Button>
 
                             <Dropdown.Toggle 
                                 split variant="success" 
+                                className="dropdown-split"
                                 id="dropdown-split-basic-gametype" />
 
                             <Dropdown.Menu >
@@ -759,10 +761,11 @@ export default function Gameslist (){
                     <Dropdown 
                         className="gameslist-game__filter-btn"
                         as={ButtonGroup}>
-                        <Button variant="success">{sortFocus.toUpperCase() === "" ? "Sort" : sortFocus.toUpperCase()}</Button>
+                        <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortFocus.toUpperCase() === "" ? "Sort" : sortFocus.toUpperCase()}</Button>
 
                         <Dropdown.Toggle 
                             split variant="success" 
+                            className="dropdown-split"
                             id="dropdown-split-basic-sort-dir" />
 
                         <Dropdown.Menu >
@@ -786,10 +789,11 @@ export default function Gameslist (){
                     <Dropdown 
                         className="gameslist-game__filter-btn"
                         as={ButtonGroup}>
-                        <Button variant="success">{sortDirection.toUpperCase() === "" ? "Sort" : sortDirection.toUpperCase()}</Button>
+                        <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortDirection.toUpperCase() === "" ? "Sort" : sortDirection.toUpperCase()}</Button>
 
                         <Dropdown.Toggle 
                             split variant="success" 
+                            className="dropdown-split"
                             id="dropdown-split-basic-sort" />
 
                         <Dropdown.Menu >

@@ -47,6 +47,19 @@ body {
     margin-top: 40px;
 }
 
+.gameslist-game__filter-dropdown-btn, 
+.dropdown-split,
+.gameslist-game__filter-dropdown-btn:hover, 
+.dropdown-split:hover,
+.dropdown-split:focus {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+.btn-group>.btn-group:not(:first-child)>.btn, .btn-group>.btn:nth-child(n+3), .btn-group>:not(.btn-check)+.btn {
+    font-size: 2em;
+}
+
 .gameslist-game__filter-label {
     color: white;
 }
