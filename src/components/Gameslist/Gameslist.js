@@ -21,6 +21,8 @@ import './Gameslist.css';
 
 import leftArrow from "../../assets/arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
+import upArrow from "../../assets/up-arrow.png";
+import downArrow from "../../assets/down-arrow.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
 
@@ -786,27 +788,24 @@ export default function Gameslist (){
                     
                     <div className="gameslist-game__filter-container">
                     <p className="gameslist-game__filter-label">Direction</p>
-                    <Dropdown 
-                        className="gameslist-game__filter-btn"
-                        as={ButtonGroup}>
-                        <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortDirection.toUpperCase() === "" ? "Sort" : sortDirection.toUpperCase()}</Button>
-
-                        <Dropdown.Toggle 
-                            split variant="success" 
-                            className="dropdown-split"
-                            id="dropdown-split-basic-sort" />
-
-                        <Dropdown.Menu >
-                            <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setSortDirection("ascending");
-                            }}>⬆️</Dropdown.Item>
-                            <Dropdown.Item onClick={() => {
-                                setSortDirection("descending");
-                            }}>⬇️</Dropdown.Item>
-                        </Dropdown.Menu>
-                        
-                    </Dropdown>
+                        <div>
+                            {sortDirection === "ascending" && <Image 
+                                src={upArrow}
+                                alt="ascending arrow"
+                                className="gameslist-game__filter__sort-arrow"
+                                onClick={() => {
+                                    setSortDirection("descending");
+                                }}
+                            />}
+                            {sortDirection === "descending" && <Image 
+                                src={downArrow}
+                                alt="descending arrow"
+                                className="gameslist-game__filter__sort-arrow"
+                                onClick={() => {
+                                    setSortDirection("ascending");
+                                }}
+                            />}
+                        </div>
                     </div>
                     <div className="gameslist-game__filter-container">
                         <p className="gameslist-game__filter-label">Search</p>
