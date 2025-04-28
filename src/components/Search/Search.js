@@ -330,21 +330,23 @@ export default function Search () {
 
     return (
         <div>
-            <form id="search-form">
-                <select id="search-game__type" onChange={(e) => {
+            <form className="d-flex flex-row justify-content-around" id="search-form">
+                <Form.Select className="w-25 align-self-center" id="search-game__type" onChange={(e) => {
                     setGameType(prevGameType => e.target.value);
                 }}>
-                    <option value="regular" selected>Regular</option>
-                    <option value="custom">Custom</option>
-                </select>
+                    <option className="search-game__type__option" value="regular" selected>Regular</option>
+                    <option className="search-game__type__option" value="custom">Custom</option>
+                </Form.Select>
                 {gameType === "regular" ? 
-                <div>
-                    <input className="search" placeholder="Search games" 
+                <div className="w-50 d-flex flex-row justify-content-around align-self-center">
+                    <Form.Control className="search align-self-center" placeholder="Search games" 
                         onChange={(e) => {
                                 setSearch(prevSearch => e.target.value);
                             }}
                             value={search}/>
-                    <button onClick={(e) => {
+                    <button 
+                    className="search-game__submit"    
+                    onClick={(e) => {
                         setPage(1);
                         getGames(e);
                         }}>Submit</button>

@@ -10,6 +10,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
+
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 
@@ -28,6 +31,7 @@ export default function AddGame () {
     let searchGameName = useSelector((state) => state.gamesReducer.searchGameName);
     let searchGameImg = useSelector((state) => state.gamesReducer.searchGameImg);
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selected, setSelected] = useState(false);
     const [rating, setRating] = useState(0);
     const [gameRank, setGameRank] = useState("playing");
     const [summary, setSummary] = useState("");
@@ -179,7 +183,40 @@ export default function AddGame () {
                         }}
                         dateFormat="yyyy-MM-dd"
                         showYearDropdown
+                        showMonthDropdown
+                        autoFocus
                     />
+
+                    <DayPicker
+                        animate
+                        mode="single"
+                        selected={selected}
+                        onSelect={(e) => {
+                            if (e) {
+                                setSelected(e);
+                                // console.log(e.getDate());
+                                // console.log(e.getMonth());
+                                // console.log(e.getFullYear());
+    
+                                setSelectedDate(`${e.getFullYear()}-${e.getMonth() + 1}-${e.getDate()}`);
+    
+                                if (e.getFullYear() < 1970 || e.getFullYear() > year + 10) {
+                                    setSelectedDate(new Date());
+                                    notifyYears();
+                                }
+                            }
+                        }}
+                        modifiers={{
+                            weekend: (date) => date.getDay() === 0 || date.getDay() === 6, // Sunday (0) or Saturday (6)
+                          }}
+                          classNames={{
+                            weekend: 'my-weekend',
+                          }}
+                        captionLayout="dropdown"
+                        footer={
+                            selected ? `Selected: ${selected.toLocaleDateString()}` : "Pick a day."
+                        }
+                        />
                     <div className="search-game__rating">
                         <label>Rating: </label>
                         <select className="search-game__rating__num" onChange={(e) => {

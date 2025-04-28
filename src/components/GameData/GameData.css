@@ -6,26 +6,48 @@ tr:nth-child(odd) {
     background-color: #d1cfc9; /* Light color */
 }
 
+tr:nth-child(even) {
+    background-color: white; /* Light color */
+}
+
+.gameslist-games__filters {
+    margin-bottom: 2%;
+}
+
+.game-data-container {
+    font-family: vt323;
+    text-transform: uppercase;
+    padding-top: 15px;
+    font-size: 1.55em;
+    width: 29%;
+    border: 3px solid white;
+}
+
 #game-data__simplfied-flex {
     display: flex;
-    width: 75%;
+    width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
     margin-left: auto;
     color: white;
+    justify-content: space-around;
+}
+
+#game-data__detailed {
+    width: 100%;
 }
 
 .game-data__simplfied-flex-item {
     display: flex;
-    width: 50%;
-    justify-content: space-evenly;
+    width: 40%;
+    justify-content: space-between;
 }
 
 #game-data__more-details, #game-data__less-details {
     text-align: right;
     margin-right: 5%;
     text-decoration: underline;
-    color: blue;
+    color: rgb(238, 242, 7);
 }
 
 #game-data__more-details:hover, #game-data__less-details:hover {
@@ -34,8 +56,8 @@ tr:nth-child(odd) {
 
 @media (min-width: 768px) {
     #game-data__detailed {
-        width: 50%;
-        margin-left: auto;
+        /* width: 50%;
+        margin-left: auto; */
     }
 }
 

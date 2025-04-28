@@ -896,14 +896,14 @@ export default function Gameslist (){
                                 <Modal id="discover" onHide={() => {
                                     handleClose();
                                 }}show={showDiscover}>
-                                    <Modal.Header>
+                                    <Modal.Header className="text-center">
                                         <Modal.Title id="discover__title-flex">
                                             <h1>Discover</h1>
-                                            {showGame && <Button onClick={() => {
+                                        </Modal.Title>
+                                        {showGame && <Button onClick={() => {
                                                 dispatch(setShowGame(false));
                                                 dispatch(setShowSearch(true));
                                             }}>Back</Button>}
-                                        </Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
                                         {showSearch && <Search />}
