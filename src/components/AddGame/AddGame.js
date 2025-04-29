@@ -10,6 +10,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 
@@ -152,7 +156,7 @@ export default function AddGame () {
                     />
                 </div>
                 <div className="addgame-details">
-                    <label>Date:</label>
+                    {/* <label>Date:</label> */}
                     {/* <input  
                         className="search-game__date" 
                         type="date" 
@@ -167,7 +171,7 @@ export default function AddGame () {
                     }}
                     /> */}
 
-                    <DatePicker 
+                    {/* <DatePicker 
                         selected={selectedDate}
                         onChange={(e) => {
                             console.log(e.getDate());
@@ -185,7 +189,7 @@ export default function AddGame () {
                         showYearDropdown
                         showMonthDropdown
                         autoFocus
-                    />
+                    /> */}
 
                     <DayPicker
                         animate
@@ -213,38 +217,112 @@ export default function AddGame () {
                             weekend: 'my-weekend',
                           }}
                         captionLayout="dropdown"
-                        footer={
-                            selected ? `Selected: ${selected.toLocaleDateString()}` : "Pick a day."
-                        }
+                        // footer={
+                        //     selected ? `Selected: ${selected.toLocaleDateString()}` : "Pick a day."
+                        // }
                         />
-                    <div className="search-game__rating">
-                        <label>Rating: </label>
-                        <select className="search-game__rating__num" onChange={(e) => {
-                            setRating(e.target.value)
+                    <div className="addgame-details-container">
+                    <Dropdown 
+                            className="addgame-filter-btn"
+                            as={ButtonGroup}>
+                            <Button className="" variant="success">Rating</Button>
+    
+                            <Dropdown.Toggle 
+                                split variant="success" 
+                                className="dropdown-split"
+                                id="dropdown-split-rating" />
+    
+                            <Dropdown.Menu >
+                                <Dropdown.Item><option disabled selected>Select</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(10);
+                                }}>10</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(9);
+                                }}>9</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(8);
+                                }}>8</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(7);
+                                }}>7</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(6);
+                                }}>6</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(5);
+                                }}>5</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(4);
+                                }}>4</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(3);
+                                }}>3</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(2);
+                                }}>2</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setRating(1);
+                                }}>1</Dropdown.Item>
+                            </Dropdown.Menu>
+                            
+                        </Dropdown>
+                        {/* <div className="search-game__rating addgame-rating">
+                            <label>Rating: </label>
+                            <select className="search-game__rating__num" onChange={(e) => {
+                                setRating(e.target.value)
+                            }}>
+                                <option selected value="10">10</option>
+                                <option value="9">9</option>
+                                <option value="8">8</option>
+                                <option value="7">7</option>
+                                <option value="6">6</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                                <option selected value="0">-</option> 
+                            </select>    
+                        </div> */}
+
+                        <Dropdown 
+                            className="addgame-filter-btn"
+                            as={ButtonGroup}>
+                            <Button className="" variant="success">Game Status</Button>
+    
+                            <Dropdown.Toggle 
+                                split variant="success" 
+                                className="dropdown-split"
+                                id="dropdown-split-rating" />
+    
+                            <Dropdown.Menu >
+                                <Dropdown.Item><option disabled selected>Select</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameRank("playing");
+                                }}>Playing</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameRank("upcoming");
+                                }}>Upcoming</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameRank("completed");
+                                }}>Completed</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameRank("Dropped");
+                                }}>Dropped</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        {/* <div className="search-game__status addgame-status" onChange={(e) => {
+                            setGameRank(e.target.value);
                         }}>
-                            <option selected value="10">10</option>
-                            <option value="9">9</option>
-                            <option value="8">8</option>
-                            <option value="7">7</option>
-                            <option value="6">6</option>
-                            <option value="5">5</option>
-                            <option value="4">4</option>
-                            <option value="3">3</option>
-                            <option value="2">2</option>
-                            <option value="1">1</option>
-                            <option selected value="0">-</option> 
-                        </select>    
-                    </div>
-                    <div className="search-game__status" onChange={(e) => {
-                        setGameRank(e.target.value);
-                    }}>
-                        <label>Game Status</label>
-                        <select>
-                            <option selected="selected" value="playing">Playing</option>
-                            <option value="upcoming">Upcoming</option>
-                            <option value="completed">Completed</option>
-                            <option value="dropped">Dropped</option>
-                        </select>
+                            <label>Game Status</label>
+                            <select>
+                                <option selected="selected" value="playing">Playing</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="completed">Completed</option>
+                                <option value="dropped">Dropped</option>
+                            </select>
+                        </div> */}
                     </div>
                     <textarea onChange={(e) => {
                         setSummary(e.target.value);

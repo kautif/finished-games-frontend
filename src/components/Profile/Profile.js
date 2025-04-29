@@ -479,16 +479,25 @@ export default function Profile (match) {
     } else {
         return (
             <div>
-                <GameData 
-                    gamesObj={gamesObj}
-                />
-                <img src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
-                <h1>{user.twitch_default}</h1>
-                <p onClick={() => {
-                    localStorage.setItem("reportUser", user.twitch_default);
-                    window.location.pathname = "/report";
-                }}>Report User</p>
-                <Button onClick={() => notifyShareProfile()}>Share Profile</Button>
+                <div className="profile-intro-flex">
+                    <GameData 
+                        gamesObj={gamesObj}
+                    />
+                    <div className="profile-intro-flex__user">
+                        <div className="profile-intro-flex__user__name">
+                            <img className="w-25" src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
+                            <h1 className="align-self-end text-light text-uppercase">{user.twitch_default}</h1>
+                        </div>
+                        <div className="profile-intro__action float-start ml-5">
+                            <p  className="text-light"
+                                onClick={() => {
+                                localStorage.setItem("reportUser", user.twitch_default);
+                                window.location.pathname = "/report";
+                            }}>Report User</p>
+                            <Button onClick={() => notifyShareProfile()}>Share Profile</Button>
+                        </div>
+                    </div>
+                </div>
                 <div className="user-game__filter-sorting mb-4 mt-4">
                     <div>
                         <select onChange={(e) => {

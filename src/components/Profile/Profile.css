@@ -1,3 +1,23 @@
+.profile-intro-flex {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+}
+
+.profile-intro-flex__user__name {
+    display: flex;
+}
+
+.profile-intro-flex__user__name h1 {
+    font-family: vt323;
+    margin-left: 3%;
+    font-size: 3em;
+}
+
+.profile-intro__action {
+    margin-left: 4%;
+}
+
 .user-game {
     display: flex;
   flex-direction: column;
