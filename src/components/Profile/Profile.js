@@ -7,11 +7,16 @@ import Row from "react-bootstrap/Row";
 import Column from "react-bootstrap/Col";
 import Stack from "react-bootstrap/Stack";
 import Image from "react-bootstrap/Image";
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+import Form from 'react-bootstrap/Form';
 
 import leftArrow from "../../assets/arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
+import upArrow from "../../assets/up-arrow.png";
+import downArrow from "../../assets/down-arrow.png";
 
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
@@ -43,7 +48,7 @@ export default function Profile (match) {
     const [gameImg, setGameImg] = useState("");
     const [gameDate, setGameDate] = useState("");
     const [gameRating, setGameRating] = useState("");
-    const [gameRank, setGameRank] = useState("");
+    const [gameRank, setGameRank] = useState("all");
 
     const [showModal, setShowModal] = useState(false);
 
@@ -405,8 +410,8 @@ export default function Profile (match) {
             gamesList = games.map(game => {
                 return <Col xl={3} lg={4} sm={6} xs={12}>
                     <Row className="user-game d-flex flex-column me-2">
-                        <h2 className="user-game__title">{game.name}</h2>
-                        <Image className="user-game__img align-self-center"
+                        <h2 className="user-game__title">{game.name.toUpperCase()}</h2>
+                        <Image className="user-game__img align-self-center mb-4"
                             src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
                             onClick={() => {
                             setShowModal(true);
@@ -418,17 +423,19 @@ export default function Profile (match) {
                             setGameDate(new Date(game.date_added).toDateString().substring(4));
                         }} />
                             {/* <Image src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded /> */}
-                        <div className="user-game__date-container">
-                            <p>Date:</p>
-                            <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
+                        <div className="user-game__date-flex">
+                            <div className="user-game__date-container">
+                                <p className="user-game__date__label">Date:</p>
+                                <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
+                            </div>
+                            <div className="user-game__status-container">
+                                <p className="user-game__status__label">Game Status</p>
+                                <p className="user-game__status">{game.rank.toUpperCase()}</p>
+                            </div>
                         </div>
                         <div className="user-game__rating">
                             <p>Rating: </p>
                             <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>    
-                        </div>
-                        <div className="user-game__status-container">
-                            <p>Game Status</p>
-                            <p className="user-game__status">{game.rank.toUpperCase()}</p>
                         </div>
                         <div className="user-game__summary-container">
                             <h3>Comments</h3>
@@ -500,7 +507,7 @@ export default function Profile (match) {
                 </div>
                 <div className="user-game__filter-sorting mb-4 mt-4">
                     <div>
-                        <select onChange={(e) => {
+                        {/* <select onChange={(e) => {
                             setGameState(e.target.value);
                         }} className="user-games__filter">
                             <option disabled selected>Select Game State</option>
@@ -509,11 +516,42 @@ export default function Profile (match) {
                             <option value="upcoming">Upcoming</option>
                             <option value="completed">Completed</option>
                             <option value="dropped">Dropped</option>
-                        </select>
+                        </select> */}
+                        <h3 className="text-light">State</h3>
+                        <Dropdown 
+                            className="gameslist-game__filter-btn"
+                            as={ButtonGroup}>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameState.toUpperCase() === "" ? "State" : gameState.toUpperCase()}</Button>
+
+                            <Dropdown.Toggle 
+                                split variant="success" 
+                                className="dropdown-split"
+                                id="dropdown-split-basic" />
+
+                            <Dropdown.Menu >
+                                <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameState("all");
+                                }}><option value="all">Show All Games</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameState("playing");
+                                }}><option value="playing">Playing</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameState("upcoming");
+                                }}><option value="upcoming">Upcoming</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameState("completed");
+                                }}><option value="completed">Completed</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameState("dropped");
+                                }} 
+                                ><option value="dropped">Dropped</option></Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </div>
                     <div>
-                        <h2>Sorting</h2>
-                        <form>
+                        <h3 className="text-light">Sort By</h3>
+                        {/* <form>
                             <select id="sort-direction" onChange={(e) => {
                                 setSortDirection(e.target.value);
                             }}>
@@ -527,10 +565,34 @@ export default function Profile (match) {
                                 <option value="date">Date</option>
                                 <option value="rating">Rating</option>
                             </select>
-                        </form>
+                        </form> */}
+                        <Dropdown 
+                            className="gameslist-game__filter-btn"
+                            as={ButtonGroup}>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortFocus.toUpperCase() === "" ? "Sort" : sortFocus.toUpperCase()}</Button>
+
+                            <Dropdown.Toggle 
+                                split variant="success" 
+                                className="dropdown-split"
+                                id="dropdown-split-basic-sort-dir" />
+
+                            <Dropdown.Menu >
+                                <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setSortFocus("alpha");
+                                }}>Alphabetical</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setSortFocus("date");
+                                }}>Date</Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setSortFocus("rating");
+                                }}>Rating</Dropdown.Item>
+                            </Dropdown.Menu>
+                            
+                        </Dropdown>
                     </div>
                     <div>
-                        <h2>Game Type</h2>
+                        <h3 className="text-light">Game Type</h3>
                         {showModal && 
                         <div id="user-game__modal">
                             <p className="user-game__modal__close" onClick={() => {
@@ -550,12 +612,12 @@ export default function Profile (match) {
                                     </div>
                                     <div className="user-game__modal__text-container">
                                         <div className="user-game__modal__text-flex">
-                                            <p className="user-game__modal__text">Game Status: </p>
-                                            <p className="user-game__modal__rank">{gameRank.toUpperCase()}</p>
-                                        </div>
-                                        <div className="user-game__modal__text-flex">
                                             <p className="user-game__modal__text">Date: </p>
                                             <p className="user-game__modal__date">{gameDate}</p>
+                                        </div>
+                                        <div className="user-game__modal__text-flex">
+                                            <p className="user-game__modal__text">Game Status: </p>
+                                            <p className="user-game__modal__rank">{gameRank.toUpperCase()}</p>
                                         </div>
                                         <div className="user-game__modal__text-flex">
                                             <p className="user-game__modal__text">Rating: </p>
@@ -569,7 +631,7 @@ export default function Profile (match) {
                                 </div>
                             </div>
                         </div>}
-                        <form>
+                        {/* <form>
                             <select onChange={(e) => {
                                 setGameType(e.target.value);
                             }}>
@@ -581,20 +643,98 @@ export default function Profile (match) {
                                 <option value="pokemon">Pokemon</option>
                                 <option value="minecraft">Minecraft Mod</option>
                             </select>
-                        </form>
+                        </form> */}
+
+                        <Dropdown 
+                            className="gameslist-game__filter-btn"
+                            as={ButtonGroup}>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameType.toUpperCase() === "" ? "All" : gameType.toUpperCase()}</Button>
+
+                            <Dropdown.Toggle 
+                                split variant="success" 
+                                className="dropdown-split"
+                                id="dropdown-split-basic-gametype" />
+
+                            <Dropdown.Menu >
+                                <Dropdown.Item><option disabled selected>Select Game Type</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("all");
+                                }}><option value="all">All</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("regular");
+                                }}><option value="regular">Regular</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("custom");
+                                }}><option value="custom">Custom</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("other");
+                                }}><option value="other">Other</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("mario");
+                                }} 
+                                ><option value="mario">Mario</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("pokemon");
+                                }} 
+                                ><option value="pokemon">Pokemon</option></Dropdown.Item>
+                                <Dropdown.Item onClick={() => {
+                                    setGameType("minecraft");
+                                }} 
+                                ><option value="minecraft">Minecraft</option></Dropdown.Item>
+                            </Dropdown.Menu>
+                            
+                        </Dropdown>
                     </div>
-                    <form>
+                    <div className="gameslist-game__filter-container">
+                        <h3 className="gameslist-game__filter-label">Direction</h3>
+                            <div>
+                                {sortDirection === "ascending" && <Image 
+                                    src={upArrow}
+                                    alt="ascending arrow"
+                                    className="gameslist-game__filter__sort-arrow"
+                                    onClick={() => {
+                                        setSortDirection("descending");
+                                    }}
+                                />}
+                                {sortDirection === "descending" && <Image 
+                                    src={downArrow}
+                                    alt="descending arrow"
+                                    className="gameslist-game__filter__sort-arrow"
+                                    onClick={() => {
+                                        setSortDirection("ascending");
+                                    }}
+                                />}
+                            </div>
+                    </div>
+                    {/* <form>
                         <h2>Search</h2>
                         <input id="gameslist-games__search" type="text" 
                         onChange={(e) => {
                             setSearch(e.target.value);
                         }}/>
-                        <input type="submit" value="Submit" onClick={(e) => { 
-                            e.preventDefault();
-                            getFilteredGames()
-                            setPage(1)
-                        }}/>
-                    </form>
+
+                    </form> */}
+                     <div className="w-25">
+                        {/* <h3 className="text-light">Search</h3> */}
+                        <Form className="w-100">
+                            <Form.Control  
+                                type="text"
+                                className="w-100"
+                                placeholder="Submit search to filter or sort" 
+                                onChange={(e) => {
+                                setSearch(e.target.value);
+                            }}/>
+                        <Button 
+                            className='btn btn-primary mt-4'
+                            onClick={(e) => {
+                                e.preventDefault();
+                                getFilteredGames();
+                                setPage(1);
+                            }}>
+                            Submit
+                        </Button>
+                        </Form>
+                    </div>
                 </div>
                 <Stack gap={3} direction="horizontal" id="profile-results-container" className="profile-results" onClick={() => {
                     if (showModal) {

@@ -1,3 +1,11 @@
+.MuiStack-root {
+    margin-right: 5%;
+}
+
+.find-user__search {
+    width: 600px;
+}
+
 .find-user__results {
     display: flex;
     justify-content: space-around;
@@ -29,6 +37,8 @@
     padding: 10px;
     border-radius: 4px;
     box-shadow: 2px 3px 5px 2px #313030;
+    font-family: vt323;
+    font-size: 2em;
 }
 
 .found-user__link {
@@ -36,7 +46,8 @@
 }
 
 .find-user__head {
-    font-size: 1.5em;
+    /* font-size: 1.5em; */
+    font-family: vt323;
 }
 
 #free-solo-2-demo {

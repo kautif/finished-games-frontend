@@ -93,9 +93,9 @@ export default function FindUser () {
     }
 
     useEffect(() => {
-        // getUsers();
+        getUsers("", 1);
         // getUserList();
-        setNoResults(false);
+        // setNoResults(false);
         // document.addEventListener('click', (event) => {
         //     if (!event.target.closest('.MuiAutocomplete-root')) {
         //       setShowFill(false); // Close dropdown if click is outside
@@ -131,7 +131,8 @@ export default function FindUser () {
     return (
         <Container onClick={() => {
         }}>
-            <Form                 
+            <Form
+                className="mt-4 d-flex justify-content-center"                 
                 onSubmit={(e) => {
                     e.preventDefault();
                     console.log("submitted: ", e.target[0].value);
@@ -139,7 +140,9 @@ export default function FindUser () {
                 }}>
                 <Stack>
                 <Form.Control 
+                    className="find-user__search"
                     type="text"
+                    placeholder="Enter username or search term"
                     onChange={(e) => {
                         setInputValue(e.target.value);
                     }}
@@ -247,7 +250,7 @@ export default function FindUser () {
                     return (
                         <Row className="mx-5">
                             <Col>
-                                <h1 className="mt-4 find-user__head">{foundUser.twitch_default}</h1>
+                                <h1 className="mt-4 find-user__head text-light">{foundUser.twitch_default}</h1>
                                 <Image src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>
                                 <a class="found-user__link" href={`/${foundUser.twitchName}`}><p className="found-user__btn mt-3">See Profile</p></a>
                             </Col>

@@ -34,7 +34,7 @@
 .user-game__filter-sorting {
     display: flex;
     justify-content: space-around;
-    align-items: flex-end;
+    align-items: flex-start;
     
 }
 
@@ -47,15 +47,25 @@
     height: 250px;
 }
 
+.user-game__date-flex {
+    display: flex;
+}
+
 .user-game__date-container {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     align-self: center;
     width: 100%;
+    color: white;
 }
 
 .user-game__date-container label {
     margin: 15x 10px;
+}
+
+.user-game__date__label {
+    margin-bottom: 0;
 }
 
 .user-game__title {
@@ -72,11 +82,14 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     display: -webkit-box;
+    font-family: vt323;
+    color: white;
 }
 
 .user-game__rating {
     display: flex;
     justify-content: space-around;
+    color: white;
 }
 
 .user-game__summary {
@@ -90,12 +103,14 @@
     max-width: 300px;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    color: white;
 }
 
 .user-game__rating {
     display: flex;
     justify-content: space-around;
     width: 100%;
+    color: white;
 }
 
 .user-game__rating__red {
@@ -116,8 +131,18 @@
 .user-game__status-container {
     display: flex;
     justify-content: space-around;
+    flex-direction: column;
     align-items: center;
     width: 100%;
+    color: white;
+}
+
+.user-game__status__label {
+    margin-bottom: 0;
+}
+
+.user-game__summary-container h3 {
+    color: white;
 }
 
 .user-game__readmore {
