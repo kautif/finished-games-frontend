@@ -634,7 +634,12 @@ export default function Profile (match) {
                                 </div>
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button className="btn btn-primary">Close</Button>
+                                <Button 
+                                    className="btn btn-primary"
+                                    onClick={() => {
+                                        setShowModal(false);
+                                    }}
+                                    >Close</Button>
                             </Modal.Footer>
                         </Modal>
                         {/* {showModal && 
