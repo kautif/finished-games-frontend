@@ -154,6 +154,19 @@
     text-decoration: underline;
 }
 
+.user-game__status-container__modal, .user-game__rating-container__modal {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.user-game__rating-container__modal {
+    align-items: center;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #user-game__modal {
     background-color: rgba(0, 0, 0, 0.85);
     height: 78vh;

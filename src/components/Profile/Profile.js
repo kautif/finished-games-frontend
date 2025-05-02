@@ -10,6 +10,7 @@ import Image from "react-bootstrap/Image";
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 import leftArrow from "../../assets/arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
@@ -334,6 +335,10 @@ export default function Profile (match) {
         })
     }
 
+        function handleClose () {
+            setShowModal(false);
+        }
+
     let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];
     let gameStateArr = ["all", "playing", "upcoming", "completed", "dropped"];
     function filterOrSort () {
@@ -593,7 +598,46 @@ export default function Profile (match) {
                     </div>
                     <div>
                         <h3 className="text-light">Game Type</h3>
-                        {showModal && 
+                        <Modal 
+                            className=""
+                            show={showModal}
+                            backdrop={true}
+                            onHide={() => {
+                                handleClose();
+                            }}>
+                            <Modal.Header>
+                                <Modal.Title className="text-center mx-auto">
+                                    {title}
+                                </Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Image
+                                    className="w-100" 
+                                    src={gameImg}
+                                />
+                                <div className="user-game__status-container__modal">
+                                    <div>
+                                        <p>Date: </p>
+                                        <p>{gameDate}</p>
+                                    </div>
+                                    <div>
+                                        <p>Game Status:</p>
+                                        <p>{gameRank.toUpperCase()}</p>
+                                    </div>
+                                </div>
+                                <div className="user-game__rating-container__modal">
+                                    <p>Rating:</p>
+                                    <p className={`user-game__rating__num ${gameRating > 0 && gameRating <= 3 ? "user-game__rating__red" : gameRating >= 5 && gameRating < 8 ? "user-game__rating__yellow" : gameRating >= 8 && gameRating <= 10 ? "user-game__rating__green" : ""}`}>{gameRating}</p>
+                                </div>
+                                <div>
+                                    <p>{gameSummary}</p>
+                                </div>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button className="btn btn-primary">Close</Button>
+                            </Modal.Footer>
+                        </Modal>
+                        {/* {showModal && 
                         <div id="user-game__modal">
                             <p className="user-game__modal__close" onClick={() => {
                                 setShowModal(false);
@@ -630,7 +674,7 @@ export default function Profile (match) {
                                     </div>
                                 </div>
                             </div>
-                        </div>}
+                        </div>} */}
                         {/* <form>
                             <select onChange={(e) => {
                                 setGameType(e.target.value);
