@@ -612,7 +612,7 @@ export default function Profile (match) {
                             </Modal.Header>
                             <Modal.Body>
                                 <Image
-                                    className="w-100" 
+                                    className="w-100 mb-3" 
                                     src={gameImg}
                                 />
                                 <div className="user-game__status-container__modal">
