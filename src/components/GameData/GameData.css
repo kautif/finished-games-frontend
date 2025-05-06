@@ -21,6 +21,7 @@ tr:nth-child(even) {
     font-size: 1.55em;
     width: 29%;
     border: 3px solid white;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 #game-data__simplfied-flex {

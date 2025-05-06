@@ -836,12 +836,14 @@ export default function Gameslist (){
                                 <Row>
                                 <Col>
                                 </Col>
-                                <Modal show={showModal}
+                                <Modal 
+                                        id="gameslist-game__info"
+                                        show={showModal}
                                         backdrop={true}
                                         onHide={() => {
                                             handleClose();
                                         }}>
-                                    <Modal.Header>
+                                    <Modal.Header className="mx-auto">
                                         <Modal.Title>
                                             {gameName}
                                         </Modal.Title>
@@ -851,46 +853,54 @@ export default function Gameslist (){
                                             className="gameslist__game-img"
                                             src={gameImg}
                                         />
-                                        <Form.Control type="date" id="gameslist-game__date" name="date-added" onChange={(e) => {
-                                            setGameDate(new Date(e.target.value));
-                                        }}></Form.Control>
-                                        <Form.Select className="gameslist-game__rating__num" onChange={(e) => {
-                                            setGameRating(e.target.value);
-                                        }}>
-                                            <option selected={gameRating === 10 ? true : false} value="10">10</option>
-                                            <option selected={gameRating === 9 ? true : false} value="9">9</option>
-                                            <option selected={gameRating === 8 ? true : false} value="8">8</option>
-                                            <option selected={gameRating === 7 ? true : false} value="7">7</option>
-                                            <option selected={gameRating === 6 ? true : false} value="6">6</option>
-                                            <option selected={gameRating === 5 ? true : false} value="5">5</option>
-                                            <option selected={gameRating === 4 ? true : false} value="4">4</option>
-                                            <option selected={gameRating === 3 ? true : false} value="3">3</option>
-                                            <option selected={gameRating === 2 ? true : false} value="2">2</option>
-                                            <option selected={gameRating === 1 ? true : false} value="1">1</option>
-                                            <option selected={gameRating === 0 ? true : false} value="0">-</option>
-                                        </Form.Select>
-                                        <Form.Select className="search-game__status" onChange={(e) => {
+                                        <div className="d-flex justify-content-around mt-3 mb-3">
+                                            <Form.Control type="date" id="gameslist-game__date" name="date-added" onChange={(e) => {
+                                                setGameDate(new Date(e.target.value));
+                                            }}></Form.Control>
+                                            <Form.Select className="search-game__status gameslist-game__status" onChange={(e) => {
                                             setGameRank(e.target.value);
-                                        }}>
-                                        <option selected={gameRank === "playing" ? true : false} value="playing">Playing</option>
-                                        <option  selected={gameRank === "upcoming" ? true : false} value="upcoming">Upcoming</option>
-                                        <option  selected={gameRank === "completed" ? true : false}value="completed">Completed</option>
-                                        <option selected={gameRank === "dropped" ? true : false} value="dropped">Dropped</option>
-                                        </Form.Select>
+                                            }}>
+                                            <option selected={gameRank === "playing" ? true : false} value="playing">Playing</option>
+                                            <option  selected={gameRank === "upcoming" ? true : false} value="upcoming">Upcoming</option>
+                                            <option  selected={gameRank === "completed" ? true : false}value="completed">Completed</option>
+                                            <option selected={gameRank === "dropped" ? true : false} value="dropped">Dropped</option>
+                                            </Form.Select>
+                                            <Form.Select className="gameslist-game__rating__num" onChange={(e) => {
+                                                setGameRating(e.target.value);
+                                            }}>
+                                                <option selected={gameRating === 10 ? true : false} value="10">10</option>
+                                                <option selected={gameRating === 9 ? true : false} value="9">9</option>
+                                                <option selected={gameRating === 8 ? true : false} value="8">8</option>
+                                                <option selected={gameRating === 7 ? true : false} value="7">7</option>
+                                                <option selected={gameRating === 6 ? true : false} value="6">6</option>
+                                                <option selected={gameRating === 5 ? true : false} value="5">5</option>
+                                                <option selected={gameRating === 4 ? true : false} value="4">4</option>
+                                                <option selected={gameRating === 3 ? true : false} value="3">3</option>
+                                                <option selected={gameRating === 2 ? true : false} value="2">2</option>
+                                                <option selected={gameRating === 1 ? true : false} value="1">1</option>
+                                                <option selected={gameRating === 0 ? true : false} value="0">-</option>
+                                            </Form.Select>
+                                        </div>
                                         <textarea className="gameslist-game-summary" onChange={(e) => {
                                             setGameSummary(e.target.value);
                                         }}>{gameSummary}</textarea>
                                     </Modal.Body>
                                     <Modal.Footer id="gameslist-game-flex-container">
-                                        <p className="modal-btn text-center btn btn-danger" onClick={() => setShowDelete(true)}>Delete</p>
-                                        <Button className="modal-btn" onClick={() => {
+                                        <p className="modal-btn text-center btn btn-danger delete-game__btn" onClick={() => setShowDelete(true)}>Delete</p>
+                                        <Button 
+                                            variant="light"
+                                            className="modal-btn" 
+                                            onClick={() => {
                                             if (userGames[gameIndex].name !== gameName || userGames[gameIndex].summary !== gameSummary || new Date(userGames[gameIndex].date_added).toDateString() !== gameDate.toDateString() || userGames[gameIndex].rank !== gameRank) {
                                                 updateGame(gameName, gameSummary, gameDate, gameRank, gameRating);
                                             }
                                             setShowModal(false);
                                             notifyUpdate(gameName);
                                         }}>Save</Button>
-                                        <Button className="modal-btn" onClick={() => setShowModal(false)}>Cancel</Button>
+                                        <Button 
+                                            variant="light"
+                                            className="modal-btn" 
+                                            onClick={() => setShowModal(false)}>Cancel</Button>
                                     </Modal.Footer>
                                 </Modal>
                                 <Modal id="discover" onHide={() => {
@@ -900,17 +910,19 @@ export default function Gameslist (){
                                         <Modal.Title id="discover__title-flex">
                                             <h1>Discover</h1>
                                         </Modal.Title>
-                                        {showGame && <Button onClick={() => {
-                                                dispatch(setShowGame(false));
-                                                dispatch(setShowSearch(true));
-                                            }}>Back</Button>}
+                                        {showGame && <Button
+                                                        variant="light" 
+                                                        onClick={() => {
+                                                        dispatch(setShowGame(false));
+                                                        dispatch(setShowSearch(true));
+                                                    }}>Back</Button>}
                                     </Modal.Header>
                                     <Modal.Body>
                                         {showSearch && <Search />}
                                         {showGame && <AddGame />}
                                     </Modal.Body>
                                     <Modal.Footer>
-                                        <Button onClick={() => dispatch(setShowDiscover(false))}>Close</Button>
+                                        <Button id="discover__close" variant="light" onClick={() => dispatch(setShowDiscover(false))}>Close</Button>
                                     </Modal.Footer>
                                 </Modal>
                                 <Modal id="delete-game" show={showDelete}>
@@ -923,7 +935,8 @@ export default function Gameslist (){
                                         <p>Are you sure you want to delete {gameName}?</p>
                                     </Modal.Body>
                                     <Modal.Footer>
-                                        <Button className='btn btn-danger' onClick={() => {
+                                        <Button 
+                                            className='btn btn-danger delete-game__btn' onClick={() => {
                                             setShowDelete(false);
                                             setShowModal(false);
                                             deleteGame(gameName);

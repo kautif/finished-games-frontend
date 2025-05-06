@@ -101,7 +101,6 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     }}
   >
     {children}
-    &#x25bc;
   </a>
 ));
 
@@ -150,11 +149,10 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
             </Dropdown> */}
             <div className="auth-nav__profile-flex">
               <img id="auth-nav__profile-img" src={profileImg} />
-              <Dropdown>
+              <Dropdown id="dropdown__settings">
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                   <span id="user-settings__gear">&#9881;</span>
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu>
                   <Dropdown.Item eventKey="1" onClick={() => {
                               setShowDelete(true);
@@ -170,16 +168,16 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
               </Dropdown>
           <p id="auth-nav__profile__name">{defaultName}</p>
             </div>
-          <img className="auth-nav__logo" src={VHLogo} />
+          <Link to="/games"><img className="auth-nav__logo" src={VHLogo} /></Link>
         </div>
         <ul className="auth-nav">
-          <Link className="auth-nav__link" to="/games">
+          <Link className={window.location.pathname == "/games" ? "auth-nav__link auth-nav__link__selected" : "auth-nav__link"} to="/games">
             My Games
           </Link>
-          <Link className="auth-nav__link" to="/browseusers">
+          <Link className={window.location.pathname == "/browseusers" ? "auth-nav__link auth-nav__link__selected" : "auth-nav__link"} to="/browseusers">
             Browse Users
           </Link>
-          <Link className="auth-nav__link" to="/donate">
+          <Link className={window.location.pathname == "/donate" ? "auth-nav__link auth-nav__link__selected" : "auth-nav__link"} to="/donate">
             Donate
           </Link>
         </ul>

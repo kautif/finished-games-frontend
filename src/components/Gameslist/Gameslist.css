@@ -2,6 +2,7 @@
 body {
     background-image: url('../../assets/static_bg_v1.jpg');
     background-size: cover;
+    background-attachment: fixed;
 }
 
 .gameslist-parent {
@@ -25,6 +26,10 @@ body {
 #delete-modal__title {
     text-align: center;
     width: 100%;
+}
+
+.delete-game__btn {
+    color: white !important;
 }
 
 .gameslist-games-container {
@@ -174,6 +179,14 @@ body {
     margin-top: 8%;
 } */
 
+#gameslist-game__date,
+.gameslist-game__rating__num,
+.gameslist-game__status {
+    width: 30%;
+    align-self: center !important;
+    margin-top: 0;
+}
+
 .user-game__rating__num {
     font-size: 2em;
 }
@@ -290,10 +303,25 @@ body {
     align-self: center;
 }
 
+#discover__close {
+    color: #8E43FC;
+}
+
+#gameslist-game__info .modal-content {
+    background: linear-gradient(179deg, rgba(42, 123, 155, 1) 0%, rgba(106, 0, 138, 1) 0%, rgba(76, 1, 99, 1) 51%, rgba(46, 1, 46, 1) 100%);
+}
+
+.modal-title {
+    font-family: vt323;
+    color: #FCB500;
+    font-size: 2em;
+}
+
 .modal-btn {
     width: 30%;
     box-shadow: initial;
     padding: 11px 5px;
+    color: #8E43FC;
 }
 
 .modal-btn:hover {
