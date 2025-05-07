@@ -1,4 +1,5 @@
 import React, {useState} from "react"
+import "./Donate.css";
 
 export default function Donate () {
     return (
