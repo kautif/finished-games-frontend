@@ -18,7 +18,7 @@ import otherCart from "../../assets/vh_other_cart.webp";
 import leftArrow from "../../assets/arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
 import loadingAnim from '../../assets/loading.gif';
-import lightning from "../../assets/lightning_yellow.png";
+import lightning from "../../assets/lightning_purple.png";
 import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";

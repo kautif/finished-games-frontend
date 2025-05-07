@@ -35,6 +35,7 @@
 }
 
 .search-game__name {
+    font-family: vt323;
     color: white;
     display: flex;
     flex-direction: column;
@@ -44,7 +45,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     height: 90px;
-    font-size: 1.5em;
+    font-size: 2em;
 }
 
 .search-game, .profile-game {
@@ -64,7 +65,9 @@
     height: 222px;    
 }
 
-
+.find-user__submit-btn {
+    color: #8E43FC;
+}
 
 .profile-game img {
     width: 390px;
@@ -85,8 +88,8 @@
 .custom-game__add-btn,
 .search-result__lightning,
 .search-game__submit {
-    background-color: #8E43FC;
-    color: white;
+    background-color: #f8f9fa;
+    color: #8E43FC;
     padding: 10px 25px;
     border-radius: 4px;
     box-shadow: 2px 3px 5px 2px #313030;
@@ -99,12 +102,15 @@
 }
 
 .search-result__lightning {
-    width: 83%;
+    width: 70%;
     padding: 5px 12px;
 }
 
-.search-result__lightning:hover {
+.search-result__lightning:hover,
+.search-result__add-btn:hover {
     cursor: pointer;
+    background-color: #e3e3e3;
+    transition: 500ms;
 }
 
 .search-game .search__btn:hover,

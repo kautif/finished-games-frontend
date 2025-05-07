@@ -24,6 +24,10 @@
     cursor: pointer;
 }
 
+.find-user__user-container {
+    position: relative;
+}
+
 .find-user__pages {
     margin-left: 9%;
     margin-right: 9%;

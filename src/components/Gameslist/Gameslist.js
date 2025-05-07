@@ -612,7 +612,7 @@ export default function Gameslist (){
                                             setGameIndex(i);
                                         }}
                                     />
-                                <h2 className="gameslist-game__title">{game.name.toUpperCase()}</h2>
+                                <h2 className="gameslist-game__title mx-auto">{game.name.toUpperCase()}</h2>
                                 <div className="gameslist__game-info-flex">
                                     <div className="gameslist-game__date-container flex-column justify-content-around">
                                         <label>Date:</label>
@@ -843,7 +843,7 @@ export default function Gameslist (){
                                         onHide={() => {
                                             handleClose();
                                         }}>
-                                    <Modal.Header className="mx-auto">
+                                    <Modal.Header className="mx-auto border-bottom-0">
                                         <Modal.Title>
                                             {gameName}
                                         </Modal.Title>

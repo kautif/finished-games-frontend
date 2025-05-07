@@ -200,7 +200,8 @@ export default function FindUser () {
                             /> */}
                 </Stack>
                 <Button 
-                    className="btn btn-primary"
+                    variant="light"
+                    className="btn btn-primary find-user__submit-btn"
                     onClick={() => {
                         getUsers(inputValue.toLowerCase(), page);
                     }}
@@ -248,7 +249,10 @@ export default function FindUser () {
                 </div>
                 {foundUsers.map(foundUser => {
                     return (
-                        <Row className="mx-5">
+                        <Row className="mx-5 find-user__user-container">
+                            <div class="gameslist-game__bg-blur">
+
+                            </div>
                             <Col>
                                 <h1 className="mt-4 find-user__head text-light">{foundUser.twitch_default}</h1>
                                 <Image src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>

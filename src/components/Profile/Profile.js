@@ -415,6 +415,9 @@ export default function Profile (match) {
             gamesList = games.map(game => {
                 return <Col xl={3} lg={4} sm={6} xs={12}>
                     <Row className="user-game d-flex flex-column me-2">
+                        <div class="user-game__bg-blur">
+
+                        </div>
                         <h2 className="user-game__title">{game.name.toUpperCase()}</h2>
                         <Image className="user-game__img align-self-center mb-4"
                             src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
@@ -437,10 +440,10 @@ export default function Profile (match) {
                                 <p className="user-game__status__label">Game Status</p>
                                 <p className="user-game__status">{game.rank.toUpperCase()}</p>
                             </div>
-                        </div>
-                        <div className="user-game__rating">
-                            <p>Rating: </p>
-                            <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>    
+                            <div className="user-game__rating d-flex flex-column mb-0">
+                                <p className="mb-0">Rating: </p>
+                                <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>    
+                            </div>
                         </div>
                         <div className="user-game__summary-container">
                             <h3>Comments</h3>
@@ -506,7 +509,10 @@ export default function Profile (match) {
                                 localStorage.setItem("reportUser", user.twitch_default);
                                 window.location.pathname = "/report";
                             }}>Report User</p>
-                            <Button onClick={() => notifyShareProfile()}>Share Profile</Button>
+                            <Button
+                                variant="light" 
+                                className="share-profile-btn"
+                                onClick={() => notifyShareProfile()}>Share Profile</Button>
                         </div>
                     </div>
                 </div>
@@ -605,6 +611,8 @@ export default function Profile (match) {
                             onHide={() => {
                                 handleClose();
                             }}>
+                            <div className="user-game__modal-container">
+
                             <Modal.Header>
                                 <Modal.Title className="text-center mx-auto">
                                     {title}
@@ -616,31 +624,33 @@ export default function Profile (match) {
                                     src={gameImg}
                                 />
                                 <div className="user-game__status-container__modal">
-                                    <div>
+                                    <div className="user-game__detail-flex-item">
                                         <p>Date: </p>
                                         <p>{gameDate}</p>
                                     </div>
-                                    <div>
+                                    <div className="user-game__detail-flex-item"> 
                                         <p>Game Status:</p>
                                         <p>{gameRank.toUpperCase()}</p>
                                     </div>
-                                </div>
-                                <div className="user-game__rating-container__modal">
-                                    <p>Rating:</p>
-                                    <p className={`user-game__rating__num ${gameRating > 0 && gameRating <= 3 ? "user-game__rating__red" : gameRating >= 5 && gameRating < 8 ? "user-game__rating__yellow" : gameRating >= 8 && gameRating <= 10 ? "user-game__rating__green" : ""}`}>{gameRating}</p>
+                                    <div className="user-game__detail-flex-item d-flex flex-column" >
+                                        <p className="mb-0">Rating:</p>
+                                        <p className={`user-game__rating__num ${gameRating > 0 && gameRating <= 3 ? "user-game__rating__red" : gameRating >= 5 && gameRating < 8 ? "user-game__rating__yellow" : gameRating >= 8 && gameRating <= 10 ? "user-game__rating__green" : ""}`}>{gameRating}</p>
+                                    </div>
                                 </div>
                                 <div>
-                                    <p>{gameSummary}</p>
+                                    <p className="user-game__summary">{gameSummary}</p>
                                 </div>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button 
-                                    className="btn btn-primary"
+                                    variant="light"
+                                    className="btn btn-primary user-game__modal__close-btn"
                                     onClick={() => {
                                         setShowModal(false);
                                     }}
                                     >Close</Button>
                             </Modal.Footer>
+                            </div>
                         </Modal>
                         {/* {showModal && 
                         <div id="user-game__modal">
@@ -773,8 +783,9 @@ export default function Profile (match) {
                                 onChange={(e) => {
                                 setSearch(e.target.value);
                             }}/>
-                        <Button 
-                            className='btn btn-primary mt-4'
+                        <Button
+                            variant="light" 
+                            className='btn btn-primary mt-4 user-game__sort'
                             onClick={(e) => {
                                 e.preventDefault();
                                 getFilteredGames();
