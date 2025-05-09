@@ -7,8 +7,8 @@ import Col from 'react-bootstrap/Col';
 import Image from "react-bootstrap/Image";
 import Form from 'react-bootstrap/Form';
 
-import leftArrow from "../../assets/arrow.png";
-import rightArrow from "../../assets/right-arrow.png";
+import leftArrow from "../../assets/arrow_left_purple.png";
+import rightArrow from "../../assets/arrow_right_purple.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
 
@@ -78,6 +78,7 @@ export default function FindUser () {
                 }
             }).then(response => {
                 console.log("backend response: ", response);
+                setLastPage(response.data.lastPage);
                 setFoundUsers(response.data.users);
                 // paginatedUsers = response.data.users;
                 // console.log("paginatedUsers: ", paginatedUsers);
@@ -107,6 +108,8 @@ export default function FindUser () {
         if (page < 1) {
             setPage(1);
         }
+
+        getUsers(inputValue, page);
     }, [page])
 
     useEffect(() => {
@@ -239,6 +242,7 @@ export default function FindUser () {
                     <p className="gameslist-results__pages__num">{page}</p>
                     <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
                         if (page < lastPage) {
+                            console.log(lastPage);
                             setPage(prevPage => parseInt(prevPage + 1));
                         }
 

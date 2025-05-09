@@ -40,7 +40,8 @@
 .addgame-filter-btn .btn-success {
     background-color: transparent;
     border-color: transparent;
-    padding: 0px 20px;
+    /* padding: 0px 20px; */
+    width: 100%;
 }
 
 .search-result__add-btn {

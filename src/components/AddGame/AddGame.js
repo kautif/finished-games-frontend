@@ -222,51 +222,55 @@ export default function AddGame () {
                         // }
                         />
                     <div className="addgame-details-container">
-                    <Dropdown 
-                            className="addgame-filter-btn"
-                            as={ButtonGroup}>
-                            <Button className="" variant="success">Rating</Button>
-    
-                            <Dropdown.Toggle 
-                                split variant="success" 
-                                className="dropdown-split"
-                                id="dropdown-split-rating" />
-    
-                            <Dropdown.Menu >
-                                <Dropdown.Item><option disabled selected>Select</option></Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(10);
-                                }}>10</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(9);
-                                }}>9</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(8);
-                                }}>8</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(7);
-                                }}>7</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(6);
-                                }}>6</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(5);
-                                }}>5</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(4);
-                                }}>4</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(3);
-                                }}>3</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(2);
-                                }}>2</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setRating(1);
-                                }}>1</Dropdown.Item>
-                            </Dropdown.Menu>
-                            
-                        </Dropdown>
+                        <div className="d-flex flex-column align-items-center">
+                            <Dropdown 
+                                className="addgame-filter-btn"
+                                as={ButtonGroup}>
+                                <Button className="" variant="success">Rating</Button>
+        
+                                <Dropdown.Toggle 
+                                    split variant="success" 
+                                    className="dropdown-split"
+                                    id="dropdown-split-rating" />
+        
+                                <Dropdown.Menu >
+                                    <Dropdown.Item><option disabled selected>Select</option></Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(10);
+                                    }}>10</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(9);
+                                    }}>9</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(8);
+                                    }}>8</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(7);
+                                    }}>7</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(6);
+                                    }}>6</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(5);
+                                    }}>5</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(4);
+                                    }}>4</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(3);
+                                    }}>3</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(2);
+                                    }}>2</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setRating(1);
+                                    }}>1</Dropdown.Item>
+                                </Dropdown.Menu>
+                                
+                            </Dropdown>
+                            <p className="text-light">{rating === 0 ? "Select rating" : rating}</p>
+                        </div>
+                    
                         {/* <div className="search-game__rating addgame-rating">
                             <label>Rating: </label>
                             <select className="search-game__rating__num" onChange={(e) => {
@@ -285,33 +289,35 @@ export default function AddGame () {
                                 <option selected value="0">-</option> 
                             </select>    
                         </div> */}
-
-                        <Dropdown 
-                            className="addgame-filter-btn"
-                            as={ButtonGroup}>
-                            <Button className="" variant="success">Game Status</Button>
-    
-                            <Dropdown.Toggle 
-                                split variant="success" 
-                                className="dropdown-split"
-                                id="dropdown-split-rating" />
-    
-                            <Dropdown.Menu >
-                                <Dropdown.Item><option disabled selected>Select</option></Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setGameRank("playing");
-                                }}>Playing</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setGameRank("upcoming");
-                                }}>Upcoming</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setGameRank("completed");
-                                }}>Completed</Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
-                                    setGameRank("Dropped");
-                                }}>Dropped</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <div className="d-flex flex-column align-items-center w-25">
+                            <Dropdown 
+                                className="addgame-filter-btn"
+                                as={ButtonGroup}>
+                                <Button className="" variant="success">Game Status</Button>
+        
+                                <Dropdown.Toggle 
+                                    split variant="success" 
+                                    className="dropdown-split"
+                                    id="dropdown-split-rating" />
+        
+                                <Dropdown.Menu >
+                                    <Dropdown.Item><option disabled selected>Select</option></Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameRank("playing");
+                                    }}>Playing</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameRank("upcoming");
+                                    }}>Upcoming</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameRank("completed");
+                                    }}>Completed</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => {
+                                        setGameRank("Dropped");
+                                    }}>Dropped</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                            <p className="text-light">{gameRank.toUpperCase()}</p>
+                        </div>
                         {/* <div className="search-game__status addgame-status" onChange={(e) => {
                             setGameRank(e.target.value);
                         }}>

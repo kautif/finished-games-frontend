@@ -775,7 +775,7 @@ export default function Profile (match) {
                     </form> */}
                      <div className="w-25">
                         {/* <h3 className="text-light">Search</h3> */}
-                        <Form className="w-100">
+                        <Form className="w-100 user-game__search__form">
                             <Form.Control  
                                 type="text"
                                 className="w-100"

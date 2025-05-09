@@ -315,6 +315,10 @@ export default function Gameslist (){
     }, [gameDate])
 
     useEffect(() => {
+        console.log(gameRank);
+    }, [gameRank])
+
+    useEffect(() => {
         if (showModal) {
             document.addEventListener("click", function (e) {
                 if (e.target.classList) {
@@ -453,6 +457,7 @@ export default function Gameslist (){
     }
 
     async function updateGame (name, summary, gameDate, rank, rating) {
+        console.log("rank: ", rank);
         let config = {
             method: "put",
             url: `${backendURL}/updategame`,
@@ -462,7 +467,7 @@ export default function Gameslist (){
                     name: name,
                     summary: summary,
                     date_added: gameDate,
-                    rank: gameState,
+                    rank: rank,
                     rating: rating
                 }
             }
@@ -622,10 +627,10 @@ export default function Gameslist (){
                                         <label>Game Status</label>
                                         <p className="gameslist-game__detail">{(game.rank).toUpperCase()}</p>
                                     </div>
-                                </div>
-                                <div className="gameslist-game__rating flex-column justify-content-around">
+                                    <div className="gameslist-game__rating flex-column justify-content-around">
                                         <label>Rating: </label>
                                         <p className={`user-game__rating__num gameslist-game__detail ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>
+                                    </div>
                                 </div>
 
                                 {/* <Form.Control as="textarea" className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game"/> */}
@@ -858,7 +863,7 @@ export default function Gameslist (){
                                                 setGameDate(new Date(e.target.value));
                                             }}></Form.Control>
                                             <Form.Select className="search-game__status gameslist-game__status" onChange={(e) => {
-                                            setGameRank(e.target.value);
+                                                setGameRank(e.target.value);
                                             }}>
                                             <option selected={gameRank === "playing" ? true : false} value="playing">Playing</option>
                                             <option  selected={gameRank === "upcoming" ? true : false} value="upcoming">Upcoming</option>

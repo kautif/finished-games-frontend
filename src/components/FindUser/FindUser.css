@@ -9,6 +9,7 @@
 .find-user__results {
     display: flex;
     justify-content: space-around;
+    padding-bottom: 10%;
 }
 
 .find-results__pages {

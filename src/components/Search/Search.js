@@ -15,8 +15,8 @@ import smwCart from "../../assets/vh_smw_cart.webp";
 import mcCart from "../../assets/vh_minecraft_cart.webp";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
-import leftArrow from "../../assets/arrow.png";
-import rightArrow from "../../assets/right-arrow.png";
+import leftArrow from "../../assets/arrow_left_purple.png";
+import rightArrow from "../../assets/arrow_right_purple.png";
 import loadingAnim from '../../assets/loading.gif';
 import lightning from "../../assets/lightning_purple.png";
 import Container from "react-bootstrap/esm/Container";
@@ -481,7 +481,7 @@ export default function Search () {
                                 setPage(prevPage => parseInt(prevPage - 1));
                             }
                         }} />
-                        <input type="text" onChange={(e) => setPage(parseInt(e.target.value))} value={page} />
+                        <p className="search-results__page">{page}</p>
                         <img className="search-results__pages__nav" src={rightArrow} alt="next search page" onClick={() => {
                             notifyLoading();
                             // dispatch(setImagesRendered(false));

@@ -16,12 +16,18 @@
 
 .profile-intro__action {
     margin-left: 4%;
+    font-family: Roboto;
 }
 
 .share-profile-btn, 
 .user-game__sort,
 .user-game__modal__close-btn {
     color: #8E43FC;
+    font-family: Roboto;
+}
+
+.user-game__search__form {
+    font-family: Roboto;
 }
 
 .user-game {
@@ -55,7 +61,7 @@
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    
+    font-family: Roboto;
 }
 
 .user-game__img:hover {
@@ -69,6 +75,7 @@
 
 .user-game__date-flex {
     display: flex;
+    font-family: Roboto;
 }
 
 .user-game__date-container {
@@ -125,6 +132,7 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     color: white;
+    font-family: Roboto;
 }
 
 .user-game__rating {
@@ -164,6 +172,7 @@
 
 .user-game__summary-container h3 {
     color: white;
+    font-family: Roboto;
 }
 
 .user-game__readmore {
@@ -184,6 +193,7 @@
     justify-content: space-around;
     text-align: center;
     color: white;
+    font-family: Roboto;
 }
 
 .user-game__rating-container__modal {

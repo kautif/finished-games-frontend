@@ -144,17 +144,22 @@
     position: fixed;
     bottom: 0;
     left: 37%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(225, 225, 225);
     border-radius: 10px;
 }
 
-.search-results__pages input {
-    width: 50px;
-    text-align: center;
+.search-results__page {
+    font-size: 2em;
+    align-self: center;
 }
 
+/* .search-results__pages input {
+    width: 50px;
+    text-align: center;
+} */
+
 .search-results__pages__nav {
-    width: 12%;
+    width: 9%;
 }
 
 .search-results__pages__nav:hover {

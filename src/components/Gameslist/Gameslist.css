@@ -36,6 +36,15 @@ body {
     position: relative;
 }
 
+.gameslist-game__date-container,
+.gameslist-game__status,
+.gameslist-game__rating,
+.gameslist-game__filter-container,
+.gameslist-game__filter-btn,
+.gameslist-game__add-btn {
+    font-family: Roboto;
+}
+
 .col-xl-3,
 .col-lg-4, 
 .col-lg-4, 
@@ -131,7 +140,8 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: rgba(225, 225, 225, 0.85);
+    background-color: rgba(225, 225, 225);
+    z-index: 99;
 }
 
 .gameslist-results__pages__nav {
@@ -185,7 +195,7 @@ body {
 .gameslist-game__rating__num,
 .gameslist-game__status {
     width: 30%;
-    align-self: center !important;
+    /* align-self: center !important; */
     margin-top: 0;
 }
 
@@ -223,7 +233,7 @@ body {
     white-space: wrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 90px;
+    height: 80px;
     font-size: 2em;
     color: white;
     margin-top: 2%;
@@ -285,6 +295,8 @@ body {
 .gameslist-game-summary {
     height: 100px;
 }
+
+
 
 #discover {
     max-width: 80%;
