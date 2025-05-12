@@ -32,6 +32,10 @@ body {
     color: white !important;
 }
 
+.delete-game__head {
+    color: black;
+}
+
 .gameslist-games-container {
     position: relative;
 }

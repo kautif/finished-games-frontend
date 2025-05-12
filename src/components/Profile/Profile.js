@@ -12,8 +12,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import leftArrow from "../../assets/arrow.png";
-import rightArrow from "../../assets/right-arrow.png";
+import leftArrow from "../../assets/arrow_left_purple.png";
+import rightArrow from "../../assets/arrow_right_purple.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
 import upArrow from "../../assets/up-arrow.png";

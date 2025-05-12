@@ -933,7 +933,7 @@ export default function Gameslist (){
                                 <Modal id="delete-game" show={showDelete}>
                                     <Modal.Header>
                                         <Modal.Title>
-                                            <h1>Delete</h1>
+                                            <h1 className="delete-game__head">Delete</h1>
                                         </Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>

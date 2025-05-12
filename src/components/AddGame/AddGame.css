@@ -45,12 +45,18 @@
 }
 
 .search-result__add-btn {
-    background-color: #8E43FC;
-    color: white;
+    background-color: white;
+    color: #8E43FC;
     padding: 10px 25px;
     border-radius: 4px;
     box-shadow: 2px 3px 5px 2px #313030;
     margin-top: 4%;
+}
+
+.search-result__add-btn:hover {
+    background-color: #8E43FC !important;
+    color: white !important;
+    transition: 500ms;
 }
 
 .rdp-root {
