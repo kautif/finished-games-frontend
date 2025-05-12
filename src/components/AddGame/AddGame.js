@@ -341,7 +341,7 @@ export default function AddGame () {
                             custom_game: "regular",
                             img_url: searchGameImg,
                             summary: summary,
-                            date_added: selectedDate.toISOString(),
+                            date_added: selectedDate,
                             rank: gameRank,
                             rating: rating
                         }]))
