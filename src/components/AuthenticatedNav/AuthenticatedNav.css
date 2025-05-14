@@ -11,9 +11,10 @@
 .auth-nav__profile-img-container {
     display: flex;
     flex-direction: row-reverse;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     /* padding: 10px; */
+    /* margin-top: 10px; */
 }
 
 .auth-nav__profile-flex {
@@ -33,7 +34,7 @@
 }
 
 #auth-nav__profile-img {
-    width: 100px;
+    width: 75px;
 }
 
 #user-settings__gear {
@@ -64,6 +65,7 @@
     justify-content: space-around;
     background-color: #8E43FC;
     padding: 15px 0px;
+    margin-top: 8px;
 }
 
 .auth-nav__link {
