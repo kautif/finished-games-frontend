@@ -1,3 +1,7 @@
+#profile-results-container {
+    padding-bottom: 5%;
+}
+
 .profile-intro-flex {
     display: flex;
     flex-direction: row-reverse;
@@ -30,6 +34,14 @@
     font-family: Roboto;
 }
 
+.user-game__search {
+    background: transparent !important;
+}
+
+.user-game__search::placeholder {
+    color: white;
+}
+
 .user-game {
     display: flex;
   flex-direction: column;
@@ -41,10 +53,10 @@
 .user-game__bg-blur {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.65);
-    width: 441px;
+    width: 456px;
     height: 643px;
     z-index: -1;
-    left: -3%;
+    left: 6%;
     filter: blur(29px);
     /* -webkit-filter: blur(25px); */
     top: -9%;
@@ -62,6 +74,7 @@
     justify-content: space-around;
     align-items: flex-start;
     font-family: Roboto;
+    width: 90%;
 }
 
 .user-game__img:hover {
@@ -69,8 +82,9 @@
 }
 
 .user-game__img {
-    width: 100%;
+    width: 78%;
     height: 250px;
+    object-fit: cover;
 }
 
 .user-game__date-flex {
@@ -176,7 +190,7 @@
 }
 
 .user-game__readmore {
-    color: #0e15e1;
+    color: #00F0FF;
 }
 
 .user-game__readmore:hover {

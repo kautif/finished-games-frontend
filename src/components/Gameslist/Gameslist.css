@@ -49,6 +49,11 @@ body {
     font-family: Roboto;
 }
 
+.filter-container__search {
+    align-self: flex-start;
+    margin-top: 12px;
+}
+
 .col-xl-3,
 .col-lg-4, 
 .col-lg-4, 
@@ -59,10 +64,13 @@ body {
 .gameslist-games__filters {
     display: flex;
     justify-content: space-around;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .gameslist-games__filters .btn-primary {
-    margin-top: 47px;
+    margin-top: 10px;
 }
 
 .gameslist-game__filter-dropdown-btn, 
@@ -97,13 +105,22 @@ body {
 
 #gameslist-games__search {
     width: 100%;
-    margin-top: 12%;
-    align-self: flex-end;
+    align-self: flex-start;
+    background-color: transparent;
+}
+
+#gameslist-games__search::placeholder {
+    color: white;
+}
+
+.gameslist-game__add-btn {
+    align-self: self-start;
+    margin-top: 11px;
 }
 
 .gameslist-game__add-btn,
 .gameslist-game__submit {
-    margin-left: 2%;
+    /* margin-left: 2%; */
     background-color: white;
     color: #8E43FC;
 }
@@ -119,10 +136,10 @@ body {
 .gameslist-game__bg-blur {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.65);
-    width: 356px;
+    width: 377px;
     height: 516px;
     z-index: -1;
-    left: -3%;
+    left: 18%;
     filter: blur(29px);
     /* -webkit-filter: blur(25px); */
     top: -9%;
@@ -132,7 +149,7 @@ body {
 .gameslist-games {
     display: flex;
     flex-wrap: wrap;
-    width: 97%;
+    width: 91%;
     margin-left: auto;
     margin-right: auto;
     justify-content: space-around;
@@ -171,13 +188,17 @@ body {
     margin-bottom: 33%;
 }
 
+.gameslist-game__img {
+    object-fit: cover;
+}
+
 .gameslist-game__img:hover {
     cursor: pointer;
 }
 
 .gameslist-game__img,
 .gameslist__search-game img {
-    width: 390px;
+    width: 302px;
     height: 220px;
 }
 
@@ -185,6 +206,9 @@ body {
     display: flex;
     justify-content: space-around;
     color: white;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .gameslist-game__rating label {
@@ -253,6 +277,10 @@ body {
 
 .gameslist-game__filter-btn {
     align-self: baseline;
+}
+
+.gameslist-game__filter__sort-btn {
+    width: 100%;
 }
 
 .gameslist-game p:hover {

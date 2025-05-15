@@ -14,6 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import leftArrow from "../../assets/arrow_left_purple.png";
 import rightArrow from "../../assets/arrow_right_purple.png";
+import searchIcon from "../../assets/search.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
 import upArrow from "../../assets/up-arrow.png";
@@ -413,7 +414,7 @@ export default function Profile (match) {
             gamesList = <h2 className="user-game__no-results">No Games Found in this Category</h2>
         } else {
             gamesList = games.map(game => {
-                return <Col xl={3} lg={4} sm={6} xs={12}>
+                return <Col xl={3} lg={4} sm={6} xs={12} className="mt-5 mb-5">
                     <Row className="user-game d-flex flex-column me-2">
                         <div class="user-game__bg-blur">
 
@@ -516,7 +517,7 @@ export default function Profile (match) {
                         </div>
                     </div>
                 </div>
-                <div className="user-game__filter-sorting mb-4 mt-4">
+                <div className="user-game__filter-sorting mb-4 mt-4 mx-auto">
                     <div>
                         {/* <select onChange={(e) => {
                             setGameState(e.target.value);
@@ -528,11 +529,11 @@ export default function Profile (match) {
                             <option value="completed">Completed</option>
                             <option value="dropped">Dropped</option>
                         </select> */}
-                        <h3 className="text-light">State</h3>
+                        {/* <h3 className="text-light">State</h3> */}
                         <Dropdown 
                             className="gameslist-game__filter-btn"
                             as={ButtonGroup}>
-                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameState.toUpperCase() === "" ? "State" : gameState.toUpperCase()}</Button>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameState.toUpperCase() === "ALL" ? "STATE" : gameState.toUpperCase()}</Button>
 
                             <Dropdown.Toggle 
                                 split variant="success" 
@@ -561,7 +562,7 @@ export default function Profile (match) {
                         </Dropdown>
                     </div>
                     <div>
-                        <h3 className="text-light">Sort By</h3>
+                        {/* <h3 className="text-light">Sort By</h3> */}
                         {/* <form>
                             <select id="sort-direction" onChange={(e) => {
                                 setSortDirection(e.target.value);
@@ -578,9 +579,9 @@ export default function Profile (match) {
                             </select>
                         </form> */}
                         <Dropdown 
-                            className="gameslist-game__filter-btn"
+                            className="gameslist-game__filter-btn gameslist-game__filter__sort-btn"
                             as={ButtonGroup}>
-                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortFocus.toUpperCase() === "" ? "Sort" : sortFocus.toUpperCase()}</Button>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortFocus.toUpperCase() === "ALPHA" ? "SORT BY" : sortFocus.toUpperCase()}</Button>
 
                             <Dropdown.Toggle 
                                 split variant="success" 
@@ -603,7 +604,7 @@ export default function Profile (match) {
                         </Dropdown>
                     </div>
                     <div>
-                        <h3 className="text-light">Game Type</h3>
+                        {/* <h3 className="text-light">Game Type</h3> */}
                         <Modal 
                             className=""
                             show={showModal}
@@ -707,7 +708,7 @@ export default function Profile (match) {
                         <Dropdown 
                             className="gameslist-game__filter-btn"
                             as={ButtonGroup}>
-                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameType.toUpperCase() === "" ? "All" : gameType.toUpperCase()}</Button>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameType.toUpperCase() === "ALL" ? "FILTER" : gameType.toUpperCase()}</Button>
 
                             <Dropdown.Toggle 
                                 split variant="success" 
@@ -745,7 +746,7 @@ export default function Profile (match) {
                         </Dropdown>
                     </div>
                     <div className="gameslist-game__filter-container">
-                        <h3 className="gameslist-game__filter-label">Direction</h3>
+                        {/* <h3 className="gameslist-game__filter-label">Order</h3> */}
                             <div>
                                 {sortDirection === "ascending" && <Image 
                                     src={upArrow}
@@ -775,23 +776,23 @@ export default function Profile (match) {
                     </form> */}
                      <div className="w-25">
                         {/* <h3 className="text-light">Search</h3> */}
-                        <Form className="w-100 user-game__search__form">
+                        <Form className="w-100 user-game__search__form d-flex align-items-baseline justify-content-around">
                             <Form.Control  
                                 type="text"
-                                className="w-100"
+                                className="w-75 user-game__search"
                                 placeholder="Submit search to filter or sort" 
                                 onChange={(e) => {
                                 setSearch(e.target.value);
                             }}/>
                         <Button
                             variant="light" 
-                            className='btn btn-primary mt-4 user-game__sort'
+                            className='btn btn-primary mt-4 user-game__sort gameslist-game__submit'
                             onClick={(e) => {
                                 e.preventDefault();
                                 getFilteredGames();
                                 setPage(1);
                             }}>
-                            Submit
+                            <img src={searchIcon} alt="magnifying glass search icon" />
                         </Button>
                         </Form>
                     </div>

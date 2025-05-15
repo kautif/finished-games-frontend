@@ -82,6 +82,7 @@
 .search-result__add-game-flex {
     display: flex;
     justify-content: space-around;
+    width: 88%;
 }
 
 .search-game .search__btn,
@@ -173,6 +174,7 @@
     border-radius: 4px;
     box-shadow: 2px 3px 5px 2px #313030;
     margin-top: 4%;
+    width: 68%;
 }
 
 .custom-game-container form{

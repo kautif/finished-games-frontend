@@ -267,7 +267,7 @@ export default function Search () {
     retrievedGames = games.map((game, i) => {
         // let noNudity = game.tags.filter(tag => tag.slug !== "nudity");
         // console.log("no nudity: ", noNudity);
-            return <Col xl={3} 
+            return <Col xl={4} 
             lg={4} 
             sm={6} 
             xs={12}

@@ -20,6 +20,7 @@ import { setShowGame, setShowSearch, setShowDiscover } from "../../redux/gamesSl
 import './Gameslist.css';
 
 import leftArrow from "../../assets/arrow_left_purple.png";
+import searchIcon from "../../assets/search.png";
 import rightArrow from "../../assets/arrow_right_purple.png";
 import upArrow from "../../assets/up-arrow.png";
 import downArrow from "../../assets/down-arrow.png";
@@ -687,11 +688,11 @@ export default function Gameslist (){
                         className="gameslist-game__add-btn" 
                         onClick={() => dispatch(setShowDiscover(true))}>Add Game</Button>
                         <div className="gameslist-game__filter-container">
-                            <p className="gameslist-game__filter-label">State</p>
+                            {/* <p className="gameslist-game__filter-label">State</p> */}
                             <Dropdown 
                                 className="gameslist-game__filter-btn"
                                 as={ButtonGroup}>
-                                <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameState.toUpperCase() === "" ? "State" : gameState.toUpperCase()}</Button>
+                                <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameState.toUpperCase() === "ALL" ? "STATE" : gameState.toUpperCase()}</Button>
 
                                 <Dropdown.Toggle 
                                     split variant="success" 
@@ -721,11 +722,11 @@ export default function Gameslist (){
                         </div>
 
                         <div className="gameslist-game__filter-container">
-                        <p className="gameslist-game__filter-label">Type</p>
+                        {/* <p className="gameslist-game__filter-label">Type</p> */}
                         <Dropdown 
                             className="gameslist-game__filter-btn"
                             as={ButtonGroup}>
-                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameType.toUpperCase() === "" ? "All" : gameType.toUpperCase()}</Button>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameType.toUpperCase() === "ALL" ? "FILTER" : gameType.toUpperCase()}</Button>
 
                             <Dropdown.Toggle 
                                 split variant="success" 
@@ -764,11 +765,11 @@ export default function Gameslist (){
                         </div>
 
                     <div className="gameslist-game__filter-container">
-                    <p className="gameslist-game__filter-label">Sort By</p>
+                    {/* <p className="gameslist-game__filter-label">Sort By</p> */}
                     <Dropdown 
-                        className="gameslist-game__filter-btn"
+                        className="gameslist-game__filter-btn gameslist-game__filter__sort-btn "
                         as={ButtonGroup}>
-                        <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortFocus.toUpperCase() === "" ? "Sort" : sortFocus.toUpperCase()}</Button>
+                        <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortFocus.toUpperCase() === "ALPHA" ? "SORT BY" : sortFocus.toUpperCase()}</Button>
 
                         <Dropdown.Toggle 
                             split variant="success" 
@@ -792,7 +793,7 @@ export default function Gameslist (){
                     </div>
                     
                     <div className="gameslist-game__filter-container">
-                    <p className="gameslist-game__filter-label">Direction</p>
+                    {/* <p className="gameslist-game__filter-label">Order</p> */}
                         <div>
                             {sortDirection === "ascending" && <Image 
                                 src={upArrow}
@@ -812,12 +813,13 @@ export default function Gameslist (){
                             />}
                         </div>
                     </div>
-                    <div className="gameslist-game__filter-container">
-                        <p className="gameslist-game__filter-label">Search</p>
+                    <div className="gameslist-game__filter-container filter-container__search">
+                        {/* <p className="gameslist-game__filter-label">Search</p> */}
                         <Form className="gameslist-games__search-container">
                             <Form.Control 
-                                id="gameslist-games__search" 
+                                id="gameslist-games__search"
                                 type="text" 
+                                placeholder="Search"
                                 onChange={(e) => {
                                 setSearch(e.target.value);
                             }}/>
@@ -825,13 +827,13 @@ export default function Gameslist (){
                         </Form>
                     </div>
                     <Button 
-                        className='btn btn-primary mt-4 gameslist-game__filter-btn gameslist-game__submit'
+                        className='btn btn-primary gameslist-game__filter-btn gameslist-game__submit'
                         onClick={(e) => {
                             e.preventDefault();
                             getFilteredGames();
                             setPage(1);
                         }}>
-                        Submit
+                        <img src={searchIcon} alt="search magnifying glass" />
                     </Button>
                     {<GameData 
                             gamesObj={gamesObj}
@@ -955,7 +957,7 @@ export default function Gameslist (){
                         {/* <div className="gameslist-games">
                             {gamesList}
                         </div> */}
-                        <Container className="gameslist-games">
+                        <div className="gameslist-games">
                             {gamesList}
                             <div className="gameslist-results__pages">
                                 <img className="gameslist-results__pages__nav" src={firstPage} alt="first gameslist page" onClick={() => {
@@ -989,7 +991,7 @@ export default function Gameslist (){
                                         setPage(prevPage => parseInt(lastPage));
                                 }} />
                             </div>
-                        </Container>
+                        </div>
                     </div>
         </div>
     )
