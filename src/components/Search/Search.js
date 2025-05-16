@@ -273,7 +273,7 @@ export default function Search () {
             xs={12}
             key={i}>
                 <Row className="search-game">
-                    <h2 className="search-game__name text-center">{game.name}</h2>
+                    <h2 className="search-game__name">{game.name}</h2>
                     <img className="search-game__img" src={game.background_image === null ? otherCart : game.background_image} alt={game.name + " image"} onLoad={() => setImagesLoaded((prevImages) => prevImages + 1)}/>
     {userGameNames.includes(game.name) ? <p className="search-result__added text-center">Added</p> : 
         <div className="search-result__add-game-flex">

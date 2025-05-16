@@ -615,7 +615,7 @@ export default function Profile (match) {
                             <div className="user-game__modal-container">
 
                             <Modal.Header>
-                                <Modal.Title className="text-center mx-auto">
+                                <Modal.Title className="text-center ml-auto">
                                     {title}
                                 </Modal.Title>
                             </Modal.Header>

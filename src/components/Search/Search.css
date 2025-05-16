@@ -40,12 +40,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 378px;
+    /* width: 378px; */
+    width: 73%;
     white-space: wrap;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 90px;
     font-size: 2em;
+    text-align: left;
 }
 
 .search-game, .profile-game {

@@ -850,7 +850,7 @@ export default function Gameslist (){
                                         onHide={() => {
                                             handleClose();
                                         }}>
-                                    <Modal.Header className="mx-auto border-bottom-0">
+                                    <Modal.Header className="ml-auto border-bottom-0">
                                         <Modal.Title>
                                             {gameName}
                                         </Modal.Title>

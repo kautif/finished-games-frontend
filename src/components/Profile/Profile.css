@@ -112,7 +112,8 @@
 .user-game__title {
     display: flex;
     /* flex-direction: column; */
-    text-align: center;
+    /* text-align: center; */
+    text-align: left;
     width: 378px;
     white-space: wrap;
     overflow: hidden;
