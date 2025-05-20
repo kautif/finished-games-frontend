@@ -639,7 +639,7 @@ export default function Profile (match) {
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="user-game__summary">{gameSummary}</p>
+                                    <p className="profile-game__summary">{gameSummary}</p>
                                 </div>
                             </Modal.Body>
                             <Modal.Footer>

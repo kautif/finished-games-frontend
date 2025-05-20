@@ -150,6 +150,17 @@
     font-family: Roboto;
 }
 
+.profile-game__summary {
+    color: white;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 125px;
+    border: 2px solid white;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
 .user-game__rating {
     display: flex;
     justify-content: space-around;
