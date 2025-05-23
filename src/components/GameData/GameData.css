@@ -48,7 +48,7 @@ tr:nth-child(even) {
     text-align: right;
     margin-right: 5%;
     text-decoration: underline;
-    color: rgb(238, 242, 7);
+    color: #00F0FF;
 }
 
 #game-data__more-details:hover, #game-data__less-details:hover {

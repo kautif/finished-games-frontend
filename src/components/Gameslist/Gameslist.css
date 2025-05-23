@@ -64,7 +64,7 @@ body {
 .gameslist-games__filters {
     display: flex;
     justify-content: space-around;
-    width: 80%;
+    width: 81%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -136,10 +136,10 @@ body {
 .gameslist-game__bg-blur {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.65);
-    width: 377px;
+    width: 383px;
     height: 516px;
     z-index: -1;
-    left: 18%;
+    left: 16%;
     filter: blur(29px);
     /* -webkit-filter: blur(25px); */
     top: -9%;
@@ -198,7 +198,7 @@ body {
 
 .gameslist-game__img,
 .gameslist__search-game img {
-    width: 302px;
+    width: 54%;
     height: 220px;
 }
 

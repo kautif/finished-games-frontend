@@ -419,7 +419,6 @@ export default function Profile (match) {
                         <div class="user-game__bg-blur">
 
                         </div>
-                        <h2 className="user-game__title">{game.name.toUpperCase()}</h2>
                         <Image className="user-game__img align-self-center mb-4"
                             src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
                             onClick={() => {
@@ -431,6 +430,7 @@ export default function Profile (match) {
                             setGameRating(game.rating);
                             setGameDate(new Date(game.date_added).toDateString().substring(4));
                         }} />
+                        <h2 className="user-game__title">{game.name.toUpperCase()}</h2>
                             {/* <Image src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded /> */}
                         <div className="user-game__date-flex">
                             <div className="user-game__date-container">
