@@ -20,6 +20,10 @@
 }
 
 .search-game__type__option {
+    color: black;
+}
+
+.search-game__type__option:hover {
     color: white;
     background-color: #8E43FC;
 }
@@ -191,11 +195,15 @@
 .custom-game__field {
     margin-top: 2.5%;
     margin-bottom: 2.5%;
+    color: white;
 }
 
 #custom-game__game-type {
     display: flex;
     justify-content: space-around;
+    flex-direction: column;
+    color: white;
+    align-items: center;
 }
 
 #custom-game__notif {

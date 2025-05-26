@@ -370,7 +370,7 @@ export default function Search () {
                     <Form.Control className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" value={title} placeholder="Title can't be empty" onChange={(e) => {
                         setTitle(e.target.value);
                     }}/>
-                    <div className="custom-game__field">
+                    <div className="custom-game__field d-flex justify-content-between">
                         <label>Date:</label>
                         {/* <Form.Control className="custom-game__date" type="date" name="date-added" selected={date} onChange={(e) => {
                             setDate(prevDate => e.target.value);
