@@ -776,7 +776,12 @@ export default function Profile (match) {
                     </form> */}
                      <div className="w-25">
                         {/* <h3 className="text-light">Search</h3> */}
-                        <Form className="w-100 user-game__search__form d-flex align-items-baseline justify-content-around">
+                        <Form 
+                            className="w-100 user-game__search__form d-flex align-items-baseline justify-content-around"
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                getFilteredGames();
+                            }}>
                             <Form.Control  
                                 type="text"
                                 className="w-75 user-game__search"
@@ -792,7 +797,11 @@ export default function Profile (match) {
                                 getFilteredGames();
                                 setPage(1);
                             }}>
-                            <img src={searchIcon} alt="magnifying glass search icon" />
+                            <img    src={searchIcon} 
+                                    alt="magnifying glass search icon"
+                                    onClick={() => {
+                                        getFilteredGames();
+                                    }}/>
                         </Button>
                         </Form>
                     </div>

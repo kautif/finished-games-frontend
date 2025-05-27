@@ -95,6 +95,10 @@ body {
     margin-bottom: 3px;
 }
 
+#gameslist-games__search.form-control {
+    color: white;
+}
+
 .gameslist-game__filter__sort-arrow {
     width: 34%;
 }

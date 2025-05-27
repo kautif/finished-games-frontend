@@ -815,7 +815,13 @@ export default function Gameslist (){
                     </div>
                     <div className="gameslist-game__filter-container filter-container__search">
                         {/* <p className="gameslist-game__filter-label">Search</p> */}
-                        <Form className="gameslist-games__search-container">
+                        <Form 
+                            className="gameslist-games__search-container"
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                getFilteredGames();
+                            }}
+                            >
                             <Form.Control 
                                 id="gameslist-games__search"
                                 type="text" 
@@ -833,7 +839,7 @@ export default function Gameslist (){
                             getFilteredGames();
                             setPage(1);
                         }}>
-                        <img src={searchIcon} alt="search magnifying glass" />
+                        <img src={searchIcon} alt="search magnifying glass" onClick={() => getFilteredGames()}/>
                     </Button>
                     {<GameData 
                             gamesObj={gamesObj}

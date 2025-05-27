@@ -33,6 +33,11 @@
 
 .user-game__search__form {
     font-family: Roboto;
+    color: white;
+}
+
+.user-game__search.form-control {
+    color: white;
 }
 
 .user-game__search {
