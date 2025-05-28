@@ -198,6 +198,10 @@
     color: white;
 }
 
+#custom-game__summary {
+    color: black;
+}
+
 #custom-game__game-type {
     display: flex;
     justify-content: space-around;
