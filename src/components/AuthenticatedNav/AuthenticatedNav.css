@@ -101,3 +101,21 @@ p.auth-nav__link {
 p.auth-nav__link:hover {
     cursor: pointer;
 }
+
+@media (min-width: 375px) {
+    .auth-nav__profile-img-container {
+        width: 100%;
+    }
+
+    .auth-nav__logo {
+        height: 64px;
+    }
+
+    #auth-nav__profile-img {
+        width: 65px;
+    }
+
+    .auth-nav {
+        width: 100%;
+    }
+}

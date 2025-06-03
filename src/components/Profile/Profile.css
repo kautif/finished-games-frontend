@@ -64,7 +64,7 @@
     width: 100%;
     height: 113%;
     z-index: -1;
-    left: 6%;
+    left: 0%;
     filter: blur(29px);
     /* -webkit-filter: blur(25px); */
     top: -9%;
@@ -400,3 +400,28 @@
         margin-right: auto;
     }
 } */
+
+@media (min-width: 375px) {
+    .profile-intro-flex {
+        flex-direction: column-reverse;
+    }
+
+    .profile-intro-flex__user__name {
+        flex-direction: column;
+    }
+
+    .profile-intro-flex__user__name img {
+        align-self: center;
+    }
+
+    .profile-intro__action {
+        width: 100%;
+    }
+
+    .game-data-container {
+        width: 97%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 6%;
+    }
+}

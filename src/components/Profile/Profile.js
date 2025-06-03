@@ -447,7 +447,6 @@ export default function Profile (match) {
                             </div>
                         </div>
                         <div className="user-game__summary-container">
-                            <h3>Comments</h3>
                             <p className="user-game__summary">{game.summary}</p>
                         </div>
                             <p className="user-game__readmore" onClick={() => {
