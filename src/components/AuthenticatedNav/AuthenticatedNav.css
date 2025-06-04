@@ -118,4 +118,8 @@ p.auth-nav__link:hover {
     .auth-nav {
         width: 100%;
     }
+
+    .auth-nav__link {
+        font-size: 1.7em;
+    }
 }

@@ -380,3 +380,32 @@ body {
 .modal-btn:hover {
     cursor: pointer;
 }
+
+@media (min-width: 375px) and (max-width: 810px) {
+    .gameslist-games__filters {
+        /* flex-direction: column; */
+        flex-wrap: wrap;
+    }
+
+    .gameslist-game__add-btn {
+        width: 40%;
+        align-self: center;
+    }
+
+    .gameslist-game__filter-container {
+        width: 40%;
+    }
+
+    .gameslist-game__img, .gameslist__search-game img {
+        width: 78%;
+    }
+
+    .gameslist-game__title {
+        width: 70%;
+        font-size: 1.7em;
+    }
+
+    .gameslist__game-info-flex {
+        width: 85%;
+    }
+}

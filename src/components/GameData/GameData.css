@@ -62,12 +62,20 @@ tr:nth-child(even) {
     }
 }
 
-@media (min-width: 300px) and (max-width: 767px) {
+@media (min-width: 300px) and (max-width: 811px) {
     td, th {
         font-size: 0.75em;
     }
 
+    .game-data-container {
+        width: 100%;
+    }
+
     #game-data__simplfied-flex {
         width: 100%;
+    }
+
+    .game-data__simplfied-flex-item {
+        width: 44%;
     }
 }
