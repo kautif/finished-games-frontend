@@ -102,7 +102,7 @@ p.auth-nav__link:hover {
     cursor: pointer;
 }
 
-@media (min-width: 375px) {
+@media (min-width: 375px) and (max-width: 810px) {
     .auth-nav__profile-img-container {
         width: 100%;
     }

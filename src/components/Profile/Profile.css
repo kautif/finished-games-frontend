@@ -401,7 +401,7 @@
     }
 } */
 
-@media (min-width: 375px) {
+@media (min-width: 375px) and (max-width: 811px) {
     .profile-intro-flex {
         flex-direction: column-reverse;
     }
