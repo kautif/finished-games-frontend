@@ -418,6 +418,21 @@
         width: 100%;
     }
 
+    .user-game__filter-sorting {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        flex-wrap: wrap;;
+    }
+
+    .user-game__filter-sorting__flex-item {   
+        width: 40%;
+     }
+
+     .user-game__filter-sorting__flex-item__search {
+        width: 75% !important;
+     }
+
     .game-data-container {
         width: 97%;
         margin-left: auto;

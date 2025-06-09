@@ -517,7 +517,7 @@ export default function Profile (match) {
                     </div>
                 </div>
                 <div className="user-game__filter-sorting mb-4 mt-4 mx-auto">
-                    <div>
+                    <div className="user-game__filter-sorting__flex-item">
                         {/* <select onChange={(e) => {
                             setGameState(e.target.value);
                         }} className="user-games__filter">
@@ -560,7 +560,7 @@ export default function Profile (match) {
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
-                    <div>
+                    <div className="user-game__filter-sorting__flex-item">
                         {/* <h3 className="text-light">Sort By</h3> */}
                         {/* <form>
                             <select id="sort-direction" onChange={(e) => {
@@ -602,7 +602,7 @@ export default function Profile (match) {
                             
                         </Dropdown>
                     </div>
-                    <div>
+                    <div className="user-game__filter-sorting__flex-item">
                         {/* <h3 className="text-light">Game Type</h3> */}
                         <Modal 
                             className=""
@@ -744,7 +744,7 @@ export default function Profile (match) {
                             
                         </Dropdown>
                     </div>
-                    <div className="gameslist-game__filter-container">
+                    <div className="gameslist-game__filter-container user-game__filter-sorting__flex-item">
                         {/* <h3 className="gameslist-game__filter-label">Order</h3> */}
                             <div>
                                 {sortDirection === "ascending" && <Image 
@@ -773,7 +773,7 @@ export default function Profile (match) {
                         }}/>
 
                     </form> */}
-                     <div className="w-25">
+                     <div className="w-25 user-game__filter-sorting__flex-item user-game__filter-sorting__flex-item__search">
                         {/* <h3 className="text-light">Search</h3> */}
                         <Form 
                             className="w-100 user-game__search__form d-flex align-items-baseline justify-content-around"
