@@ -90,8 +90,9 @@
 }
 
 .user-game__img {
-    width: 67%;
-    height: 220px;
+    width: 77%;
+    /* height: 220px; */
+    aspect-ratio: 16/9;
     object-fit: cover;
 }
 
@@ -431,6 +432,10 @@
 
      .user-game__filter-sorting__flex-item__search {
         width: 75% !important;
+     }
+
+     .profile-intro-flex__user__name h1 {
+        align-self: center !important;
      }
 
     .game-data-container {

@@ -203,7 +203,8 @@ body {
 .gameslist-game__img,
 .gameslist__search-game img {
     width: 54%;
-    height: 220px;
+    /* height: 220px; */
+    aspect-ratio: 16/9;
 }
 
 .gameslist__game-info-flex {
