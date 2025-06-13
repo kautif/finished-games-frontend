@@ -79,3 +79,15 @@ tr:nth-child(even) {
         width: 44%;
     }
 }
+
+@media (min-width: 811px) {
+    .game-data-container {
+        width: 54%;
+    }
+}
+
+@media (min-width: 1368px) {
+    .game-data-container {
+        width: 29%;
+    }
+}

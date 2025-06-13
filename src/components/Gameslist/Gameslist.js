@@ -829,18 +829,17 @@ export default function Gameslist (){
                                 onChange={(e) => {
                                 setSearch(e.target.value);
                             }}/>
-                            
+                        <Button 
+                            className='btn btn-primary gameslist-game__filter-btn gameslist-game__submit'
+                            onClick={(e) => {
+                                e.preventDefault();
+                                getFilteredGames();
+                                setPage(1);
+                            }}>
+                            <img src={searchIcon} alt="search magnifying glass" onClick={() => getFilteredGames()}/>
+                        </Button>
                         </Form>
                     </div>
-                    <Button 
-                        className='btn btn-primary gameslist-game__filter-btn gameslist-game__submit'
-                        onClick={(e) => {
-                            e.preventDefault();
-                            getFilteredGames();
-                            setPage(1);
-                        }}>
-                        <img src={searchIcon} alt="search magnifying glass" onClick={() => getFilteredGames()}/>
-                    </Button>
                     {<GameData 
                             gamesObj={gamesObj}
                         />}
