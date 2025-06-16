@@ -404,6 +404,12 @@ body {
         width: 78%;
     }
 
+    .gameslist-game__bg-blur {
+        width: 83%;
+        height: 89%;
+        left: 8%;
+    }
+
     .gameslist-game__title {
         width: 70%;
         font-size: 1.7em;
@@ -421,6 +427,12 @@ body {
 
     .gameslist-game__add-btn {
         width: 16%;
+    }
+
+    .gameslist-game__bg-blur {
+        width: 83%;
+        height: 89%;
+        left: 8%;
     }
 }
 
