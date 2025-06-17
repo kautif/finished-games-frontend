@@ -78,6 +78,10 @@ tr:nth-child(even) {
     .game-data__simplfied-flex-item {
         width: 44%;
     }
+
+    .gameslist-game__filter-container.filter-container__search {
+        width: 60%;
+    }
 }
 
 @media (min-width: 811px) {

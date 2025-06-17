@@ -58,3 +58,13 @@
 #free-solo-2-demo {
     z-index: 1;
 }
+
+@media (min-width: 375px) and (max-width: 810px) {
+    .find-user__search {
+        width: 100%;
+    }
+
+    .find-user__results {
+        justify-content: center;
+    }
+}
