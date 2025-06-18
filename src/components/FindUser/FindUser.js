@@ -253,8 +253,8 @@ export default function FindUser () {
                 </div>
                 {foundUsers.map(foundUser => {
                     return (
-                        <Row className="mx-5 find-user__user-container">
-                            <div class="gameslist-game__bg-blur">
+                        <div className="mx-5 find-user__user-container">
+                            <div class="find-user__bg-blur">
 
                             </div>
                             <Col>
@@ -262,7 +262,7 @@ export default function FindUser () {
                                 <Image src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>
                                 <a class="found-user__link" href={`/${foundUser.twitchName}`}><p className="found-user__btn mt-3">See Profile</p></a>
                             </Col>
-                        </Row>
+                        </div>
                     )
                 })}
                 {noResults && "no results found"}

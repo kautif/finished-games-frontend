@@ -12,6 +12,19 @@
     padding-bottom: 10%;
 }
 
+.find-user__bg-blur {   
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.65);
+    width: 23em;
+    height: 93%;
+    z-index: -1;
+    left: -11%;
+    filter: blur(29px);
+    -webkit-filter: blur(25px);
+    top: 9%;
+    opacity: 0.65;
+}
+
 .find-results__pages {
     position: fixed;
     bottom: 0;
