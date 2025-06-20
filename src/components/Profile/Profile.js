@@ -433,15 +433,15 @@ export default function Profile (match) {
                         <h2 className="user-game__title">{game.name.toUpperCase()}</h2>
                             {/* <Image src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded /> */}
                         <div className="user-game__date-flex">
-                            <div className="user-game__date-container">
+                            <div className="user-game__date-container user-game__date-flex-item">
                                 <p className="user-game__date__label">Date:</p>
                                 <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
                             </div>
-                            <div className="user-game__status-container">
+                            <div className="user-game__status-container user-game__date-flex-item">
                                 <p className="user-game__status__label">Game Status</p>
                                 <p className="user-game__status">{game.rank.toUpperCase()}</p>
                             </div>
-                            <div className="user-game__rating d-flex flex-column mb-0">
+                            <div className="user-game__rating user-game__date-flex-item d-flex flex-column mb-0">
                                 <p className="mb-0">Rating: </p>
                                 <p className={`user-game__rating__num ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>    
                             </div>
@@ -501,9 +501,33 @@ export default function Profile (match) {
                     <div className="profile-intro-flex__user">
                         <div className="profile-intro-flex__user__name">
                             <img className="w-25" src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
-                            <h1 className="align-self-end text-light text-uppercase">{user.twitch_default}</h1>
+                            <div className="d-flex">
+                                <h1 className="align-self-end text-light text-uppercase">{user.twitch_default}</h1>
+                                <Dropdown 
+                                    className="user-game__socials-btn align-self-end"
+                                    as={ButtonGroup}>
+                                    <Button className="user-game__socials-dropdown-btn" variant="success"></Button>
+
+                                    <Dropdown.Toggle 
+                                        split variant="success" 
+                                        className="dropdown-split"
+                                        id="user-game__socials-dropdown-split-basic" />
+
+                                    <Dropdown.Menu >
+                                        <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
+                                        <Dropdown.Item 
+                                                className="share-profile-btn"
+                                                onClick={() => notifyShareProfile()}><option>Share</option></Dropdown.Item>
+                                        <Dropdown.Item
+                                                onClick={() => {
+                                                localStorage.setItem("reportUser", user.twitch_default);
+                                                window.location.pathname = "/report";
+                                            }}><option>Report</option></Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </div>
                         </div>
-                        <div className="profile-intro__action float-start ml-5">
+                        {/* <div className="profile-intro__action float-start ml-5">
                             <p  className="text-light"
                                 onClick={() => {
                                 localStorage.setItem("reportUser", user.twitch_default);
@@ -513,7 +537,7 @@ export default function Profile (match) {
                                 variant="light" 
                                 className="share-profile-btn"
                                 onClick={() => notifyShareProfile()}>Share Profile</Button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="user-game__filter-sorting mb-4 mt-4 mx-auto">

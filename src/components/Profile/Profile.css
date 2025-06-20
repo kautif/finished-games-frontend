@@ -24,11 +24,14 @@
     font-family: Roboto;
 }
 
-.share-profile-btn, 
 .user-game__sort,
 .user-game__modal__close-btn {
     color: #8E43FC;
     font-family: Roboto;
+}
+
+.user-game__socials-dropdown-btn {
+    display: none;
 }
 
 .user-game__search__form {
@@ -199,6 +202,10 @@
     align-items: center;
     width: 100%;
     color: white;
+}
+
+.user-game__date-flex-item {
+    width: 33%;
 }
 
 .user-game__status__label {

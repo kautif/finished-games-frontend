@@ -620,15 +620,15 @@ export default function Gameslist (){
                                     />
                                 <h2 className="gameslist-game__title mx-auto">{game.name.toUpperCase()}</h2>
                                 <div className="gameslist__game-info-flex">
-                                    <div className="gameslist-game__date-container flex-column justify-content-around">
+                                    <div className="gameslist-game__date-container gameslist__game-info-flex-item flex-column justify-content-around">
                                         <label>Date:</label>
                                         <p className="gameslist-game__detail">{`${month}/${day}/${year}`}</p>
                                     </div>
-                                    <div className="gameslist-game__status flex-column justify-content-around">
+                                    <div className="gameslist-game__status gameslist__game-info-flex-item flex-column justify-content-around">
                                         <label>Game Status</label>
                                         <p className="gameslist-game__detail">{(game.rank).toUpperCase()}</p>
                                     </div>
-                                    <div className="gameslist-game__rating flex-column justify-content-around">
+                                    <div className="gameslist-game__rating gameslist__game-info-flex-item flex-column justify-content-around">
                                         <label>Rating: </label>
                                         <p className={`user-game__rating__num gameslist-game__detail ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>
                                     </div>

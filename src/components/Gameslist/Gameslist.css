@@ -214,9 +214,10 @@ body {
     display: flex;
     justify-content: space-around;
     color: white;
-    width: 75%;
+    width: 56%;
     margin-left: auto;
     margin-right: auto;
+    flex-wrap: wrap;
 }
 
 .gameslist-game__rating label {
@@ -420,6 +421,13 @@ body {
     }
 }
 
+@media (min-width: 584px) and (max-width: 1610px) {
+    .gameslist__game-info-flex-item {
+        width: 50%;
+    }
+}
+
+
 @media (min-width: 811px) {
     .gameslist-games__filters {
         flex-wrap: wrap;
@@ -444,5 +452,11 @@ body {
 
     .gameslist-games__filters {
         flex-wrap: unset;
+    }
+}
+
+@media (min-width: 1611px) {
+    .gameslist__game-info-flex-item {
+        width: 33%;
     }
 }
