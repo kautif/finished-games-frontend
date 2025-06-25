@@ -19,9 +19,9 @@ import { setShowGame, setShowSearch, setShowDiscover } from "../../redux/gamesSl
 
 import './Gameslist.css';
 
-import leftArrow from "../../assets/arrow_left_purple.png";
+import leftArrow from "../../assets/left-arrow.png";
 import searchIcon from "../../assets/search.png";
-import rightArrow from "../../assets/arrow_right_purple.png";
+import rightArrow from "../../assets/right-arrow.png";
 import upArrow from "../../assets/up-arrow.png";
 import downArrow from "../../assets/down-arrow.png";
 import firstPage from "../../assets/first.png";

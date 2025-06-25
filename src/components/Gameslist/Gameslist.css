@@ -1,3 +1,7 @@
+@font-face {
+  font-family: CFMontreal;
+  src: url("../../assets/fonts/CfMontrealHighSchoolRegular-WK4Y.ttf");
+}
 
 body {
     background-image: url('../../assets/static_bg_v1.jpg');
@@ -238,6 +242,7 @@ body {
 
 .user-game__rating__num {
     font-size: 2em;
+    font-family: CFMontreal;
 }
 
 #gameslist-game-flex-container {

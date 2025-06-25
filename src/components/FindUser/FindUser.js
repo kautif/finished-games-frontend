@@ -7,8 +7,8 @@ import Col from 'react-bootstrap/Col';
 import Image from "react-bootstrap/Image";
 import Form from 'react-bootstrap/Form';
 
-import leftArrow from "../../assets/arrow_left_purple.png";
-import rightArrow from "../../assets/arrow_right_purple.png";
+import leftArrow from "../../assets/left-arrow.png";
+import rightArrow from "../../assets/right-arrow.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
 
@@ -259,7 +259,7 @@ export default function FindUser () {
                             </div>
                             <Col>
                                 <h1 className="mt-4 find-user__head text-light">{foundUser.twitch_default}</h1>
-                                <Image src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>
+                                <Image className="w-50" src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>
                                 <a class="found-user__link" href={`/${foundUser.twitchName}`}><p className="found-user__btn mt-3">See Profile</p></a>
                             </Col>
                         </div>

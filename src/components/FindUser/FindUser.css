@@ -56,7 +56,10 @@
     border-radius: 4px;
     box-shadow: 2px 3px 5px 2px #313030;
     font-family: vt323;
-    font-size: 2em;
+    font-size: 1.6em;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .found-user__link {

@@ -83,6 +83,14 @@
     justify-content: center;
 }
 
+.rdp-chevron {
+    fill: #FCB500 !important;
+}
+
+.rdp-today {
+    color: #FCB500 !important;
+}
+
 .my-weekend {
     color: #ea0808 !important; /* amber-500 */
     font-weight: bold;
