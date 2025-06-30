@@ -1,6 +1,6 @@
 @font-face {
-  font-family: CFMontreal;
-  src: url("../../assets/fonts/CfMontrealHighSchoolRegular-WK4Y.ttf");
+  font-family: SHARPIN;
+  src: url("../../assets/fonts/SHARPIN.otf");
 }
 
 body {
@@ -242,7 +242,7 @@ body {
 
 .user-game__rating__num {
     font-size: 2em;
-    font-family: CFMontreal;
+    font-family: SHARPIN;
 }
 
 #gameslist-game-flex-container {

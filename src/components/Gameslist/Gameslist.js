@@ -920,7 +920,7 @@ export default function Gameslist (){
                                 }}show={showDiscover}>
                                     <Modal.Header className="text-center">
                                         <Modal.Title id="discover__title-flex">
-                                            <h1>Discover</h1>
+                                            <h1>Add Game</h1>
                                         </Modal.Title>
                                         {showGame && <Button
                                                         variant="light" 
