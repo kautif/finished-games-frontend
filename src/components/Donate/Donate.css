@@ -1,10 +1,22 @@
+.donate__origin {
+    color: white;
+    font-family: Roboto;
+}
+
 .donate-container {
     color: white;
-    width: 50%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgba(0, 0, 0, 0.85);
+    /* background-color: rgba(0, 0, 0, 0.85); */
     padding: 2%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#kofiframe {
+    width: 25em;
+    height: 37em;
 }
 
 .donate-container h1,
@@ -14,4 +26,10 @@
 
 .donate-container p {
     font-family: Roboto;
+}
+
+.donate__justify {
+  background-color: rgba(0,0,0,0.85);
+  align-self: center;
+  padding: 3em;
 }

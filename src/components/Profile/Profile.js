@@ -500,7 +500,7 @@ export default function Profile (match) {
                     />
                     <div className="profile-intro-flex__user">
                         <div className="profile-intro-flex__user__name">
-                            <img className="w-25" src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
+                            <img src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
                             <div className="d-flex">
                                 <h1 className="align-self-end text-light text-uppercase">{user.twitch_default}</h1>
                                 <Dropdown 
@@ -514,7 +514,6 @@ export default function Profile (match) {
                                         id="user-game__socials-dropdown-split-basic" />
 
                                     <Dropdown.Menu >
-                                        <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
                                         <Dropdown.Item 
                                                 className="share-profile-btn"
                                                 onClick={() => notifyShareProfile()}><option>Share</option></Dropdown.Item>
