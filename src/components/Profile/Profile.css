@@ -6,10 +6,15 @@
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-around;
+    width: 95.8%;
 }
 
 .profile-intro-flex__user__name {
     display: flex;
+}
+
+.profile-intro-flex__user__name img {
+    margin-left: 6%;
 }
 
 .profile-intro-flex__user__name h1 {
@@ -22,6 +27,10 @@
 .profile-intro__action {
     margin-left: 4%;
     font-family: Roboto;
+}
+
+.game-data-container {
+    align-self: baseline;
 }
 
 .user-game__sort,
