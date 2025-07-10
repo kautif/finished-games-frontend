@@ -540,7 +540,8 @@ export default function Profile (match) {
                     </div>
                 </div>
                 <div className="user-game__filter-sorting mb-4 mt-4 mx-auto">
-                    <div className="user-game__filter-sorting__flex-item">
+                    <div className="d-flex">
+                        <div className="user-game__filter-sorting__flex-item">
                         {/* <select onChange={(e) => {
                             setGameState(e.target.value);
                         }} className="user-games__filter">
@@ -552,6 +553,9 @@ export default function Profile (match) {
                             <option value="dropped">Dropped</option>
                         </select> */}
                         {/* <h3 className="text-light">State</h3> */}
+                        <div>
+
+                        </div>
                         <Dropdown 
                             className="gameslist-game__filter-btn"
                             as={ButtonGroup}>
@@ -627,54 +631,7 @@ export default function Profile (match) {
                     </div>
                     <div className="user-game__filter-sorting__flex-item">
                         {/* <h3 className="text-light">Game Type</h3> */}
-                        <Modal 
-                            className=""
-                            show={showModal}
-                            backdrop={true}
-                            onHide={() => {
-                                handleClose();
-                            }}>
-                            <div className="user-game__modal-container">
-
-                            <Modal.Header>
-                                <Modal.Title className="text-center ml-auto">
-                                    {title}
-                                </Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Image
-                                    className="w-100 mb-3" 
-                                    src={gameImg}
-                                />
-                                <div className="user-game__status-container__modal">
-                                    <div className="user-game__detail-flex-item">
-                                        <p>Date: </p>
-                                        <p>{gameDate}</p>
-                                    </div>
-                                    <div className="user-game__detail-flex-item"> 
-                                        <p>Game Status:</p>
-                                        <p>{gameRank.toUpperCase()}</p>
-                                    </div>
-                                    <div className="user-game__detail-flex-item d-flex flex-column" >
-                                        <p className="mb-0">Rating:</p>
-                                        <p className={`user-game__rating__num ${gameRating > 0 && gameRating <= 3 ? "user-game__rating__red" : gameRating >= 5 && gameRating < 8 ? "user-game__rating__yellow" : gameRating >= 8 && gameRating <= 10 ? "user-game__rating__green" : ""}`}>{gameRating}</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p className="profile-game__summary">{gameSummary}</p>
-                                </div>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button 
-                                    variant="light"
-                                    className="btn btn-primary user-game__modal__close-btn"
-                                    onClick={() => {
-                                        setShowModal(false);
-                                    }}
-                                    >Close</Button>
-                            </Modal.Footer>
-                            </div>
-                        </Modal>
+                        
                         {/* {showModal && 
                         <div id="user-game__modal">
                             <p className="user-game__modal__close" onClick={() => {
@@ -788,6 +745,9 @@ export default function Profile (match) {
                                 />}
                             </div>
                     </div>
+                    
+                    </div>
+                    
                     {/* <form>
                         <h2>Search</h2>
                         <input id="gameslist-games__search" type="text" 
@@ -828,6 +788,54 @@ export default function Profile (match) {
                         </Form>
                     </div>
                 </div>
+                        <Modal 
+                            className=""
+                            show={showModal}
+                            backdrop={true}
+                            onHide={() => {
+                                handleClose();
+                            }}>
+                            <div className="user-game__modal-container">
+
+                            <Modal.Header>
+                                <Modal.Title className="text-center ml-auto">
+                                    {title}
+                                </Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Image
+                                    className="w-100 mb-3" 
+                                    src={gameImg}
+                                />
+                                <div className="user-game__status-container__modal">
+                                    <div className="user-game__detail-flex-item">
+                                        <p>Date: </p>
+                                        <p>{gameDate}</p>
+                                    </div>
+                                    <div className="user-game__detail-flex-item"> 
+                                        <p>Game Status:</p>
+                                        <p>{gameRank.toUpperCase()}</p>
+                                    </div>
+                                    <div className="user-game__detail-flex-item d-flex flex-column" >
+                                        <p className="mb-0">Rating:</p>
+                                        <p className={`user-game__rating__num ${gameRating > 0 && gameRating <= 3 ? "user-game__rating__red" : gameRating >= 5 && gameRating < 8 ? "user-game__rating__yellow" : gameRating >= 8 && gameRating <= 10 ? "user-game__rating__green" : ""}`}>{gameRating}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="profile-game__summary">{gameSummary}</p>
+                                </div>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button 
+                                    variant="light"
+                                    className="btn btn-primary user-game__modal__close-btn"
+                                    onClick={() => {
+                                        setShowModal(false);
+                                    }}
+                                    >Close</Button>
+                            </Modal.Footer>
+                            </div>
+                        </Modal>
                 <Stack gap={3} direction="horizontal" id="profile-results-container" className="profile-results" onClick={() => {
                     if (showModal) {
                         setShowModal(false);
