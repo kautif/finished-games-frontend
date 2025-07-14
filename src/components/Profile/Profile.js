@@ -559,13 +559,12 @@ export default function Profile (match) {
                         <Dropdown 
                             className="gameslist-game__filter-btn"
                             as={ButtonGroup}>
-                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameState.toUpperCase() === "ALL" ? "STATE" : gameState.toUpperCase()}</Button>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">State: {gameState.toUpperCase()}</Button>
 
                             <Dropdown.Toggle 
                                 split variant="success" 
                                 className="dropdown-split"
                                 id="dropdown-split-basic" />
-
                             <Dropdown.Menu >
                                 <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
                                 <Dropdown.Item onClick={() => {
@@ -607,7 +606,7 @@ export default function Profile (match) {
                         <Dropdown 
                             className="gameslist-game__filter-btn gameslist-game__filter__sort-btn"
                             as={ButtonGroup}>
-                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{sortFocus.toUpperCase() === "ALPHA" ? "SORT BY" : sortFocus.toUpperCase()}</Button>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">Sort By: {sortFocus.toUpperCase()}</Button>
 
                             <Dropdown.Toggle 
                                 split variant="success" 
@@ -615,7 +614,7 @@ export default function Profile (match) {
                                 id="dropdown-split-basic-sort-dir" />
 
                             <Dropdown.Menu >
-                                <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
+                                <Dropdown.Item><option disabled selected>Select Sort Option</option></Dropdown.Item>
                                 <Dropdown.Item onClick={() => {
                                     setSortFocus("alpha");
                                 }}>Alphabetical</Dropdown.Item>
@@ -687,7 +686,7 @@ export default function Profile (match) {
                         <Dropdown 
                             className="gameslist-game__filter-btn"
                             as={ButtonGroup}>
-                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">{gameType.toUpperCase() === "ALL" ? "FILTER" : gameType.toUpperCase()}</Button>
+                            <Button className="gameslist-game__filter-dropdown-btn" variant="success">Type: {gameType.toUpperCase()}</Button>
 
                             <Dropdown.Toggle 
                                 split variant="success" 
@@ -726,6 +725,7 @@ export default function Profile (match) {
                     </div>
                     <div className="gameslist-game__filter-container user-game__filter-sorting__flex-item">
                         {/* <h3 className="gameslist-game__filter-label">Order</h3> */}
+                        <span className="profile__filter-label">Order: </span>
                             <div>
                                 {sortDirection === "ascending" && <Image 
                                     src={upArrow}
