@@ -17,6 +17,9 @@ import rightArrow from "../../assets/right-arrow.png";
 import searchIcon from "../../assets/search.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
+import sortUp from "../../assets/sort_ascending.png";
+import sortDown from "../../assets/sort_descending.png";
+
 import upArrow from "../../assets/up-arrow.png";
 import downArrow from "../../assets/down-arrow.png";
 
@@ -540,7 +543,7 @@ export default function Profile (match) {
                     </div>
                 </div>
                 <div className="user-game__filter-sorting mb-4 mt-4 mx-auto">
-                    <div className="d-flex">
+                    <div className="d-flex user-game__filter-container">
                         <div className="user-game__filter-sorting__flex-item">
                         {/* <select onChange={(e) => {
                             setGameState(e.target.value);
@@ -726,24 +729,23 @@ export default function Profile (match) {
                     <div className="gameslist-game__filter-container user-game__filter-sorting__flex-item">
                         {/* <h3 className="gameslist-game__filter-label">Order</h3> */}
                         <span className="profile__filter-label">Order: </span>
-                            <div>
-                                {sortDirection === "ascending" && <Image 
-                                    src={upArrow}
-                                    alt="ascending arrow"
-                                    className="gameslist-game__filter__sort-arrow"
-                                    onClick={() => {
-                                        setSortDirection("descending");
-                                    }}
-                                />}
-                                {sortDirection === "descending" && <Image 
-                                    src={downArrow}
-                                    alt="descending arrow"
-                                    className="gameslist-game__filter__sort-arrow"
-                                    onClick={() => {
-                                        setSortDirection("ascending");
-                                    }}
-                                />}
-                            </div>
+                        
+                        {sortDirection === "ascending" && <Image 
+                            src={sortUp}
+                            alt="ascending arrow"
+                            className="gameslist-game__filter__sort-arrow"
+                            onClick={() => {
+                                setSortDirection("descending");
+                            }}
+                        />}
+                        {sortDirection === "descending" && <Image 
+                            src={sortDown}
+                            alt="descending arrow"
+                            className="gameslist-game__filter__sort-arrow"
+                            onClick={() => {
+                                setSortDirection("ascending");
+                            }}
+                        />}
                     </div>
                     
                     </div>

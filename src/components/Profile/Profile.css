@@ -40,8 +40,21 @@
     font-family: Roboto;
 }
 
+.user-game__filter-container {
+    justify-content: center;
+}
+
+.gameslist-game__filter-btn {
+    width: 100%;
+}
+
 .user-game__socials-dropdown-btn {
     display: none;
+}
+
+.gameslist-game__filter__sort-arrow {
+    width: 50px;
+    color: white;
 }
 
 .user-game__search__form {
