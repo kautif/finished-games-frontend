@@ -41,7 +41,13 @@
 }
 
 .user-game__filter-container {
-    justify-content: center;
+    justify-content: space-around;
+    width: 43%;
+    margin-right: 13%;
+}
+
+.gameslist-game__filter-container {
+    align-self: center;
 }
 
 .gameslist-game__filter-btn {
@@ -64,6 +70,10 @@
 
 .user-game__search.form-control {
     color: white;
+}
+
+.user-game__filter-sorting__flex-item__search {
+    margin-right: 3.4%;
 }
 
 .user-game__search {
