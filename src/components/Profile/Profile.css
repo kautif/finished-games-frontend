@@ -30,6 +30,15 @@
     font-family: Roboto;
 }
 
+.user-profile__icons {
+    align-self: end;
+    width: 15%;
+}
+
+.user-profile__icons:hover {
+    cursor: pointer;
+}
+
 .game-data-container {
     align-self: baseline;
 }

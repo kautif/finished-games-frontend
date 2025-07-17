@@ -23,6 +23,9 @@ import sortDown from "../../assets/sort_descending.png";
 import upArrow from "../../assets/up-arrow.png";
 import downArrow from "../../assets/down-arrow.png";
 
+import share from "../../assets/share.png";
+import report from "../../assets/flag.png";
+
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import "./Profile.css";
@@ -506,7 +509,26 @@ export default function Profile (match) {
                             <img src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
                             <div className="d-flex">
                                 <h1 className="align-self-end text-light text-uppercase">{user.twitch_default}</h1>
-                                <Dropdown 
+                                <div className="user-profile__icons">
+                                    <Image 
+                                        src={share}
+                                        className="user-profile__icons__action"
+                                        onClick={() => notifyShareProfile()}
+                                        alt="share icon"
+                                    />
+
+                                    <Image 
+                                        src={report}
+                                        className="user-profile__icons__action"
+                                        onClick={() => {
+                                            localStorage.setItem("reportUser", user.twitch_default);
+                                            window.location.pathname = "/report";
+                                        }}
+                                        alt="flag report icon"
+                                    />
+
+                                </div>
+                                {/* <Dropdown 
                                     className="user-game__socials-btn align-self-end"
                                     as={ButtonGroup}>
                                     <Button className="user-game__socials-dropdown-btn" variant="success"></Button>
@@ -526,7 +548,7 @@ export default function Profile (match) {
                                                 window.location.pathname = "/report";
                                             }}><option>Report</option></Dropdown.Item>
                                     </Dropdown.Menu>
-                                </Dropdown>
+                                </Dropdown> */}
                             </div>
                         </div>
                         {/* <div className="profile-intro__action float-start ml-5">
