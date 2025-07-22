@@ -453,6 +453,12 @@
     }
 } */
 
+@media (min-width: 900px) and (max-width: 1400px) {
+    .profile-intro-flex__user__name h1 {
+        font-size: 2.5em
+    }
+}
+
 @media (min-width: 375px) and (max-width: 811px) {
     .profile-intro-flex {
         flex-direction: column-reverse;
