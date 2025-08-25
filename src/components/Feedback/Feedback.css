@@ -13,6 +13,10 @@
     margin-bottom: 2.5%;
 }
 
+.topic-flex label {
+    color: white;
+}
+
 .feedback-field {
     margin-top: 2.5%;
     margin-bottom: 2.5%;

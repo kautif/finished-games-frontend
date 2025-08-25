@@ -4,6 +4,11 @@
 
 .find-user__search {
     width: 600px;
+    margin: 2em 0;
+}
+
+.find-user__submit-btn {
+    align-self: center;
 }
 
 .find-user__results {

@@ -163,7 +163,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
                   <Dropdown.Item className="dropdown-link" eventKey="3" onClick={() => {
                     navigate("/faq");
                   }}>FAQ</Dropdown.Item>
-                  <Dropdown.Item eventKey="4" active><p className="auth-nav__link" onClick={() => logout()}>Logout</p></Dropdown.Item>
+                  <Dropdown.Item eventKey="4"><p className="auth-nav__link" onClick={() => logout()}>Logout</p></Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
           <p id="auth-nav__profile__name">{defaultName}</p>

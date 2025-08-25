@@ -232,11 +232,19 @@ export default function FindUser () {
                     <img className="gameslist-results__pages__nav" src={firstPage} alt="first gameslist page" onClick={() => {
                         if (page > 1) {
                             setPage(prevPage => parseInt(1));
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
                         }
                     }} />
                     <img className="gameslist-results__pages__nav" src={leftArrow} alt="previous gameslist page" onClick={() => {
                         if (page > 1) {
                             setPage(prevPage => parseInt(prevPage - 1));
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
                         }
                     }} />
                     <p className="gameslist-results__pages__num">{page}</p>
@@ -244,11 +252,19 @@ export default function FindUser () {
                         if (page < lastPage) {
                             console.log(lastPage);
                             setPage(prevPage => parseInt(prevPage + 1));
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
                         }
 
                     }}/>
                         <img className="gameslist-results__pages__nav" src={lastPageImg} alt="last gameslist page" onClick={() => {
                             setPage(prevPage => parseInt(lastPage));
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
                     }} />
                 </div>
                 {foundUsers.map(foundUser => {

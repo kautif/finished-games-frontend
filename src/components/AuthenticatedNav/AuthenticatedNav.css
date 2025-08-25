@@ -86,6 +86,16 @@
     text-transform: uppercase;
 }
 
+.dropdown-item {
+    font-family: vt323;
+    font-size: 1.5em;
+}
+
+.dropdown-item .auth-nav__link {
+    color: black;
+    font-size: 1em;
+}
+
 .auth-nav__link__selected {
     color: #FCB500;
 }

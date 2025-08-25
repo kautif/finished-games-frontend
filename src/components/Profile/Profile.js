@@ -873,12 +873,20 @@ export default function Profile (match) {
                             if (page > 1) {
                                 // notifyLoading();
                                 setPage(prevPage => parseInt(1));
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                })
                             }
                         }} />
                         <img className="gameslist-results__pages__nav" src={leftArrow} alt="previous gameslist page" onClick={() => {
                             if (page > 1) {
                                 // notifyLoading();
                                 setPage(prevPage => parseInt(prevPage - 1));
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                })
                             }
                         }} />
                         <p className="gameslist-results__pages__num">{page}</p>
@@ -892,12 +900,21 @@ export default function Profile (match) {
                             // }
                             if (page < lastPage) {
                                 setPage(prevPage => parseInt(prevPage + 1));
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                })
                             }
+                            
 
                         }}/>
                             <img className="gameslist-results__pages__nav" src={lastPageImg} alt="last gameslist page" onClick={() => {
                                 // notifyLoading();
                                 setPage(prevPage => parseInt(lastPage));
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                })
                         }} />
                     </div>
                 </Stack>
