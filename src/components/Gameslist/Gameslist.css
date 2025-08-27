@@ -124,11 +124,6 @@ body {
     color: white;
 }
 
-.gameslist-game__add-btn {
-    align-self: self-start;
-    margin-top: 11px;
-}
-
 .gameslist-game__add-btn,
 .gameslist-game__submit {
     /* margin-left: 2%; */
@@ -284,7 +279,7 @@ body {
 }
 
 .gameslist-game__add-btn {
-    align-self: baseline;
+    align-self: center;
     width: 10%;
     margin-right: 2%;
     margin-left: 2%;
@@ -434,6 +429,10 @@ body {
 
 
 @media (min-width: 811px) {
+    .gameslist-games {
+        margin-top: 4%;
+    }
+
     .gameslist-games__filters {
         flex-wrap: wrap;
     }
