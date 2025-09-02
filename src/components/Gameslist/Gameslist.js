@@ -22,8 +22,8 @@ import './Gameslist.css';
 import leftArrow from "../../assets/left-arrow.png";
 import searchIcon from "../../assets/search.png";
 import rightArrow from "../../assets/right-arrow.png";
-import upArrow from "../../assets/up-arrow.png";
-import downArrow from "../../assets/down-arrow.png";
+import upArrow from "../../assets/sort_ascending.png";
+import downArrow from "../../assets/sort_descending.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
 
@@ -777,7 +777,7 @@ export default function Gameslist (){
                             id="dropdown-split-basic-sort-dir" />
 
                         <Dropdown.Menu >
-                            <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
+                            <Dropdown.Item><option disabled selected>Select Sort Option</option></Dropdown.Item>
                             <Dropdown.Item onClick={() => {
                                 setSortFocus("alpha");
                             }}>Alphabetical</Dropdown.Item>
