@@ -18,6 +18,10 @@
     width: 34%;
 }
 
+.user-profile__img {
+    width: 250px !important;
+}
+
 .profile-intro-flex__user__name h1 {
     font-family: vt323;
     margin-left: 3%;

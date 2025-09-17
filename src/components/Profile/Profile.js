@@ -506,7 +506,7 @@ export default function Profile (match) {
                     />
                     <div className="profile-intro-flex__user">
                         <div className="profile-intro-flex__user__name">
-                            <img src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
+                            <img className="user-profile__img" src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
                             <div className="d-flex">
                                 <h1 className="align-self-end text-light text-uppercase">{user.twitch_default}</h1>
                                 <div className="user-profile__icons">

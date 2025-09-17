@@ -602,9 +602,9 @@ export default function Gameslist (){
                 }
                 let year = formattedDate.getFullYear();
                 return <Col xl={4} lg={4} sm={6} xs={12}>
-                    <div class="gameslist-game__bg-blur">
+                    {/* <div class="gameslist-game__bg-blur">
 
-                    </div>
+                    </div> */}
                             <Row className="gameslist-game d-flex flex-column me-2">
                             <Image className="gameslist-game__img align-self-center" src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
                                         onClick={() => {
