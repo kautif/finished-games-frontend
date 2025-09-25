@@ -270,9 +270,9 @@ export default function FindUser () {
                 {foundUsers.map(foundUser => {
                     return (
                         <div className="mx-5 find-user__user-container">
-                            <div class="find-user__bg-blur">
+                            {/* <div class="find-user__bg-blur">
 
-                            </div>
+                            </div> */}
                             <Col>
                                 <h1 className="mt-4 find-user__head text-light">{foundUser.twitch_default}</h1>
                                 <Image className="w-50" src={foundUser.profileImageUrl} alt={`${foundUser.twitchName}'s profile image`} rounded/>

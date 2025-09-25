@@ -422,9 +422,9 @@ export default function Profile (match) {
             gamesList = games.map(game => {
                 return <Col xl={3} lg={4} sm={6} xs={12} className="mt-5 mb-5">
                     <Row className="user-game d-flex flex-column me-2">
-                        <div class="user-game__bg-blur">
+                        {/* <div class="user-game__bg-blur">
 
-                        </div>
+                        </div> */}
                         <Image className="user-game__img align-self-center mb-4"
                             src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
                             onClick={() => {
