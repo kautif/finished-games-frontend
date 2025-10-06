@@ -175,8 +175,8 @@ export default function Gameslist (){
     let matchArr;
 
     useEffect(() => {
-        // getFilteredGames()
-    }, [])
+        getFilteredGames();
+    }, [gameState, sortFocus, gameType, sortDirection])
 
     useEffect(() => {
         getUserGames();

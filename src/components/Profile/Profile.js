@@ -184,6 +184,8 @@ export default function Profile (match) {
        async function getFilteredGames () {
             let twitchName = document.baseURI.split("/")[3]
             // setLoading(true);
+            console.log("useEffect gameState: ", gameState);
+            console.log("useEffect sortFocus: ", sortFocus)
             await axios(`${backendURL}/filter`, {
                 method: "get",
                 params: {
@@ -590,7 +592,7 @@ export default function Profile (match) {
                                 split variant="success" 
                                 className="dropdown-split"
                                 id="dropdown-split-basic" />
-                            <Dropdown.Menu >
+                            <Dropdown.Menu>
                                 <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
                                 <Dropdown.Item onClick={() => {
                                     setGameState("all");
