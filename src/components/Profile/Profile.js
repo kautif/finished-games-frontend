@@ -891,7 +891,7 @@ export default function Profile (match) {
                                 })
                             }
                         }} />
-                        <p className="gameslist-results__pages__num">{page}</p>
+                        <p className="gameslist-results__pages__num">{page}/{lastPage}</p>
                         <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
                             // notifyLoading();
                             // dispatch(setImagesRendered(false));

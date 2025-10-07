@@ -247,7 +247,7 @@ export default function FindUser () {
                             });
                         }
                     }} />
-                    <p className="gameslist-results__pages__num">{page}</p>
+                    <p className="gameslist-results__pages__num">{page}/{lastPage}</p>
                     <img className="gameslist-results__pages__nav" src={rightArrow} alt="next gameslist page" onClick={() => {
                         if (page < lastPage) {
                             console.log(lastPage);
