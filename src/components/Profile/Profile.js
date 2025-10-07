@@ -333,7 +333,7 @@ export default function Profile (match) {
 
     useEffect(() => {
         getFilteredGames();
-    }, [page])
+    }, [page, gameState, gameType, sortFocus, sortDirection])
 
     function organizeGameData (gameTypeArr, gameStatus, counter, setCount) {
         gameTypeArr.map(game => {
