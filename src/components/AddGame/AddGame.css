@@ -100,6 +100,13 @@
     cursor: pointer;
 }
 
+#search-game__type {
+    background: url('data:image/svg+xml;utf8,<svg fill="%23FFFFFF" height="32" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M8 12l8 8 8-8z"/></svg>') 
+            no-repeat right 10px center / 24px;
+    padding-right: 40px; /* space for larger arrow */
+    border-radius: 4px;
+}
+
 @media (min-width: 768px) and (max-width: 1550px) {
     #discover {
         max-width: 95% !important;
