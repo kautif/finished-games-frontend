@@ -4,7 +4,7 @@ import "./Faq.css";
 export default function Faq () {
     return (
         <div>
-            <h1>Frequently Asked Questions</h1>
+            <h1 className="faq-head">Frequently Asked Questions</h1>
             <div className="faq-container">
                 <div className="faq-item">
                     <h2>How do I login to another Twitch account?</h2>

@@ -697,7 +697,8 @@ export default function Gameslist (){
                                 <Dropdown.Toggle 
                                     split variant="success" 
                                     className="dropdown-split"
-                                    id="dropdown-split-basic" />
+                                    id="dropdown-split-basic"
+                                     />
 
                                 <Dropdown.Menu >
                                     <Dropdown.Item><option disabled selected>Select Game State</option></Dropdown.Item>
