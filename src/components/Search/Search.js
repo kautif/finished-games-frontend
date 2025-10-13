@@ -11,8 +11,8 @@ import "./Search.css";
 import { setUserGames, setSearchGameName, setSearchGameImg, setShowGame, setShowSearch, 
     // setImagesRendered 
 } from "../../redux/gamesSlice";
-import smwCart from "../../assets/vh_smw_cart.webp";
-import mcCart from "../../assets/vh_minecraft_cart.webp";
+import romhacksCart from "../../assets/romhacks_cartridge.png";
+import modsCart from "../../assets/mods_cartridge.png";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
 import leftArrow from "../../assets/arrow_left_purple.png";
@@ -361,12 +361,14 @@ export default function Search () {
                             setCustomGame(prevGame => e.target.value);
                         }}>
                             <option value="other">Other</option>
-                            <option value="mario">Super Mario</option>
-                            <option value="pokemon">Pokemon</option>
-                            <option value="minecraft">Minecraft Mod</option>
+                            <option value="romhacks">Romhacks</option>
+                            <option value="mods">Mods</option>
+                            {/* <option value="minecraft">Minecraft Mod</option> */}
                         </Form.Select>
                     </div>
-                    <img src={customGame === "mario" ? smwCart : customGame === "pokemon" ? pokemonCart : customGame === "minecraft" ? mcCart : otherCart} />
+                    <img src={customGame === "romhacks" ? romhacksCart : 
+                        // customGame === "pokemon" ? pokemonCart : 
+                        customGame === "mods" ? modsCart : otherCart} />
                     <Form.Control className="custom-game__field custom-game__field__text" id="custom-game__title" type="text" value={title} placeholder="Title can't be empty" onChange={(e) => {
                         setTitle(e.target.value);
                     }}/>

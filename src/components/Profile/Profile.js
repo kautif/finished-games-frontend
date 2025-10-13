@@ -29,8 +29,8 @@ import report from "../../assets/flag.png";
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import "./Profile.css";
-import smwCart from "../../assets/vh_smw_cart.webp";
-import mcCart from "../../assets/vh_minecraft_cart.webp";
+import romhacksCart from "../../assets/romhacks_cartridge.png";
+import modsCart from "../../assets/mods_cartridge.png";
 import pokemonCart from "../../assets/vh_pokemon_cart.webp";
 import otherCart from "../../assets/vh_other_cart.webp";
 import Col from "react-bootstrap/Col";
@@ -75,20 +75,20 @@ export default function Profile (match) {
     const [regCompCount, setRegCompCount] = useState(0);
     const [regDroppedCount, setRegDroppedCount] = useState(0);
     
-    const [marioCount, setMarioCount] = useState(0);
-    const [marioUpCount, setMarioUpCount] = useState(0);
-    const [marioCompCount, setMarioCompCount] = useState(0);
-    const [marioDroppedCount, setMarioDroppedCount] = useState(0);
+    const [romhacksCount, setRomhacksCount] = useState(0);
+    const [romhacksUpCount, setRomhacksUpCount] = useState(0);
+    const [romhacksCompCount, setRomhacksCompCount] = useState(0);
+    const [romhacksDroppedCount, setRomhacksDroppedCount] = useState(0);
 
-    const [pokemonCount, setPokemonCount] = useState(0);
-    const [pokemonUpCount, setPokemonUpCount] = useState(0);
-    const [pokemonCompCount, setPokemonCompCount] = useState(0);
-    const [pokemonDroppedCount, setPokemonDroppedCount] = useState(0);
+    // const [pokemonCount, setPokemonCount] = useState(0);
+    // const [pokemonUpCount, setPokemonUpCount] = useState(0);
+    // const [pokemonCompCount, setPokemonCompCount] = useState(0);
+    // const [pokemonDroppedCount, setPokemonDroppedCount] = useState(0);
 
-    const [minecraftCount, setMinecraftCount] = useState(0);
-    const [minecraftUpCount, setMinecraftUpCount] = useState(0);
-    const [minecraftCompCount, setMinecraftCompCount] = useState(0);
-    const [minecraftDroppedCount, setMinecraftDroppedCount] = useState(0);
+    const [modsCount, setModsCount] = useState(0);
+    const [modsUpCount, setModsUpCount] = useState(0);
+    const [modsCompCount, setModsCompCount] = useState(0);
+    const [modsDroppedCount, setModsDroppedCount] = useState(0);
 
     const [otherCount, setOtherCount] = useState(0);
     const [otherUpCount, setOtherUpCount] = useState(0);
@@ -102,19 +102,19 @@ export default function Profile (match) {
             completed: 0,
             dropped: 0
         },
-        mario: {
+        romhacks: {
             playing: 0,
             upcoming: 0,
             completed: 0,
             dropped: 0
         },
-        pokemon: {
-            playing: 0,
-            upcoming: 0,
-            completed: 0,
-            dropped: 0
-        },
-        minecraft: {
+        // pokemon: {
+        //     playing: 0,
+        //     upcoming: 0,
+        //     completed: 0,
+        //     dropped: 0
+        // },
+        mods: {
             playing: 0,
             upcoming: 0,
             completed: 0,
@@ -133,20 +133,20 @@ export default function Profile (match) {
     let regComp = 0;
     let regDropped = 0;
 
-    let smwPlaying = 0;
-    let smwUp = 0;
-    let smwComp = 0;
-    let smwDropped = 0;
+    let romhacksPlaying = 0;
+    let romhacksUp = 0;
+    let romhacksComp = 0;
+    let romhacksDropped = 0;
 
-    let pokemonPlaying = 0;
-    let pokemonUp = 0;
-    let pokemonComp = 0;
-    let pokemonDropped = 0;
+    // let pokemonPlaying = 0;
+    // let pokemonUp = 0;
+    // let pokemonComp = 0;
+    // let pokemonDropped = 0;
 
-    let minecraftPlaying = 0;
-    let minecraftUp = 0;
-    let minecraftComp = 0;
-    let minecraftDropped = 0;
+    let modsPlaying = 0;
+    let modsUp = 0;
+    let modsComp = 0;
+    let modsDropped = 0;
 
     let otherPlaying = 0;
     let otherUp = 0;
@@ -155,9 +155,9 @@ export default function Profile (match) {
 
     let regularArr = [];
     let otherArr = [];
-    let minecraftArr = [];
-    let pokemonArr = [];
-    let smwArr = [];
+    let modsArr = [];
+    // let pokemonArr = [];
+    let romhacksArr = [];
 
     const [gameState, setGameState] = useState("all");
 
@@ -248,17 +248,17 @@ export default function Profile (match) {
                     otherArr.push(game);
                 }
 
-                if (game.custom_game === "minecraft") {
-                    minecraftArr.push(game);
+                if (game.custom_game === "mods") {
+                    modsArr.push(game);
                 }
 
-                if (game.custom_game === "mario") {
-                    smwArr.push(game);
+                if (game.custom_game === "romhacks") {
+                    romhacksArr.push(game);
                 }
 
-                if (game.custom_game === "pokemon") {
-                    pokemonArr.push(game);
-                }
+                // if (game.custom_game === "pokemon") {
+                //     pokemonArr.push(game);
+                // }
             })
         }
 
@@ -267,20 +267,20 @@ export default function Profile (match) {
         organizeGameData(regularArr, "completed", regComp, setRegCompCount);
         organizeGameData(regularArr, "dropped", regDropped, setRegDroppedCount);
 
-        organizeGameData(smwArr, "playing", smwPlaying, setMarioCount);
-        organizeGameData(smwArr, "upcoming", smwUp, setMarioUpCount);
-        organizeGameData(smwArr, "completed", smwComp, setMarioCompCount);
-        organizeGameData(smwArr, "dropped", smwDropped, setMarioDroppedCount);
+        organizeGameData(romhacksArr, "playing", romhacksPlaying, setRomhacksCount);
+        organizeGameData(romhacksArr, "upcoming", romhacksUp, setRomhacksUpCount);
+        organizeGameData(romhacksArr, "completed", romhacksComp, setRomhacksCompCount);
+        organizeGameData(romhacksArr, "dropped", romhacksDropped, setRomhacksDroppedCount);
 
-        organizeGameData(pokemonArr, "playing", pokemonPlaying, setPokemonCount);
-        organizeGameData(pokemonArr, "upcoming", pokemonUp, setPokemonUpCount);
-        organizeGameData(pokemonArr, "completed", pokemonComp, setPokemonCompCount);
-        organizeGameData(pokemonArr, "dropped", pokemonDropped, setPokemonDroppedCount);
+        // organizeGameData(pokemonArr, "playing", pokemonPlaying, setPokemonCount);
+        // organizeGameData(pokemonArr, "upcoming", pokemonUp, setPokemonUpCount);
+        // organizeGameData(pokemonArr, "completed", pokemonComp, setPokemonCompCount);
+        // organizeGameData(pokemonArr, "dropped", pokemonDropped, setPokemonDroppedCount);
 
-        organizeGameData(minecraftArr, "playing", minecraftPlaying, setMinecraftCount);
-        organizeGameData(minecraftArr, "upcoming", minecraftUp, setMinecraftUpCount);
-        organizeGameData(minecraftArr, "completed", minecraftComp, setMinecraftCompCount);
-        organizeGameData(minecraftArr, "dropped", minecraftDropped, setMinecraftDroppedCount);
+        organizeGameData(modsArr, "playing", modsPlaying, setModsCount);
+        organizeGameData(modsArr, "upcoming", modsUp, setModsUpCount);
+        organizeGameData(modsArr, "completed", modsComp, setModsCompCount);
+        organizeGameData(modsArr, "dropped", modsDropped, setModsDroppedCount);
 
         organizeGameData(otherArr, "playing", otherPlaying, setOtherCount);
         organizeGameData(otherArr, "upcoming", otherUp, setOtherUpCount);
@@ -300,26 +300,26 @@ export default function Profile (match) {
                 completed: regCompCount,
                 dropped: regDroppedCount
             },
-            mario: {
-                ...prevObj.mario,
-                playing: marioCount,
-                upcoming: marioUpCount,
-                completed: marioCompCount,
-                dropped: marioDroppedCount
+            romhacks: {
+                ...prevObj.romhacks,
+                playing: romhacksCount,
+                upcoming: romhacksUpCount,
+                completed: romhacksCompCount,
+                dropped: romhacksDroppedCount
             },
-            pokemon: {
-                ...prevObj.pokemon,
-                playing: pokemonCount,
-                upcoming: pokemonUpCount,
-                completed: pokemonCompCount,
-                dropped: pokemonDroppedCount
-            },
-            minecraft: {
-                ...prevObj.minecraft,
-                playing: minecraftCount,
-                upcoming: minecraftUpCount,
-                completed: minecraftCompCount,
-                dropped: minecraftDroppedCount
+            // pokemon: {
+            //     ...prevObj.pokemon,
+            //     playing: pokemonCount,
+            //     upcoming: pokemonUpCount,
+            //     completed: pokemonCompCount,
+            //     dropped: pokemonDroppedCount
+            // },
+            mods: {
+                ...prevObj.mods,
+                playing: modsCount,
+                upcoming: modsUpCount,
+                completed: modsCompCount,
+                dropped: modsDroppedCount
             },
             other: {
                 ...prevObj.other,
@@ -348,7 +348,9 @@ export default function Profile (match) {
             setShowModal(false);
         }
 
-    let gameTypesArr = ["regular", "custom", "other", "mario", "pokemon", "minecraft"];
+    let gameTypesArr = ["regular", "custom", "other", "romhacks", 
+        // "pokemon", 
+        "mods"];
     let gameStateArr = ["all", "playing", "upcoming", "completed", "dropped"];
     function filterOrSort () {
         if (gameType === "all") {
@@ -365,7 +367,9 @@ export default function Profile (match) {
             if (gameType === "custom") {
                 phase1Arr = [];
                 for (let i = 0; i < userGames.length; i++) {
-                    if (userGames[i].custom_game === "other" || userGames[i].custom_game === "mario" || userGames[i].custom_game === "pokemon" || userGames[i].custom_game === "minecraft") {
+                    if (userGames[i].custom_game === "other" || userGames[i].custom_game === "romhacks" || 
+                        // userGames[i].custom_game === "pokemon" || 
+                        userGames[i].custom_game === "mods") {
                         phase1Arr.push(userGames[i]);
                     }
                 }
@@ -428,12 +432,16 @@ export default function Profile (match) {
 
                         </div> */}
                         <Image className="user-game__img align-self-center mb-4"
-                            src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
+                            src={game.custom_game === "romhacks" ? romhacksCart : 
+                                // game.custom_game === "pokemon" ? pokemonCart : 
+                                game.custom_game === "mods" ? modsCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
                             onClick={() => {
                             setShowModal(true);
                             setTitle(game.name);
                             setGameSummary(game.summary);
-                            setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
+                            setGameImg(game.custom_game === "romhacks" ? romhacksCart : 
+                                // game.custom_game === "pokemon" ? pokemonCart : 
+                                game.custom_game === "mods" ? modsCart : game.custom_game === "other" ? otherCart : game.img_url);
                             setGameRank(game.rank);
                             setGameRating(game.rating);
                             setGameDate(new Date(game.date_added).toDateString().substring(4));
@@ -461,7 +469,9 @@ export default function Profile (match) {
                                 setShowModal(true);
                                 setTitle(game.name);
                                 setGameSummary(game.summary);
-                                setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
+                                setGameImg(game.custom_game === "romhacks" ? romhacksCart : 
+                                    // game.custom_game === "pokemon" ? pokemonCart : 
+                                    game.custom_game === "mods" ? modsCart : game.custom_game === "other" ? otherCart : game.img_url);
                                 setGameRank(game.rank);
                                 setGameRating(game.rating);
                                 setGameDate(new Date(game.date_added).toDateString().substring(4));
@@ -735,17 +745,17 @@ export default function Profile (match) {
                                     setGameType("other");
                                 }}><option value="other">Other</option></Dropdown.Item>
                                 <Dropdown.Item onClick={() => {
-                                    setGameType("mario");
+                                    setGameType("romhacks");
                                 }} 
-                                ><option value="mario">Mario</option></Dropdown.Item>
-                                <Dropdown.Item onClick={() => {
+                                ><option value="romhacks">Romhacks</option></Dropdown.Item>
+                                {/* <Dropdown.Item onClick={() => {
                                     setGameType("pokemon");
                                 }} 
-                                ><option value="pokemon">Pokemon</option></Dropdown.Item>
+                                ><option value="pokemon">Pokemon</option></Dropdown.Item> */}
                                 <Dropdown.Item onClick={() => {
-                                    setGameType("minecraft");
+                                    setGameType("mods");
                                 }} 
-                                ><option value="minecraft">Minecraft</option></Dropdown.Item>
+                                ><option value="mods">Mods</option></Dropdown.Item>
                             </Dropdown.Menu>
                             
                         </Dropdown>
