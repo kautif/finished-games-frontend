@@ -350,6 +350,10 @@ body {
     background: linear-gradient(179deg, rgba(42, 123, 155, 1) 0%, rgba(106, 0, 138, 1) 0%, rgba(76, 1, 99, 1) 51%, rgba(46, 1, 46, 1) 100%);
 }
 
+.discover__back-arrow:hover {
+    cursor: pointer;
+}
+
 #discover__title-flex {
     color: white;
     display: flex;

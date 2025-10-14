@@ -20,6 +20,7 @@ import { setShowGame, setShowSearch, setShowDiscover } from "../../redux/gamesSl
 import './Gameslist.css';
 
 import leftArrow from "../../assets/left-arrow.png";
+import backArrow from "../../assets/arrow-left-white.png";
 import searchIcon from "../../assets/search.png";
 import rightArrow from "../../assets/right-arrow.png";
 import upArrow from "../../assets/sort_ascending.png";
@@ -925,6 +926,9 @@ export default function Gameslist (){
                                     handleClose();
                                 }}show={showDiscover}>
                                     <Modal.Header className="text-center">
+                                        <div className="discover__back-arrow" onClick={() => dispatch(setShowDiscover(false))}>
+                                            <Image src={backArrow} width={60} />
+                                        </div>
                                         <Modal.Title id="discover__title-flex">
                                             <h1>Add Game</h1>
                                         </Modal.Title>
