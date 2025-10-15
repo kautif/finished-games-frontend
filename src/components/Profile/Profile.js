@@ -12,6 +12,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
+import backArrow from "../../assets/arrow-left-white.png";
 import leftArrow from "../../assets/left-arrow.png";
 import rightArrow from "../../assets/right-arrow.png";
 import searchIcon from "../../assets/search.png";
@@ -834,7 +835,10 @@ export default function Profile (match) {
                             <div className="user-game__modal-container">
 
                             <Modal.Header>
-                                <Modal.Title className="text-center ml-auto">
+                                <div className="discover__back-arrow" onClick={() => setShowModal(false)} style={{ marginRight: "auto"}}>
+                                    <Image src={backArrow} width={60} />
+                                </div>
+                                <Modal.Title className="text-center ml-auto" style={{ marginRight: "auto" }}>
                                     {title}
                                 </Modal.Title>
                             </Modal.Header>

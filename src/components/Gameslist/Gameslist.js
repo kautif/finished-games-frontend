@@ -862,8 +862,11 @@ export default function Gameslist (){
                                         onHide={() => {
                                             handleClose();
                                         }}>
-                                    <Modal.Header className="ml-auto border-bottom-0">
-                                        <Modal.Title>
+                                    <Modal.Header className="ml-auto border-bottom-0" style={{ justifyContent: "center"}}>
+                                        <div className="discover__back-arrow" onClick={() => setShowModal(false)} style={{ marginRight: "auto"}}>
+                                            <Image src={backArrow} width={60} />
+                                        </div>
+                                        <Modal.Title style={{ marginRight: "auto"}}>
                                             {gameName}
                                         </Modal.Title>
                                     </Modal.Header>
