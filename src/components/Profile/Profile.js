@@ -445,14 +445,15 @@ export default function Profile (match) {
                                 game.custom_game === "mods" ? modsCart : game.custom_game === "other" ? otherCart : game.img_url);
                             setGameRank(game.rank);
                             setGameRating(game.rating);
-                            setGameDate(new Date(game.date_added).toDateString().substring(4));
+                            // setGameDate(new Date(game.date_added).toDateString().substring(4));
+                            setGameDate(new Date(game.date_added).toLocaleDateString());
                         }} />
                         <h2 className="user-game__title">{game.name.toUpperCase()}</h2>
                             {/* <Image src={game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url} rounded /> */}
                         <div className="user-game__date-flex">
                             <div className="user-game__date-container user-game__date-flex-item">
                                 <p className="user-game__date__label">Date:</p>
-                                <p className="user-game__date">{new Date(game.date_added).toDateString().substring(4)}</p>
+                                <p className="user-game__date">{new Date(game.date_added).toLocaleDateString()}</p>
                             </div>
                             <div className="user-game__status-container user-game__date-flex-item">
                                 <p className="user-game__status__label">Game Status</p>
@@ -475,7 +476,7 @@ export default function Profile (match) {
                                     game.custom_game === "mods" ? modsCart : game.custom_game === "other" ? otherCart : game.img_url);
                                 setGameRank(game.rank);
                                 setGameRating(game.rating);
-                                setGameDate(new Date(game.date_added).toDateString().substring(4));
+                                setGameDate(new Date(game.date_added).toLocaleDateString());;
                             }}>Read More</p>
                     </Row>
                 </Col> 
@@ -850,7 +851,7 @@ export default function Profile (match) {
                                 <div className="user-game__status-container__modal">
                                     <div className="user-game__detail-flex-item">
                                         <p>Date: </p>
-                                        <p>{gameDate}</p>
+                                        <p>{new Date(gameDate).toLocaleDateString()}</p>
                                     </div>
                                     <div className="user-game__detail-flex-item"> 
                                         <p>Game Status:</p>

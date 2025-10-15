@@ -587,7 +587,7 @@ export default function Gameslist (){
             console.log("renderGames found: ", games);
             gamesList = games.map((game, i) => {
                 let formattedDate = new Date(game.date_added);
-                let month = parseInt(formattedDate.getMonth() + 1);
+                let month = parseInt(formattedDate.getMonth());
                 let day = parseInt(formattedDate.getDate());
 
                 if ((month === 4 || month === 5 || month === 9 || month === 11) && day > 30) {
@@ -629,7 +629,12 @@ export default function Gameslist (){
                                 <div className="gameslist__game-info-flex">
                                     <div className="gameslist-game__date-container gameslist__game-info-flex-item flex-column justify-content-around">
                                         <label>Date:</label>
-                                        <p className="gameslist-game__detail">{`${month}/${day}/${year}`}</p>
+                                        {/* <p className="gameslist-game__detail">{`${month}/${day}/${year}`}</p> */}
+                                        <p className="gameslist-game__detail">{`${new Date(year, month, day).toLocaleDateString(undefined, {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit'
+                                        })}`}</p>
                                     </div>
                                     <div className="gameslist-game__status gameslist__game-info-flex-item flex-column justify-content-around">
                                         <label>Game Status</label>
