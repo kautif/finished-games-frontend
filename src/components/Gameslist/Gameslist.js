@@ -25,6 +25,8 @@ import searchIcon from "../../assets/search.png";
 import rightArrow from "../../assets/right-arrow.png";
 import upArrow from "../../assets/sort_ascending.png";
 import downArrow from "../../assets/sort_descending.png";
+import upNum from "../../assets/ascending_number.png";
+import downNum from "../../assets/descending_number.png";
 import firstPage from "../../assets/first.png";
 import lastPageImg from "../../assets/last.png";
 
@@ -807,7 +809,7 @@ export default function Gameslist (){
                     <div className="gameslist-game__filter-container">
                     {/* <p className="gameslist-game__filter-label">Order</p> */}
                         <div>
-                            {sortDirection === "ascending" && <Image 
+                            {(sortDirection === "ascending" && sortFocus === "alpha") && <Image 
                                 src={upArrow}
                                 alt="ascending arrow"
                                 className="gameslist-game__filter__sort-arrow"
@@ -815,9 +817,27 @@ export default function Gameslist (){
                                     setSortDirection("descending");
                                 }}
                             />}
-                            {sortDirection === "descending" && <Image 
+                            {(sortDirection === "descending" && sortFocus === "alpha") && <Image 
                                 src={downArrow}
                                 alt="descending arrow"
+                                className="gameslist-game__filter__sort-arrow"
+                                onClick={() => {
+                                    setSortDirection("ascending");
+                                }}
+                            />}
+
+                            {(sortDirection === "ascending" && (sortFocus === "date" || sortFocus === "rating")) && <Image 
+                                src={upNum}
+                                alt="ascending arrow for numbers"
+                                className="gameslist-game__filter__sort-arrow"
+                                onClick={() => {
+                                    setSortDirection("descending");
+                                }}
+                            />}
+
+                            {(sortDirection === "descending" && (sortFocus === "date" || sortFocus === "rating")) && <Image 
+                                src={downNum}
+                                alt="descending arrow for numbers"
                                 className="gameslist-game__filter__sort-arrow"
                                 onClick={() => {
                                     setSortDirection("ascending");
