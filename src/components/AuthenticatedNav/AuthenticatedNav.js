@@ -17,31 +17,55 @@ export default function AuthenticatedNav() {
   const dispatch = useDispatch();
   let twitchName = window.localStorage.getItem("twitchName");
   let twitchId = window.localStorage.getItem("twitchId");
+  let username = window.localStorage.getItem("username"); // For username/password users
+  console.log("AuthNav username: ", username);
   const [profileImg, setProfileImg] = useState("");
   const [defaultName, setDefaultName] = useState("");
   const [showDelete, setShowDelete] = useState(false);
   const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
   const navigate = useNavigate();
+  
+  // Determine display name (prefer twitchName, fallback to username)
+  let displayName;
+
+  if (twitchName === "undefined") {
+    displayName = username;
+  } else {
+    displayName = twitchName;
+  }
 
   function logout() {
+    const authToken = getItem("authToken");
+    const twitchToken = getItem("twitchToken");
+
     axios({
       url: `${backendURL}/logout`,
       method: "POST",
       headers: {
         Accept: "application/json",
-        authorization: getItem("twitchToken"),
+        authorization: authToken || twitchToken, // Send JWT token or Twitch token
       },
+      data: {
+        twitchToken: twitchToken, // Send Twitch token in body if exists (for Twitch OAuth users)
+        authToken
+      }
     })
       .then((response) => {
+        console.log("Logout successful:", response.data.message);
         dispatch(setIsAuthenticated(false));
         handleUnauthorizedRedirect();
       })
       .catch((err) => {
-        console.error("error: ", err.message);
+        console.error("Logout error: ", err.message);
+        // Still logout on frontend even if backend fails
+        dispatch(setIsAuthenticated(false));
+        handleUnauthorizedRedirect();
       });
   }
 
   function getUser(username) {
+    if (!username) return; // Don't fetch if no username
+    
     axios({
         method: 'get',
         url: `${backendURL}/api/user`,
@@ -49,10 +73,14 @@ export default function AuthenticatedNav() {
             username: username
         }
     }).then(response => {
-      setProfileImg(response.data.user.profileImageUrl);
-      setDefaultName(response.data.user.twitch_default);
+      if (response.data.user) {
+        setProfileImg(response.data.user.profileImageUrl || "");
+        setDefaultName(response.data.user.twitch_default || response.data.user.username || username);
+      }
     }).catch(err => {
-        console.log("error");
+        console.log("Error fetching user data:", err.message);
+        // Set default name even if fetch fails
+        setDefaultName(username);
     })
 }
 
@@ -88,8 +116,12 @@ function handleClose () {
 }
 
 useEffect(() => {
-  getUser(twitchName);
-}, [])
+  // Fetch user data using displayName (works for both auth types)
+  if (displayName) {
+    getUser(displayName);
+    setDefaultName(displayName);
+  }
+}, [displayName])
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <a
@@ -104,51 +136,28 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   </a>
 ));
 
-// const CustomMenu = React.forwardRef(
-//   ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
-//     const [value, setValue] = useState('');
-
-//     return (
-//       <div
-//         ref={ref}
-//         style={style}
-//         className={className}
-//         aria-labelledby={labeledBy}
-//       >
-//         <Form.Control
-//           autoFocus
-//           className="mx-3 my-2 w-auto"
-//           placeholder="Type to filter..."
-//           onChange={(e) => setValue(e.target.value)}
-//           value={value}
-//         />
-//         <ul className="list-unstyled">
-//           {React.Children.toArray(children).filter(
-//             (child) =>
-//               !value || child.props.children.toLowerCase().startsWith(value),
-//           )}
-//         </ul>
-//       </div>
-//     );
-//   },
-// );
-
   return (
     <div>
         <div className="auth-nav__profile-img-container">
-
-          {/* <Dropdown size="sm" id="user-settings">
-                <Dropdown.Toggle id="dropdown-basic">
-                        <span id="user-settings__gear">&#9881;</span>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => {
-                        setShowDelete(true);
-                    }}>Delete Account</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown> */}
             <div className="auth-nav__profile-flex">
-              <img id="auth-nav__profile-img" src={profileImg} />
+              {profileImg ? (
+                <img id="auth-nav__profile-img" src={profileImg} alt="Profile" />
+              ) : (
+                <div id="auth-nav__profile-img" style={{
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontSize: '20px',
+                  fontWeight: 'bold'
+                }}>
+                  {defaultName ? defaultName.charAt(0).toUpperCase() : '?'}
+                </div>
+              )}
               <Dropdown id="dropdown__settings">
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                   <span id="user-settings__gear">&#9881;</span>

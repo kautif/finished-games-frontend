@@ -50,12 +50,14 @@ export default function Gameslist (){
     // const backendURL = "http://localhost:4000";
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
+    let username = window.localStorage.getItem("username");
+    console.log("localstorage username:", username);
 
 
 
     const [userGames, setUserGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
-    const [loading, setLoading] = useState();
+    const [loading, setLoading] = useState(true);
     const [lastPage, setLastPage] = useState(0);
     let selectedGameTypeArr = [];
     const [gameType, setGameType] = useState("all");
@@ -176,7 +178,9 @@ export default function Gameslist (){
     }, [gameState, sortFocus, gameType, sortDirection])
 
     useEffect(() => {
-        getUserGames();
+        if (!loading) {
+            getUserGames();
+        }
     }, [loading])
 
     useEffect(() => {
@@ -192,7 +196,6 @@ export default function Gameslist (){
 
         getGameDate(userGames);
         getGameSummary(userGames);
-        setLoading(false);
 
         if (userGames) {
             userGames.map(game => {
@@ -244,6 +247,7 @@ export default function Gameslist (){
         organizeGameData(otherArr, "dropped", otherDropped, setOtherDroppedCount);
 
         getFilteredGames()
+        setLoading(false);
     }, [userGames])
 
     useEffect(() => {
@@ -285,6 +289,7 @@ export default function Gameslist (){
                 dropped: otherDroppedCount
             }
         }))
+        
     }, [regCount])
 
     useEffect(() => {
@@ -517,25 +522,27 @@ export default function Gameslist (){
 
     async function getUserGames() {
         twitchId = window.localStorage.getItem("twitchId");
-        setLoading(true);
+        console.log("is this function running?");
         await axios(`${backendURL}/games`, {
             method: "get",
             params: {
-                twitchName: twitchName
+                twitchName: twitchName,
+                username: username
             }
         }).then(result => {
             if (result.data.response === null) {
                 console.log("no games: ", result);
             } else {
                 setUserGames(result.data.response.games);
+                setLoading(false);
             }
         }).catch(err => {
             console.error("Failed to get Games: ", err.message);
         }).finally(end => {
-            setLoading(false);
         })
     }
 
+    console.log("USER GAMES: ", userGames);
     async function getFilteredGames () {
         twitchId = window.localStorage.getItem("twitchId");
         // setLoading(true);

@@ -48,6 +48,7 @@ export default function Profile (match) {
     const navigate = useNavigate();
     // const backendURL = "http://localhost:4000";
     const [user, setUser] = useState({});
+    const [username, setUsername] = useState("");
     const [userGames, setUserGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
 
@@ -176,6 +177,7 @@ export default function Profile (match) {
                 username: document.baseURI.split("/")[3] 
             }
         }).then(response => {
+            console.log("profile response.data: ", response.data);
             setObject(response.data.user);
             gamesArr = [...response.data.user.games];
             setUserGames(gamesArr);
@@ -524,7 +526,7 @@ export default function Profile (match) {
                         <div className="profile-intro-flex__user__name">
                             <img className="user-profile__img" src={user.profileImageUrl} alt={user.twitch_default + "'s profile picture"}  />
                             <div className="d-flex">
-                                <h1 className="align-self-end text-light text-uppercase">{user.twitch_default}</h1>
+                                <h1 className="align-self-end text-light text-uppercase">{user.twitch_default || user.username_default}</h1>
                                 <div className="user-profile__icons">
                                     <Image 
                                         src={share}

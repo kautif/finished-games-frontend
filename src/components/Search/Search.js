@@ -62,6 +62,7 @@ export default function Search () {
     let twitchName;
     twitchId = window.localStorage.getItem("twitchId");
     twitchName = window.localStorage.getItem("twitchName");
+    let username = window.localStorage.getItem("username");
 
     function notifyCustom (gameTitle) {
         toast(`${gameTitle} has been added`, {
@@ -108,7 +109,7 @@ export default function Search () {
             if (response.status === 200) {
                 for (let i = 0; i < response.data.results.length; i++) {
                     for (let k = 0; k < response.data.results[i].tags.length; k++) {
-                        console.log("slugs: ", response.data.results[i].tags[k].slug);
+                        // console.log("slugs: ", response.data.results[i].tags[k].slug);
                         tagsList.push(response.data.results[i].tags[k].slug);
                     }
                     console.log("next game");
@@ -146,7 +147,8 @@ export default function Search () {
         await axios(`${backendURL}/games`, {
             method: "get",
             params: {
-                twitchName: twitchName
+                twitchName: twitchName,
+                username: username
             }
         }).then(result => {
             dispatch(setUserGames(result.data.response.games));

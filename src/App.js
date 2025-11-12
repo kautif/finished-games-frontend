@@ -25,6 +25,8 @@ import axiosInstance from "./service/interceptor";
 import { validateAuthToken } from "./service";
 import { handleUnauthorizedRedirect } from "./utils";
 import Faq from "./components/Faq/Faq";
+import Register from "./components/Register/Register";
+import Login from "./components/Login/Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -210,9 +212,12 @@ function App() {
           <>
             <Routes>
               <Route exact path="/" element={<Splash />}></Route>
+              <Route exact path="/register" element={<Register />}></Route>
+              <Route exact path="/login" element={<Login />}></Route>
               <Route exact path="/:user" element={<Profile />}></Route>
               <Route exact path="/donate" element={<Donate />}></Route>
               <Route exact path="/feedback" element={<Feedback />}></Route>
+              <Route path="*" element={<Navigate to="/login" replace={true}/>}></Route>
             </Routes>
           </>
         )}

@@ -108,9 +108,11 @@ function AuthenticatedComponent() {
       const response = await getUserInfo();
 
       setData(response.data);
+      console.log("getUserInfo response: ", response.data);
       // Set local storage items based on response data
       window.localStorage.setItem("twitchId", response.data.twitchId);
       window.localStorage.setItem("twitchName", response.data.twitchName);
+      window.localStorage.setItem("username", response.data.username);
       dispatch(setUserGames(response.data.games));
     } catch (error) {
       console.error("Error fetching data from protected route", error.message);
