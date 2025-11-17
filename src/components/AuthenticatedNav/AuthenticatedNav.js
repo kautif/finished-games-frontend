@@ -54,6 +54,12 @@ export default function AuthenticatedNav() {
         console.log("Logout successful:", response.data.message);
         dispatch(setIsAuthenticated(false));
         handleUnauthorizedRedirect();
+        twitchName = "";
+        twitchId = "";
+        localStorage.removeItem("twitchToken");
+        localStorage.removeItem("twitchId");
+        localStorage.removeItem("twitchName");
+        localStorage.removeItem("authToken");
       })
       .catch((err) => {
         console.error("Logout error: ", err.message);

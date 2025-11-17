@@ -52,6 +52,7 @@ export default function Gameslist (){
     let twitchName = window.localStorage.getItem("twitchName");
     let username = window.localStorage.getItem("username");
     console.log("localstorage username:", username);
+    console.log("localstorage twitch:", twitchName);
 
 
 

@@ -159,6 +159,8 @@ export default function Search () {
                         gameDate, index, gameRating, customGame) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
+                console.log("addgame twitch: ", twitchName);
+        console.log("addgame username: ", username);
         // getDate(gameDate, index);
         let gameObj = {
             name: gameName,
@@ -175,6 +177,7 @@ export default function Search () {
             url: `${backendURL}/addgame`,
             data: {
                 twitchName: twitchName,
+                username: username,
                 twitchId: twitchId,
                 games: gameObj
             }

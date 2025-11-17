@@ -35,6 +35,7 @@ export default function Login() {
                 setItem("authToken", data.token);
                 setItem("refreshToken", data.refreshToken);
                 setItem("username", username);
+                setItem("twitchName", "");
                 setAuthTokenExpiry();
 
                 // Set authentication state
