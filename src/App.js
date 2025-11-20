@@ -118,6 +118,8 @@ function App() {
       setItem("twitchToken", twitchToken);
       setItem("refreshToken", refreshToken);
       setItem("reloadLogin", true);
+      setItem("twitchName", urlParams.get("twitch_name"));
+      setItem("twitchId", urlParams.get("twitch_id"));
       setSessionitem("reloadLogin", true);
       setAuthTokenExpiry();
 
@@ -146,7 +148,6 @@ function App() {
       // dispatch(setIsAuthenticated(true));
     } else if (
       getItem("authToken") &&
-      getItem("twitchToken") &&
       getItem("refreshToken")
     ) {
       dispatch(setIsAuthenticated(true));

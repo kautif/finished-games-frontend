@@ -1,3 +1,39 @@
-.vh__register__head {
-    color: white;
+@import "../Login/Login.css";
+
+.vh-password-wrapper {
+  position: relative;
+}
+
+/* give room for the eye icon */
+.vh-password-wrapper .vh-auth-input {
+  padding-right: 40px;
+}
+
+/* eye button */
+.vh-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: #4b1f4f; /* matches your purple accent */
+}
+
+.vh-password-toggle:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.vh-password-toggle:not(:disabled):hover {
+  color: #6d28d9;
 }

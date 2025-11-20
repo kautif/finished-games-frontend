@@ -170,11 +170,13 @@ export default function Profile (match) {
     const [search, setSearch] = useState("");
 
     function getProfile(setObject) {
+        let twitchName = window.localStorage.getItem("twitchName");
         axios({
             method: 'get',
             url: `${backendURL}/api/user`,
             params: {
-                username: document.baseURI.split("/")[3] 
+                // username: document.baseURI.split("/")[3] 
+                username: twitchName
             }
         }).then(response => {
             console.log("profile response.data: ", response.data);
@@ -187,10 +189,11 @@ export default function Profile (match) {
     }
 
        async function getFilteredGames () {
-            let twitchName = document.baseURI.split("/")[3]
-            // setLoading(true);
-            console.log("useEffect gameState: ", gameState);
-            console.log("useEffect sortFocus: ", sortFocus)
+            // let twitchName = document.baseURI.split("/")[3]
+            // // setLoading(true);
+            // console.log("useEffect gameState: ", gameState);
+            // console.log("useEffect sortFocus: ", sortFocus)
+            let twitchName = window.localStorage.getItem("twitchName");
             await axios(`${backendURL}/filter`, {
                 method: "get",
                 params: {

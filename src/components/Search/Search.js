@@ -141,14 +141,11 @@ export default function Search () {
     }
 
     async function getUserGames() {
-        twitchId = window.localStorage.getItem("twitchId");
-        // twitchName = window.localStorage.getItem("twitchName");
-
+        let twitchName = window.localStorage.getItem("twitchName");
         await axios(`${backendURL}/games`, {
             method: "get",
             params: {
                 twitchName: twitchName,
-                username: username
             }
         }).then(result => {
             dispatch(setUserGames(result.data.response.games));
@@ -159,8 +156,7 @@ export default function Search () {
                         gameDate, index, gameRating, customGame) {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");
-                console.log("addgame twitch: ", twitchName);
-        console.log("addgame username: ", username);
+
         // getDate(gameDate, index);
         let gameObj = {
             name: gameName,
@@ -179,7 +175,7 @@ export default function Search () {
                 twitchName: twitchName,
                 username: username,
                 twitchId: twitchId,
-                games: gameObj
+                game: gameObj
             }
         }
 

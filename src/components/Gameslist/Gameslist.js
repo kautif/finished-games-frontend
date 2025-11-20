@@ -318,9 +318,6 @@ export default function Gameslist (){
         }
     }, [gameDate])
 
-    useEffect(() => {
-        console.log(gameRank);
-    }, [gameRank])
 
     useEffect(() => {
         if (showModal) {
@@ -523,12 +520,14 @@ export default function Gameslist (){
 
     async function getUserGames() {
         twitchId = window.localStorage.getItem("twitchId");
-        console.log("is this function running?");
+        twitchName = window.localStorage.getItem("twitchName");
+    
+                console.log("getUserGames twitchName:22222 ", twitchName);
+
         await axios(`${backendURL}/games`, {
             method: "get",
             params: {
                 twitchName: twitchName,
-                username: username
             }
         }).then(result => {
             if (result.data.response === null) {
@@ -545,7 +544,9 @@ export default function Gameslist (){
 
     console.log("USER GAMES: ", userGames);
     async function getFilteredGames () {
-        twitchId = window.localStorage.getItem("twitchId");
+        let twitchId = window.localStorage.getItem("twitchId");
+        let twitchName = window.localStorage.getItem("twitchName");
+
         // setLoading(true);
         await axios(`${backendURL}/filter`, {
             method: "get",

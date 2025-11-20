@@ -90,20 +90,18 @@ export default function AddGame () {
             rank: gameStatus,
             rating: gameRating
         }
-
         let config = {
             method: "post",
             url: `${backendURL}/addgame`,
             data: {
                 twitchName: twitchName,
                 twitchId: twitchId,
-                games: gameObj
+                game: gameObj
             }
         }
 
         axios(config)
         .then(result => {
-        console.log("addGame: ", result)
         // getUserGames();
             // setTitle("");
             setRating(0);
