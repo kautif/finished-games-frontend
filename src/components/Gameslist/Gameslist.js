@@ -51,8 +51,8 @@ export default function Gameslist (){
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
     let username = window.localStorage.getItem("username");
-    console.log("localstorage username:", username);
-    console.log("localstorage twitch:", twitchName);
+    // console.log("localstorage username:", username);
+    // console.log("localstorage twitch:", twitchName);
 
 
 
@@ -175,22 +175,29 @@ export default function Gameslist (){
     let matchArr;
 
     useEffect(() => {
+        getUserGames();
+        getFilteredGames();
+    }, []);
+
+    useEffect(() => {
         getFilteredGames();
     }, [gameState, sortFocus, gameType, sortDirection])
 
     useEffect(() => {
         if (!loading) {
+            console.log("loading getUserGames");
+
             getUserGames();
         }
     }, [loading])
 
     useEffect(() => {
         if (userGames.length === 0) {
-            console.log("user games is empty")
+            // console.log("user games is empty")
         } else {
             userGamesList = () => {
                 userGames.map(game => {
-                    console.log("game:", game);
+                    // console.log("game:", game);
                 })
             }
         }
@@ -331,6 +338,7 @@ export default function Gameslist (){
 
     useEffect(() => {
         if (!showDiscover) {
+            console.log("discover getUserGames");
             getUserGames();
             setPage(page + 1);
             setPage(1);
@@ -353,8 +361,8 @@ export default function Gameslist (){
 
     function notifyUpdate (gameTitle) {
         if (userGames[gameIndex].name === gameName && userGames[gameIndex].summary === gameSummary && new Date(userGames[gameIndex].date_added).toDateString() === gameDate.toDateString() && userGames[gameIndex].rank === gameRank) {
-            console.log("usergame rank: ", userGames[gameIndex].rank);
-            console.log("gameRank: ", gameRank);
+            // console.log("usergame rank: ", userGames[gameIndex].rank);
+            // console.log("gameRank: ", gameRank);
             toast(`${gameTitle} details did not change`, {
                 autoClose: 1000,
                 position: "top-center",
@@ -464,7 +472,7 @@ export default function Gameslist (){
     }
 
     async function updateGame (name, summary, gameDate, rank, rating) {
-        console.log("rank: ", rank);
+        // console.log("rank: ", rank);
         let config = {
             method: "put",
             url: `${backendURL}/updategame`,
@@ -483,21 +491,21 @@ export default function Gameslist (){
         axios(config)
             .then(result => {
                 // setGameName(prevGame => gameName);
-                console.log("update game result: ", result);
+                // console.log("update game result: ", result);
             })
             .catch(error => {
-                console.log("update summary error: ", error);
+                // console.log("update summary error: ", error);
             })
     }
 
     function deleteGame (gameName) {
-        console.log("deleting game");
+        // console.log("deleting game");
         findGame(gameName);
         const deleteTarget = findGame(gameName);
         setUserGames(userGames.filter(prevGame => prevGame.name !== gameName));
         setShowDelete(false);
-        console.log("deleteTarget: ", deleteTarget);
-        console.log("delete userGames: ", userGames);
+        // console.log("deleteTarget: ", deleteTarget);
+        // console.log("delete userGames: ", userGames);
         let config = {
             data: {
                 twitchName: twitchName,
@@ -508,7 +516,7 @@ export default function Gameslist (){
         }
             axios.delete(`${backendURL}/deletegame`, config)
                 .then(response => {
-                    console.log("delete response: ", response);
+                    // console.log("delete response: ", response);
                 }).catch(err => {
                     console.error("Failed to delete: ", err.message);
                 })
@@ -520,9 +528,8 @@ export default function Gameslist (){
 
     async function getUserGames() {
         twitchId = window.localStorage.getItem("twitchId");
-        twitchName = window.localStorage.getItem("twitchName");
-    
-                console.log("getUserGames twitchName:22222 ", twitchName);
+        twitchName = window.localStorage.getItem("twitchName");    
+                // console.log("getUserGames twitchName:22222 ", twitchName);
 
         await axios(`${backendURL}/games`, {
             method: "get",
@@ -531,8 +538,9 @@ export default function Gameslist (){
             }
         }).then(result => {
             if (result.data.response === null) {
-                console.log("no games: ", result);
+                // console.log("no games: ", result);
             } else {
+                console.log("Gameslist getUserGames: ", result);
                 setUserGames(result.data.response.games);
                 setLoading(false);
             }
@@ -542,11 +550,11 @@ export default function Gameslist (){
         })
     }
 
-    console.log("USER GAMES: ", userGames);
+    // console.log("USER GAMES: ", userGames);
     async function getFilteredGames () {
         let twitchId = window.localStorage.getItem("twitchId");
         let twitchName = window.localStorage.getItem("twitchName");
-
+        
         // setLoading(true);
         await axios(`${backendURL}/filter`, {
             method: "get",
@@ -561,15 +569,15 @@ export default function Gameslist (){
             }
         }).then(result => {
             if (result.data.response === null) {
-                console.log("no games: ", result);
+                // console.log("no games: ", result);
             } else {
                 // setUserGames(result.data.response.games);
-                console.log("filteredGames: ", result.data.paginatedGames);
+                // console.log("filteredGames: ", result.data.paginatedGames);
                 setFilteredGames(result.data.paginatedGames);
                 setLastPage(result.data.lastPage);
             }
         }).then(games => {
-            console.log("games: ", filteredGames);
+            // console.log("games: ", filteredGames);
             renderGames(filteredGames);
         }).catch(err => {
             console.error("Failed to get Games: ", err.message);
@@ -592,10 +600,10 @@ export default function Gameslist (){
 
     function renderGames (games) {
         if (games.length <= 0) {
-            console.log("no renderGames");
+            // console.log("no renderGames");
             gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
         } else {
-            console.log("renderGames found: ", games);
+            // console.log("renderGames found: ", games);
             gamesList = games.map((game, i) => {
                 let formattedDate = new Date(game.date_added);
                 let month = parseInt(formattedDate.getMonth());
