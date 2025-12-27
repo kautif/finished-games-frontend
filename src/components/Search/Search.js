@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Image from "react-bootstrap/Image";
+import { Image } from 'react-bootstrap';`   `
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
