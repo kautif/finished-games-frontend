@@ -180,27 +180,40 @@ export default function Gameslist (){
     }, []);
 
     useEffect(() => {
-        getFilteredGames();
+        console.log("usergames: ", userGames);
+        // renderGames(filteredGames);
+    }, [userGames])
+
+    useEffect(() => {
+        renderGames(filteredGames);
+    }, [filteredGames])
+
+    useEffect(() => {
+        if (userGames.length > 0) {
+            getFilteredGames();
+        }
     }, [gameState, sortFocus, gameType, sortDirection])
 
     useEffect(() => {
         if (!loading) {
             console.log("loading getUserGames");
-
             getUserGames();
+            getFilteredGames();
         }
+        console.log("loading: ", loading);
     }, [loading])
 
     useEffect(() => {
-        if (userGames.length === 0) {
-            // console.log("user games is empty")
-        } else {
-            userGamesList = () => {
-                userGames.map(game => {
-                    // console.log("game:", game);
-                })
-            }
-        }
+        // if (userGames.length === 0) {
+        //     // console.log("user games is empty")
+        // } else {
+        //     getFilteredGames()
+        //     userGamesList = () => {
+        //         userGames.map(game => {
+        //             // console.log("game:", game);
+        //         })
+        //     }
+        // }
 
         getGameDate(userGames);
         getGameSummary(userGames);
@@ -227,6 +240,7 @@ export default function Gameslist (){
                 //     pokemonArr.push(game);
                 // }
             })
+
         }
 
         organizeGameData(regularArr, "playing", regPlaying, setRegCount);
@@ -254,8 +268,10 @@ export default function Gameslist (){
         organizeGameData(otherArr, "completed", otherComp, setOtherCompCount);
         organizeGameData(otherArr, "dropped", otherDropped, setOtherDroppedCount);
 
-        getFilteredGames()
-        setLoading(false);
+        if (userGames.length > 0) {
+            renderGames(filteredGames);
+        }
+
     }, [userGames])
 
     useEffect(() => {
@@ -526,6 +542,8 @@ export default function Gameslist (){
         return userGames.find(obj => obj.name === gameName);
     }
 
+    console.log("user games ====", userGames)
+
     async function getUserGames() {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");    
@@ -534,11 +552,12 @@ export default function Gameslist (){
         await axios(`${backendURL}/games`, {
             method: "get",
             params: {
-                twitchName: twitchName,
+                twitchName: twitchName.toLowerCase(),
             }
         }).then(result => {
-            if (result.data.response === null) {
+            if (result.data.response === null || result.data.response.length === 0) {
                 // console.log("no games: ", result);
+                setLoading(true);
             } else {
                 console.log("Gameslist getUserGames: ", result);
                 setUserGames(result.data.response.games);
@@ -559,7 +578,7 @@ export default function Gameslist (){
         await axios(`${backendURL}/filter`, {
             method: "get",
             params: {
-                twitchName: twitchName,
+                twitchName: twitchName.toLowerCase(),
                 search: search,
                 rank: gameState,
                 gameType: gameType,
@@ -568,17 +587,17 @@ export default function Gameslist (){
                 page: page
             }
         }).then(result => {
-            if (result.data.response === null) {
+            if (result.data.paginatedGames === null || result.data.paginatedGames.length === 0) {
                 // console.log("no games: ", result);
             } else {
-                // setUserGames(result.data.response.games);
                 // console.log("filteredGames: ", result.data.paginatedGames);
                 setFilteredGames(result.data.paginatedGames);
                 setLastPage(result.data.lastPage);
+                setUserGames(result.data.response.games);
+                setLoading(false);
             }
         }).then(games => {
-            // console.log("games: ", filteredGames);
-            renderGames(filteredGames);
+            console.log("games =>", filteredGames);
         }).catch(err => {
             console.error("Failed to get Games: ", err.message);
         }).finally(end => {
@@ -602,6 +621,7 @@ export default function Gameslist (){
         if (games.length <= 0) {
             // console.log("no renderGames");
             gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
+            return gamesList;
         } else {
             // console.log("renderGames found: ", games);
             gamesList = games.map((game, i) => {
@@ -694,7 +714,7 @@ export default function Gameslist (){
         }        
     }
 
-    filterOrSort();
+    // filterOrSort();
 
     if (search.length > 0 && phase3Arr.length > 0) {
         matchArr = [];
@@ -706,9 +726,15 @@ export default function Gameslist (){
         // renderGames(matchArr);
     }
 
-    if (filteredGames.length > 0) {
+    if (filteredGames.length > 0 || userGames.length > 0) {
         renderGames(filteredGames);
     } 
+
+    if (loading) {
+        gamesList = <h2>Looking for games</h2>
+    } else {
+        renderGames(filteredGames);
+    }
 
     return (
         <div className='gameslist-parent'>
@@ -1018,7 +1044,7 @@ export default function Gameslist (){
                             {gamesList}
                         </div> */}
                         <div className="gameslist-games">
-                            {gamesList}
+                            {!loading && gamesList}
                             <div className="gameslist-results__pages">
                                 <img className="gameslist-results__pages__nav" src={firstPage} alt="first gameslist page" onClick={() => {
                                     if (page > 1) {
@@ -1048,6 +1074,7 @@ export default function Gameslist (){
                                 }}/>
                                     <img className="gameslist-results__pages__nav" src={lastPageImg} alt="last gameslist page" onClick={() => {
                                         // notifyLoading();
+                                        
                                         setPage(prevPage => parseInt(lastPage));
                                 }} />
                             </div>
