@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Register.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -19,8 +19,51 @@ export default function Register() {
   const [showPw, setShowPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
 
-  const backendURL =
-    process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
+  const [profileImageUrl, setProfileImageUrl] = useState('');
+  const [imageError, setImageError] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
+
+const validateImageUrl = (url) => {
+  return new Promise((resolve, reject) => {
+    if (!url.toLowerCase().endsWith('.png')) {
+      reject('URL must point to a PNG image');
+      return;
+    }
+
+    const img = new Image();
+    
+    img.onload = () => {
+      if (img.width === 300 && img.height === 300) {
+        resolve(url);
+      } else {
+        reject(`Image must be 300x300px. This image is ${img.width}x${img.height}px.`);
+      }
+    };
+
+    img.onerror = () => {
+      reject('Failed to load image from URL. Make sure the URL is valid and publicly accessible.');
+    };    
+    img.src = url;
+  });
+};
+
+  const handleUrlChange = async (e) => {
+    const url = e.target.value.trim();
+    setProfileImageUrl(url);
+    setImageError('');
+    setImagePreview(null);
+
+    if (!url) return;
+
+    try {
+      await validateImageUrl(url);
+      setImagePreview(url);
+    } catch (err) {
+      setImageError(err);
+    }
+  };
+
+  const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -48,6 +91,7 @@ export default function Register() {
           username,
           password: pw,
           email,
+          profileImageUrl
         }),
       });
 
@@ -131,6 +175,17 @@ export default function Register() {
         {error && <div className="vh-auth-error">{error}</div>}
 
         <Form className="vh-auth-form" onSubmit={register}>
+          <Form.Group>
+            <label>Profile Image (300x300 PNG, max 1MB)</label>
+             <input
+              type="url"
+              placeholder="https://example.com/image.png"
+              value={profileImageUrl}
+              onChange={handleUrlChange}
+            />
+            {imageError && <p style={{ color: 'red' }}>{imageError}</p>}
+            {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px' }} />}
+          </Form.Group>
           <Form.Group className="vh-auth-field">
             <Form.Label className="vh-auth-label">Email</Form.Label>
             <Form.Control

@@ -326,6 +326,7 @@ body {
 }
 
 .gameslist-game__no-results {
+    color: white;
     text-align: center;
     width: 100%;
 }

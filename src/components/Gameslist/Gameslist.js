@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
+import { setUserGames } from '../../redux/gamesSlice';
 import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -44,6 +45,7 @@ export default function Gameslist (){
     let showGame = useSelector((state) => state.gamesReducer.showGame);
     let showSearch = useSelector((state) => state.gamesReducer.showSearch);
     let showDiscover = useSelector((state) => state.gamesReducer.showDiscover);
+    let userGames = useSelector((state) => state.gamesReducer.userGames);
     let imagesRendered = useSelector((state) => state.gamesReducer.imagesRendered);
 
     const backendURL = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:4000";
@@ -51,12 +53,11 @@ export default function Gameslist (){
     let twitchId;
     let twitchName = window.localStorage.getItem("twitchName");
     let username = window.localStorage.getItem("username");
-    // console.log("localstorage username:", username);
-    // console.log("localstorage twitch:", twitchName);
 
 
 
-    const [userGames, setUserGames] = useState([]);
+    const [gamesList, setGamesList] = useState(null);
+    // const [userGames, setUserGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [lastPage, setLastPage] = useState(0);
@@ -168,7 +169,7 @@ export default function Gameslist (){
 
     const [search, setSearch] = useState("");
     let userGamesList;
-    let gamesList;
+    // let gamesList;
     let phase1Arr = [];
     let phase2Arr = [];
     let phase3Arr;
@@ -196,7 +197,11 @@ export default function Gameslist (){
 
     useEffect(() => {
         if (!loading) {
+<<<<<<< HEAD
             console.log("loading getUserGames");
+=======
+
+>>>>>>> eda7625c69b0c3cceaac34efeaee0f338b84f130
             getUserGames();
             getFilteredGames();
         }
@@ -204,6 +209,7 @@ export default function Gameslist (){
     }, [loading])
 
     useEffect(() => {
+<<<<<<< HEAD
         // if (userGames.length === 0) {
         //     // console.log("user games is empty")
         // } else {
@@ -214,6 +220,15 @@ export default function Gameslist (){
         //         })
         //     }
         // }
+=======
+        if (userGames.length === 0) {
+        } else {
+            userGamesList = () => {
+                userGames.map(game => {
+                })
+            }
+        }
+>>>>>>> eda7625c69b0c3cceaac34efeaee0f338b84f130
 
         getGameDate(userGames);
         getGameSummary(userGames);
@@ -268,11 +283,20 @@ export default function Gameslist (){
         organizeGameData(otherArr, "completed", otherComp, setOtherCompCount);
         organizeGameData(otherArr, "dropped", otherDropped, setOtherDroppedCount);
 
+<<<<<<< HEAD
         if (userGames.length > 0) {
             renderGames(filteredGames);
         }
 
+=======
+        getFilteredGames();
+        setLoading(false);
+>>>>>>> eda7625c69b0c3cceaac34efeaee0f338b84f130
     }, [userGames])
+
+    useEffect(() => {
+        renderGames(filteredGames);
+    }, [filteredGames])
 
     useEffect(() => {
         setGamesObj((prevObj) => ({
@@ -354,7 +378,6 @@ export default function Gameslist (){
 
     useEffect(() => {
         if (!showDiscover) {
-            console.log("discover getUserGames");
             getUserGames();
             setPage(page + 1);
             setPage(1);
@@ -377,8 +400,6 @@ export default function Gameslist (){
 
     function notifyUpdate (gameTitle) {
         if (userGames[gameIndex].name === gameName && userGames[gameIndex].summary === gameSummary && new Date(userGames[gameIndex].date_added).toDateString() === gameDate.toDateString() && userGames[gameIndex].rank === gameRank) {
-            // console.log("usergame rank: ", userGames[gameIndex].rank);
-            // console.log("gameRank: ", gameRank);
             toast(`${gameTitle} details did not change`, {
                 autoClose: 1000,
                 position: "top-center",
@@ -488,7 +509,6 @@ export default function Gameslist (){
     }
 
     async function updateGame (name, summary, gameDate, rank, rating) {
-        // console.log("rank: ", rank);
         let config = {
             method: "put",
             url: `${backendURL}/updategame`,
@@ -507,21 +527,16 @@ export default function Gameslist (){
         axios(config)
             .then(result => {
                 // setGameName(prevGame => gameName);
-                // console.log("update game result: ", result);
             })
             .catch(error => {
-                // console.log("update summary error: ", error);
             })
     }
 
     function deleteGame (gameName) {
-        // console.log("deleting game");
         findGame(gameName);
         const deleteTarget = findGame(gameName);
-        setUserGames(userGames.filter(prevGame => prevGame.name !== gameName));
+        dispatch(setUserGames(userGames.filter(prevGame => prevGame.name !== gameName)));
         setShowDelete(false);
-        // console.log("deleteTarget: ", deleteTarget);
-        // console.log("delete userGames: ", userGames);
         let config = {
             data: {
                 twitchName: twitchName,
@@ -532,7 +547,6 @@ export default function Gameslist (){
         }
             axios.delete(`${backendURL}/deletegame`, config)
                 .then(response => {
-                    // console.log("delete response: ", response);
                 }).catch(err => {
                     console.error("Failed to delete: ", err.message);
                 })
@@ -547,7 +561,6 @@ export default function Gameslist (){
     async function getUserGames() {
         twitchId = window.localStorage.getItem("twitchId");
         twitchName = window.localStorage.getItem("twitchName");    
-                // console.log("getUserGames twitchName:22222 ", twitchName);
 
         await axios(`${backendURL}/games`, {
             method: "get",
@@ -559,8 +572,7 @@ export default function Gameslist (){
                 // console.log("no games: ", result);
                 setLoading(true);
             } else {
-                console.log("Gameslist getUserGames: ", result);
-                setUserGames(result.data.response.games);
+                dispatch(setUserGames(result.data.response.games));
                 setLoading(false);
             }
         }).catch(err => {
@@ -569,7 +581,6 @@ export default function Gameslist (){
         })
     }
 
-    // console.log("USER GAMES: ", userGames);
     async function getFilteredGames () {
         let twitchId = window.localStorage.getItem("twitchId");
         let twitchName = window.localStorage.getItem("twitchName");
@@ -587,17 +598,28 @@ export default function Gameslist (){
                 page: page
             }
         }).then(result => {
+<<<<<<< HEAD
             if (result.data.paginatedGames === null || result.data.paginatedGames.length === 0) {
                 // console.log("no games: ", result);
             } else {
                 // console.log("filteredGames: ", result.data.paginatedGames);
+=======
+            if (result.data.response === null) {
+            } else {
+                // setUserGames(result.data.response.games);
+                console.log("filteredGames: ", result.data.paginatedGames);
+>>>>>>> eda7625c69b0c3cceaac34efeaee0f338b84f130
                 setFilteredGames(result.data.paginatedGames);
                 setLastPage(result.data.lastPage);
                 setUserGames(result.data.response.games);
                 setLoading(false);
             }
         }).then(games => {
+<<<<<<< HEAD
             console.log("games =>", filteredGames);
+=======
+            renderGames(filteredGames);
+>>>>>>> eda7625c69b0c3cceaac34efeaee0f338b84f130
         }).catch(err => {
             console.error("Failed to get Games: ", err.message);
         }).finally(end => {
@@ -618,13 +640,18 @@ export default function Gameslist (){
     }
 
     function renderGames (games) {
+        console.log("renderGames: ", games);
         if (games.length <= 0) {
+<<<<<<< HEAD
             // console.log("no renderGames");
             gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
             return gamesList;
+=======
+            // gamesList = <h2 className="gameslist-game__no-results">No Games Found in this Category</h2>;
+            setGamesList(<h2 className="gameslist-game__no-results">No Games Found in this Category</h2>);
+>>>>>>> eda7625c69b0c3cceaac34efeaee0f338b84f130
         } else {
-            // console.log("renderGames found: ", games);
-            gamesList = games.map((game, i) => {
+            setGamesList(games.map((game, i) => {
                 let formattedDate = new Date(game.date_added);
                 let month = parseInt(formattedDate.getMonth());
                 let day = parseInt(formattedDate.getDate());
@@ -710,13 +737,104 @@ export default function Gameslist (){
                                 </div>
                             </Row>
                         </Col>
-            })
+            }));
+            // gamesList = games.map((game, i) => {
+            //     let formattedDate = new Date(game.date_added);
+            //     let month = parseInt(formattedDate.getMonth());
+            //     let day = parseInt(formattedDate.getDate());
+
+            //     if ((month === 4 || month === 5 || month === 9 || month === 11) && day > 30) {
+            //         day = "1";
+            //     } else if ((month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10 || month === 12) && day > 31) {
+            //         day = "1";
+            //         month++;
+            //     } else if (month === 2 && day > 28 ) {
+            //         day = "1";
+            //         month++;
+            //     } else {
+            //         day = formattedDate.getDate();
+            //     }
+            //     let year = formattedDate.getFullYear();
+            //     return <Col xl={4} lg={4} sm={6} xs={12}>
+            //         {/* <div class="gameslist-game__bg-blur">
+
+            //         </div> */}
+            //                 <Row className="gameslist-game d-flex flex-column me-2">
+            //                 <Image className="gameslist-game__img align-self-center" src={
+            //                     game.custom_game === "romhacks" ? romhacksCart : 
+            //                 // game.custom_game === "pokemon" ? pokemonCart : 
+            //                 game.custom_game === "mods" ? modsCart : game.custom_game === "other" ? otherCart : game.img_url} rounded
+            //                             onClick={() => {
+            //                                 setShowModal(true);
+            //                                 setGameName(game.name); 
+            //                                 setGameImg(
+            //                                     game.custom_game === "romhacks" ? romhacksCart : 
+            //                                     // game.custom_game === "pokemon" ? pokemonCart : 
+            //                                     game.custom_game === "mods" ? modsCart : game.custom_game === "other" ? otherCart : game.img_url);
+            //                                 setGameSummary(game.summary);
+            //                                 setGameRating(game.rating);
+            //                                 setGameDate(new Date(game.date_added));
+            //                                 setGameRank(game.rank);
+            //                                 setGameIndex(i);
+            //                             }}
+            //                         />
+            //                     <h2 className="gameslist-game__title mx-auto">{game.name.toUpperCase()}</h2>
+            //                     <div className="gameslist__game-info-flex">
+            //                         <div className="gameslist-game__date-container gameslist__game-info-flex-item flex-column justify-content-around">
+            //                             <label>Date:</label>
+            //                             {/* <p className="gameslist-game__detail">{`${month}/${day}/${year}`}</p> */}
+            //                             <p className="gameslist-game__detail">{`${new Date(year, month, day).toLocaleDateString(undefined, {
+            //                                 year: 'numeric',
+            //                                 month: '2-digit',
+            //                                 day: '2-digit'
+            //                             })}`}</p>
+            //                         </div>
+            //                         <div className="gameslist-game__status gameslist__game-info-flex-item flex-column justify-content-around">
+            //                             <label>Game Status</label>
+            //                             <p className="gameslist-game__detail">{(game.rank).toUpperCase()}</p>
+            //                         </div>
+            //                         <div className="gameslist-game__rating gameslist__game-info-flex-item flex-column justify-content-around">
+            //                             <label>Rating: </label>
+            //                             <p className={`user-game__rating__num gameslist-game__detail ${game.rating > 0 && game.rating <= 3 ? "user-game__rating__red" : game.rating >= 5 && game.rating < 8 ? "user-game__rating__yellow" : game.rating >= 8 && game.rating <= 10 ? "user-game__rating__green" : ""}`}>{game.rating === 0 ? "-" : game.rating}</p>
+            //                         </div>
+            //                     </div>
+
+            //                     {/* <Form.Control as="textarea" className="gameslist-game__summary" placeholder="Let your viewers know how you felt about this game"/> */}
+            //                     <div className="gameslist-btn-container">
+            //                         {/* <p className="gameslist-game__add-btn" onClick={(e) => {
+            //                             updateSummary(game.name, document.getElementsByClassName("gameslist-game__summary")[i].value, document.getElementsByClassName("gameslist-game__date")[i].value, document.getElementsByClassName("gameslist-game__rank")[i].value, document.getElementsByClassName("gameslist-game__rating__num")[i].value);
+            //                             notifyUpdate(game.name);
+            //                             }}>Update</p> */}
+            //                             {/* <p className="gameslist-game__add-btn" onClick={() => {
+            //                                 setShowModal(true);
+            //                                 setGameName(game.name); 
+            //                                 setGameImg(game.custom_game === "mario" ? smwCart : game.custom_game === "pokemon" ? pokemonCart : game.custom_game === "minecraft" ? mcCart : game.custom_game === "other" ? otherCart : game.img_url);
+            //                                 setGameSummary(game.summary);
+            //                                 setGameRating(game.rating);
+            //                                 setGameDate(new Date(game.date_added));
+            //                                 setGameRank(game.rank);
+            //                                 setGameIndex(i);
+            //                             }}>Edit</p> */}
+            //                         {/* <p className="gameslist-game__add-btn" onClick={() => {
+            //                             deleteGame(game.name);
+            //                             setTimeout(function () {
+            //                                 window.location.reload();
+            //                             }, 390)
+            //                         }}>Delete</p> */}
+            //                     </div>
+            //                 </Row>
+            //             </Col>
+            // })
         }        
     }
 
+<<<<<<< HEAD
     // filterOrSort();
 
     if (search.length > 0 && phase3Arr.length > 0) {
+=======
+/*    if (search.length > 0 && phase3Arr.length > 0) {
+>>>>>>> eda7625c69b0c3cceaac34efeaee0f338b84f130
         matchArr = [];
         phase3Arr.map(game => {
             if (game.name.toLowerCase().includes(search.toLowerCase())) {
@@ -724,11 +842,15 @@ export default function Gameslist (){
             }
         })
         // renderGames(matchArr);
+<<<<<<< HEAD
     }
 
     if (filteredGames.length > 0 || userGames.length > 0) {
         renderGames(filteredGames);
     } 
+=======
+    } */
+>>>>>>> eda7625c69b0c3cceaac34efeaee0f338b84f130
 
     if (loading) {
         gamesList = <h2>Looking for games</h2>
@@ -902,8 +1024,8 @@ export default function Gameslist (){
                                 type="text" 
                                 placeholder="Search"
                                 onChange={(e) => {
-                                setSearch(e.target.value);
-                            }}/>
+                                    setSearch(e.target.value);
+                                }}/>
                         <Button 
                             className='btn btn-primary gameslist-game__filter-btn gameslist-game__submit'
                             onClick={(e) => {
